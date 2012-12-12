@@ -14,7 +14,7 @@ public:
 	ScreenManager(void);
 	~ScreenManager(void);
 	void pushScreen(Screen* scrn);
-	Screen* popScreen();
+	void popScreen();
 	std::list<Screen*> getToRender();
 	std::list<Screen*> getToUpdate();
 	
