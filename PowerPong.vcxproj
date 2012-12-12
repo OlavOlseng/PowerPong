@@ -82,13 +82,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ScreenManager.cpp" />
+    <ClCompile Include="src\BaseGame.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\ScreenManager.cpp" />
     <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\eirik.cpp" />
     <ClCompile Include="src\PowerPong.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScreenManager.h" />
+    <ClInclude Include="src\BaseGame.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\ScreenManager.h" />
     <ClInclude Include="src\Screen.h" />
     <ClInclude Include="src\eirik.h" />
   </ItemGroup>
