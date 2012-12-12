@@ -4,10 +4,17 @@
 *.o
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
+#*.so
+#*.dylib
 
 # Compiled Static libraries
-*.lai
-*.la
-*.a
+#*.lai
+#*.la
+#*.a
+
+#Dirs
+Debug/
+
+#Project files
+#*.sdf
+#*.sln
