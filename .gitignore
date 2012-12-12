@@ -19,4 +19,4 @@ Release/
 #Project files
 *.sdf
 *.opensdf
-PowerPong.*
+PowerPong*
