@@ -7,6 +7,7 @@
 #include <GL\glew.h>
 #include <GL\freeglut.h>
 #include <glm\glm.hpp>
+#include "eirik.h"
 
 void display(){
 	glm::vec3 vec(1,1,1);
@@ -17,6 +18,8 @@ void display(){
 
 
 }
+
+
 int main(int argc, char* argv[])
 {
 	glutInit( &argc, argv);
@@ -26,6 +29,8 @@ int main(int argc, char* argv[])
 	glutDisplayFunc(display);
 
 	glutMainLoop();
+
+	Eirik j;
 
 	std::cout << "VAGINA!" << std::endl;
 	system("PAUSE");
