@@ -82,14 +82,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ScreenManager.cpp" />
-    <ClCompile Include="src\Screen.cpp" />
+    <ClCompile Include="src\Screen\OverlayScreen.cpp" />
+    <ClCompile Include="src\Screen\MenuScreen.cpp" />
+    <ClCompile Include="src\Screen\GameScreen.cpp" />
+    <ClCompile Include="src\Screen\ScreenManager.cpp" />
+    <ClCompile Include="src\Screen\Screen.cpp" />
     <ClCompile Include="src\eirik.cpp" />
     <ClCompile Include="src\PowerPong.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScreenManager.h" />
-    <ClInclude Include="src\Screen.h" />
+    <ClInclude Include="src\Screen\OverlayScreen.h" />
+    <ClInclude Include="src\Screen\MenuScreen.h" />
+    <ClInclude Include="src\Screen\GameScreen.h" />
+    <ClInclude Include="src\Screen\ScreenManager.h" />
+    <ClInclude Include="src\Screen\Screen.h" />
     <ClInclude Include="src\eirik.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
