@@ -82,10 +82,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ScreenManager.cpp" />
+    <ClCompile Include="src\Screen.cpp" />
     <ClCompile Include="src\eirik.cpp" />
     <ClCompile Include="src\PowerPong.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ScreenManager.h" />
+    <ClInclude Include="src\Screen.h" />
     <ClInclude Include="src\eirik.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
