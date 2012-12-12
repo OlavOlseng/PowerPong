@@ -16,5 +16,5 @@
 Debug/
 
 #Project files
-#*.sdf
-#*.sln
+*.sdf
+*.opensdf
