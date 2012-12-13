@@ -24,7 +24,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 	glutIdleFunc(BaseGame::idle);
 	glutReshapeFunc(BaseGame::onReshape);
 	BaseGame::instance->lastTime = glutGet(GLUT_ELAPSED_TIME);
-
+	BaseGame::instance->setup();
 	glutMainLoop();
 
 
@@ -32,8 +32,6 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 
 //glut static callback
 void BaseGame::display(){
-
-
 	BaseGame::instance->draw();
 }
 //glut static callback

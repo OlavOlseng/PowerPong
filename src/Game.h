@@ -18,6 +18,7 @@ protected:
 	void reshape(int width, int height);
 	void draw();
 	void update(double dt);
+	void setup();
 };
 
 #endif
