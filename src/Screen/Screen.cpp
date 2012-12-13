@@ -4,7 +4,7 @@
 Screen::Screen(void)
 {
 	this -> renderBlock = 0;
-	this -> updateBlock = 1;
+	this -> updateBlock = 0;
 }
 
 
