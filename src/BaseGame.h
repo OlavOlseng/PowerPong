@@ -30,7 +30,7 @@ protected:
 	virtual void draw() = 0;
 	virtual void update(double dt) = 0;
 	virtual void reshape(int width, int height) = 0;
-
+	virtual void setup() = 0;
 	
 };
 

@@ -7,9 +7,6 @@ Game::Game(){
 }
 Game::Game(int argc,char * argv[]):BaseGame()
 {
-
-
-
 	//will not return
 	init("Game",1280,720);
 }
@@ -18,6 +15,17 @@ Game::~Game(void)
 {
 }
 
+void Game::setup(){
+	//init stuff here
+	printf("setup");
+
+
+
+
+
+
+
+}
 void Game::reshape(int width, int height){
 
 	glViewport(0,0,width,height);
