@@ -11,7 +11,7 @@ public:
 	OverlayScreen(void);
 	~OverlayScreen(void);
 
-	virtual void update() override;
+	virtual void update(double dt) override;
 	virtual void render() override;
 };
 

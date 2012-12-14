@@ -16,7 +16,7 @@ void GameScreen::render()
 	std::cout << "Rendering gamescreen" << std::endl;
 }
 
-void GameScreen::update()
+void GameScreen::update(double dt)
 {
 	std::cout << "Updating gamescreen" << std::endl;
 }

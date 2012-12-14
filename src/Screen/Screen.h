@@ -16,7 +16,7 @@ public:
 	Screen(void);
 	~Screen(void);
 
-	virtual void update() = 0;
+	virtual void update(double dt) = 0;
 	virtual void render() = 0;
 
 	void setRenderBlock(bool b);

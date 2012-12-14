@@ -9,7 +9,7 @@
 #include <glm\glm.hpp>
 #include "eirik.h"
 #include "Game.h"
-#include "bullet\btBulletDynamicsCommon.h"
+
 
 
 int main(int argc, char* argv[])

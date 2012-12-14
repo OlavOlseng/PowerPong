@@ -17,7 +17,7 @@ void MenuScreen::render()
 	std::cout << "Rendering MenuScreen" << std::endl;
 }
 
-void MenuScreen::update()
+void MenuScreen::update(double dt)
 {
 	std::cout << "Updating MenuScreen" << std::endl;
 }
