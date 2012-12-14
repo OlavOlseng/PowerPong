@@ -4,6 +4,7 @@ static char*t = new char[];
 BaseGame * BaseGame::instance = new Game();
 
 Game::Game(){
+
 }
 Game::Game(int argc,char * argv[]):BaseGame()
 {
@@ -17,9 +18,10 @@ Game::~Game(void)
 
 void Game::setup(){
 	//init stuff here
-	printf("setup");
-
-
+	cam = new Camera(0,2,0,5,5,5,1280,720);
+	walls = new std::vector<Wall*>();
+	Wall *wall = new Wall(1,5,5,glm::vec3(3,0,3));
+	renderer = new WallRenderer(walls,cam);
 
 
 
@@ -34,9 +36,8 @@ void Game::reshape(int width, int height){
 
 }
 void Game::draw(){
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0,0.0,0.0,1.0);
 
+	renderer->render();
 	
 	swapBuffers();
 }

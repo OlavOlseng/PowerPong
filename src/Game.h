@@ -2,8 +2,9 @@
 #define game_h
 
 #include "BaseGame.h"
-
-
+#include "Rendering\WallRenderer.h"
+#include "Entities\Wall.h"
+#include "camera\camera.h";
 class Game: public BaseGame
 {
 public:
@@ -13,6 +14,10 @@ public:
 
 private:
 	int width,height;
+	std::vector<Wall*> *walls;
+	WallRenderer*renderer;
+	Camera*cam;
+
 protected:
 
 	void reshape(int width, int height);

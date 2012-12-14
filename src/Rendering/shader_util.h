@@ -27,7 +27,7 @@ void bufferStaticArray(GLenum target,GLvoid*data,size_t size);
 
 
 GLint bindAttribute(GLuint program,char* attr);
-GLint bindUnifrom(GLuint program,char *uni);
+GLint bindUniform(GLuint program,char *uni);
 
 GLuint loadTexture(std::string fName,GLuint id);
 #endif
