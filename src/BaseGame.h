@@ -1,9 +1,12 @@
 #ifndef base_game_h
 #define base_game_h
-
 #include <GL\glew.h>
-#include <GL\freeglut.h>
+#include <GL\freeglut.h>;
+#include <GL\GL.h>
+#include <GL\GLU.h>
+
 #include <glm\glm.hpp>
+
 #include <string>
 
 class BaseGame
@@ -19,7 +22,9 @@ public:
 private:
 	int width,height,lastTime;
 
+
 protected:
+	bool setupDone;
 	void init(std::string windowTitle,int width,int height);
 	static BaseGame* BaseGame::instance;
 	static void display();

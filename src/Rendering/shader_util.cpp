@@ -116,7 +116,7 @@ GLint bindAttribute(GLuint program,char* attr){
         }
     return attribute;
 }
-GLint bindUnifrom(GLuint program,char *uni){
+GLint bindUniform(GLuint program,char *uni){
     GLint uniform = glGetUniformLocation(program, uni);
     if(uniform == -1){
         printf( "Could not bind uniform %s\n", uni);
