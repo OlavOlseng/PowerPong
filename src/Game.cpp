@@ -41,18 +41,26 @@ void Game::setup(){
 	
 	Model*model = new Model();
 	Model*model2 = new Model();
+	Model* model3 = new Model();
 	model2->setPosition(glm::vec3(0,0,5));
 
+	model3->setPosition(glm::vec3(0,1,20));
 	models = new std::vector<Model*>();
 	
 	models->push_back(model);
 	models->push_back(model2);
+	models->push_back(model3);
 
 	GLTriangleBatch*batch = new GLTriangleBatch(model->getVertexBuffer(),model->getNormalBuffer(),model->getTexcoordBuffer(),model->getElementBuffer());
 	gltMakeSphere(*batch,5,25,13);
 
 	GLTriangleBatch*batch2 = new GLTriangleBatch(model2->getVertexBuffer(),model2->getNormalBuffer(),model2->getTexcoordBuffer(),model2->getElementBuffer());
 	gltMakeSphere(*batch2,5,25,13);
+
+	
+	GLTriangleBatch*batch3 = new GLTriangleBatch(model3->getVertexBuffer(),model3->getNormalBuffer(),model3->getTexcoordBuffer(),model3->getElementBuffer());
+	gltMakeDisk(*batch3,5,10,25,13);
+
 	geomRenderer = new GeometryRenderer(cam,models);
 
 	generator.generateMeshFor(wall);
