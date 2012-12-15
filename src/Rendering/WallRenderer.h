@@ -23,6 +23,7 @@ private:
 	GLuint attribute_coord4;
 	GLuint attribute_color4;
 	GLuint unifrom_mvp;
+	
 	GLuint program;
 	Camera*cam;
 

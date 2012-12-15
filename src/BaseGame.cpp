@@ -25,6 +25,8 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 	glutReshapeFunc(BaseGame::onReshape);
 	BaseGame::instance->lastTime = glutGet(GLUT_ELAPSED_TIME);
 	BaseGame::instance->setupDone = false;
+	glewInit();
+	BaseGame::instance->setup();
 	glutMainLoop();
 
 
@@ -32,14 +34,9 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 
 //glut static callback
 void BaseGame::display(){
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glClearColor(1.0,0.0,0.0,1.0);
+
 	
-	if(!BaseGame::instance->setupDone){
-		glewInit();
-		BaseGame::instance->setup();
-		BaseGame::instance->setupDone = true;
-	}
+	
 	BaseGame::instance->draw();
 }
 //glut static callback

@@ -5,6 +5,12 @@
 #include "Rendering\WallRenderer.h"
 #include "Entities\Wall.h"
 #include "camera\camera.h";
+
+#include "Rendering\Model.h"
+#include "GLtools\GLTools.h"
+#include "GLtools\GLTriangleBatch.h"
+#include "Rendering\GeometryRenderer.h"
+
 class Game: public BaseGame
 {
 public:
@@ -15,7 +21,9 @@ public:
 private:
 	int width,height;
 	std::vector<Wall*> *walls;
+	std::vector<Model*>*models;
 	WallRenderer*renderer;
+	GeometryRenderer * geomRenderer;
 	Camera*cam;
 
 protected:

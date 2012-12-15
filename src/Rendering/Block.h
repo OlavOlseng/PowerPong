@@ -7,10 +7,10 @@ public:
 	Block();
 	
 	~Block(void);
-	double width,height;
+	int width;
 	glm::vec4 color;
 	bool empty;
-	void set(int width,int height,const glm::vec3 &color);
+	void set(int width,glm::vec3 color);
 
 };
 

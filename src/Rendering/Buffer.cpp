@@ -16,8 +16,9 @@ void Buffer::setData(GLvoid * data,int size){
 	if(_needsInit)
 		init();
 	_size = size;
+
 	glBindBuffer(_bufferType,_bufferHandle);
-	glBufferData(GL_ARRAY_BUFFER,_size,data,_drawMode);
+	glBufferData(_bufferType,_size,data,_drawMode);
 
 }
 int Buffer::getBufferSize(){
