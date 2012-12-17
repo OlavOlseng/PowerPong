@@ -10,16 +10,21 @@ public:
 	Entity(void);
 	~Entity(void);
 
-	//virtual void init() =0;
 	btScalar mass;
-	btMotionState* getMotionState();
 	btVector3 inertia;
 	btTransform trans;
-	float getY();
-
+	btScalar modelMatrix;
+	
+	float* getModelMatrix();
 	btCollisionShape* colShape;
 	btMotionState* motionState;
 	btRigidBody* body;
+	
+	//TODO
+	void setPosition();
+	void setOrientation();
+
+
 };
 
 #endif

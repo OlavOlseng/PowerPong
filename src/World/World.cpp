@@ -68,6 +68,6 @@ void World::update(double dt)
 {
 	this -> simWorld -> stepSimulation(dt);
 	for(std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++){
-		std::cout << (*it) -> getY() << std::endl;
+	
 	}
 }

@@ -39,7 +39,10 @@ Supplied libs and includes:
 		Everything
 		
 	Physics Simulation:
-		Everything
+		Collision handling
+		entity deletion
+		interface for rendering
+		
 		
 	User Interface:
 		Everything
