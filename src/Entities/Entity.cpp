@@ -17,3 +17,10 @@ btMotionState* Entity::getMotionState()
 {
 	return this -> motionState;
 }
+
+float Entity::getY()
+{
+	this -> motionState -> getWorldTransform(trans);
+	return trans.getOrigin().getY();
+
+}

@@ -7,8 +7,10 @@
 class Block: public Entity
 {
 public:
+	Block();
 	Block(int width, float x, float y, float z);
 	~Block(void);
 };
+
 
 #endif

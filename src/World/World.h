@@ -14,6 +14,12 @@
 class World
 {
 public:
+	//==============
+	//TEMP
+	
+	//==============
+	
+	
 	World(void);
 	~World(void);
 
@@ -21,15 +27,18 @@ public:
 	void update(double dt);
 	void render();
 	
-	std::list<Entity*> entities;
-	//std::list<Wall*> walls;
+	//Adding stuff to the world
+	void addEntity(Entity*);
+	void removeEntity(Entity*);
 
+	std::list<Entity*> entities;
+	
 	//Simulation wold params
 	btBroadphaseInterface* broadphase;
 	btDefaultCollisionConfiguration* collisionConfiguration;
 	btCollisionDispatcher* dispatcher;
 	btSequentialImpulseConstraintSolver* solver;
-	btDiscreteDynamicsWorld* dynamicsWorld;
+	btDiscreteDynamicsWorld* simWorld;
 	
 	//Ground plane shape variables
 	btCollisionShape* groundShape;

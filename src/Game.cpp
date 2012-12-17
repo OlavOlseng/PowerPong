@@ -17,6 +17,9 @@ Game::~Game(void)
 }
 #include "Rendering\WallMeshGenerator.h"
 void Game::setup(){
+	//setting up physics
+	this-> world = new World();
+	
 	//init stuff here
 	cam = new Camera(2.0,20.0,-10,0,0,5,1280,720);
 	walls = new std::vector<gWall*>();
@@ -66,7 +69,7 @@ void Game::setup(){
 	generator.generateMeshFor(wall);
 	generator.generateMeshFor(wall2);
 
-
+	
 
 }
 void Game::reshape(int width, int height){
@@ -89,7 +92,7 @@ void Game::draw(){
 
 void Game::update(double dt){
 	cam->tick();
-	
+	world-> update(dt);
 	postRedisplay();
 	
 }
