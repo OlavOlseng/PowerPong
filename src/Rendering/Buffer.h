@@ -16,8 +16,10 @@ public:
 	void setData(GLvoid * data,int size);
 	GLuint getBufferHandle();
 	int getBufferSize();
+	void setVertexAttribute(GLint attrib);
 private:
 	GLuint  _bufferHandle;
+	GLint vertexAttribute;
 	BufferType _bufferType;
 	BufferDrawMode _drawMode;
 	int _size;

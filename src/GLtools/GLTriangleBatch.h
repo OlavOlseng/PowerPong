@@ -48,34 +48,20 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 
 // Bring in OpenGL 
 // Windows
+#include <GL\glew.h>
 #ifdef WIN32
 #include <windows.h>		// Must have for Windows platform builds
 #ifndef GLEW_STATIC
 #define GLEW_STATIC
 #endif
 
-#include <gl\glew.h>			// OpenGL Extension "autoloader"
-#include <gl\gl.h>			// Microsoft OpenGL headers (version 1.1 by themselves)
+
+#include <GL\freeglut.h>;
+#include <GL\GL.h>
+#include <GL\GLU.h>		// Microsoft OpenGL headers (version 1.1 by themselves)
 #endif
 
-// Mac OS X
-#ifdef __APPLE__
-#include <TargetConditionals.h>
-#if TARGET_OS_IPHONE | TARGET_IPHONE_SIMULATOR
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
-#define OPENGL_ES
-#else
-#include <GL/glew.h>
-#include <OpenGL/gl.h>		// Apple OpenGL haders (version depends on OS X SDK version)
-#endif
-#endif
 
-// Linux
-#ifdef linux
-#define GLEW_STATIC
-#include <glew.h>
-#endif
 
 #include "math3d.h"
 
@@ -86,7 +72,7 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 class GLTriangleBatch 
     {
     public:
-		GLTriangleBatch(Buffer *vertBuffer,Buffer*normalBuffer,Buffer*texCoordBuffer,Buffer*indexBuffer);
+		GLTriangleBatch(Buffer *vertBuffer,Buffer*normalBuffer,Buffer*texCoordBuffer,Buffer*indexBuffer,GLuint * vao);
         virtual ~GLTriangleBatch(void);
         
         // Use these these functions to add triangles
@@ -109,6 +95,8 @@ class GLTriangleBatch
         GLuint nMaxIndexes;         // Maximum workspace
         GLuint nNumIndexes;         // Number of indexes currently used
         GLuint nNumVerts;           // Number of vertices actually used
+
+		GLuint *  vao;
 		Buffer * vertBuffer;
 		Buffer * normalBuffer;
 		Buffer * texCoordBuffer;

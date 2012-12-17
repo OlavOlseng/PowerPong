@@ -46,24 +46,17 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 #include "GLTriangleBatch.h"
 
 
-//////////////////////// TEMPORARY TEMPORARY TEMPORARY - On SnowLeopard this is suppored, but GLEW doens't hook up properly
-//////////////////////// Fixed probably in 10.6.3
-#ifdef __APPLE__
-#define glGenVertexArrays glGenVertexArraysAPPLE
-#define glDeleteVertexArrays  glDeleteVertexArraysAPPLE
-#define glBindVertexArray	glBindVertexArrayAPPLE
-#endif
-
-
 ///////////////////////////////////////////////////////////
 // Constructor, does what constructors do... set everything to zero or NULL
-GLTriangleBatch::GLTriangleBatch(Buffer *vertBuffer,Buffer*normalBuffer,Buffer*texCoordBuffer,Buffer*indexBuffer)
+GLTriangleBatch::GLTriangleBatch(Buffer *vertBuffer,Buffer*normalBuffer,Buffer*texCoordBuffer,Buffer*indexBuffer,GLuint*vao)
     {
 
+		
 		this->vertBuffer = vertBuffer;
 		this->normalBuffer = normalBuffer;
 		this->texCoordBuffer = texCoordBuffer;
 		this->indexBuffer = indexBuffer;
+		this->vao = vao;
     pIndexes = NULL;
     pVerts = NULL;
     pNorms = NULL;
@@ -180,12 +173,14 @@ void GLTriangleBatch::AddTriangle(M3DVector3f verts[3], M3DVector3f vNorms[3], M
 void GLTriangleBatch::End()
     {
 	
+	
+		glBindVertexArray(*vao);
 		vertBuffer->setData(pVerts,sizeof(M3DVector3d)*nNumVerts);
 		normalBuffer->setData(pNorms,sizeof(M3DVector3d)*nNumVerts);
 		texCoordBuffer->setData(pTexCoords,sizeof(M3DVector3d)*nNumVerts);
 		indexBuffer->setData(pIndexes,nNumIndexes*sizeof(GLushort));
-
-    
+		glBindVertexArray(0);
+		
     // Free older, larger arrays
     delete [] pIndexes;
     delete [] pVerts;

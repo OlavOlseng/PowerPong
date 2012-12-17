@@ -9,22 +9,27 @@
 #include "Model.h"
 #include "shader_util.h"
 #include "glm/gtc/type_ptr.hpp"
-class GeometryRenderer
+#include "Renderer.h"
+class GeometryRenderer:Renderer
 {
 public:
 	GeometryRenderer(Camera*cam,std::vector<Model*> * models);
 	~GeometryRenderer(void);
-
 	void render();
+	void registerModel(Model*model);
+
+	GLuint getAttributeCoord3d();
+	GLuint getAttributenormal3d();
+	GLuint getAttributeTexCoord();
 private:
 	std::vector<Model*> * models;
 	Camera* cam;
 
-	GLuint attribute_coord3d;
-	GLuint attribute_texcoord;
-	GLuint attriubte_normal3d;
-	GLuint program;
-	GLuint unifrom_mvp;
+	GLint attribute_coord3d;
+	GLint attribute_texcoord;
+	GLint attriubte_normal3d;
+	GLint program;
+	GLint unifrom_mvp;
 
 };
 

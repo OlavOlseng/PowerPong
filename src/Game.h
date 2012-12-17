@@ -10,7 +10,7 @@
 #include "GLtools\GLTools.h"
 #include "GLtools\GLTriangleBatch.h"
 #include "Rendering\GeometryRenderer.h"
-
+#include "Rendering\StaticModel.h"
 class Game: public BaseGame
 {
 public:

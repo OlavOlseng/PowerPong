@@ -6,7 +6,7 @@
 
 BaseGame::BaseGame()
 {	
-		
+	
 	
 }
 
@@ -26,6 +26,10 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 	BaseGame::instance->lastTime = glutGet(GLUT_ELAPSED_TIME);
 	BaseGame::instance->setupDone = false;
 	glewInit();
+	if(GLEW_VERSION_3_0)
+		printf("ok");
+	GLuint vao[4];
+	glGenBuffers(4,vao);
 	BaseGame::instance->setup();
 	glutMainLoop();
 

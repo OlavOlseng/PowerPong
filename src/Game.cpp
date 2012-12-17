@@ -18,6 +18,7 @@ Game::~Game(void)
 #include "Rendering\WallMeshGenerator.h"
 void Game::setup(){
 	//init stuff here
+	models = new std::vector<Model*>();
 	cam = new Camera(2.0,20.0,-10,0,0,5,1280,720);
 	walls = new std::vector<gWall*>();
 	
@@ -38,34 +39,38 @@ void Game::setup(){
 	WallMeshGenerator generator = WallMeshGenerator();
 	
 	renderer = new WallRenderer(walls,cam);
+	geomRenderer = new GeometryRenderer(cam,models);
+
 	
-	Model*model = new Model();
-	Model*model2 = new Model();
-	Model* model3 = new Model();
-	model2->setPosition(glm::vec3(0,0,5));
+	StaticModel*model = new StaticModel();
+	StaticModel*model2 = new StaticModel();
+	StaticModel* model3 = new StaticModel();
+	model->setPosition(glm::vec3(0,0,5));
+	model2->setPosition(glm::vec3(2,0,5));
 
 	model3->setPosition(glm::vec3(0,1,20));
-	models = new std::vector<Model*>();
+	
 	
 	models->push_back(model);
 	models->push_back(model2);
-	models->push_back(model3);
-
-	GLTriangleBatch*batch = new GLTriangleBatch(model->getVertexBuffer(),model->getNormalBuffer(),model->getTexcoordBuffer(),model->getElementBuffer());
+	//models->push_back(model3);
+	
+	geomRenderer->registerModel(model);
+	geomRenderer->registerModel(model2);
+	GLTriangleBatch*batch = new GLTriangleBatch(model->getVertexBuffer(),model->getNormalBuffer(),model->getTexcoordBuffer(),model->getElementBuffer(),model->getVao());
 	gltMakeSphere(*batch,5,25,13);
 
-	GLTriangleBatch*batch2 = new GLTriangleBatch(model2->getVertexBuffer(),model2->getNormalBuffer(),model2->getTexcoordBuffer(),model2->getElementBuffer());
+	GLTriangleBatch*batch2 = new GLTriangleBatch(model2->getVertexBuffer(),model2->getNormalBuffer(),model2->getTexcoordBuffer(),model2->getElementBuffer(),model->getVao());
 	gltMakeSphere(*batch2,5,25,13);
 
+	/*
+	GLTriangleBatch*batch3 = new GLTriangleBatch(model3->getVertexBuffer(),model3->getNormalBuffer(),model3->getTexcoordBuffer(),model3->getElementBuffer(),model->getVao());
+	gltMakeDisk(*batch3,5,10,25,13);*/
+
 	
-	GLTriangleBatch*batch3 = new GLTriangleBatch(model3->getVertexBuffer(),model3->getNormalBuffer(),model3->getTexcoordBuffer(),model3->getElementBuffer());
-	gltMakeDisk(*batch3,5,10,25,13);
 
-	geomRenderer = new GeometryRenderer(cam,models);
-
-	generator.generateMeshFor(wall);
-	generator.generateMeshFor(wall2);
-
+	
+	
 
 
 }
@@ -80,7 +85,7 @@ void Game::reshape(int width, int height){
 void Game::draw(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
-	renderer->render();
+	//renderer->render();
 	geomRenderer->render();
 	
 	swapBuffers();
