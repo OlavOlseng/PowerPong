@@ -4,18 +4,21 @@
 World::World(void)
 {
 	this -> init();
+	
+	//TEMP
+
 }
 
 
 World::~World(void)
 {
-    dynamicsWorld->removeRigidBody(groundBody);
+    simWorld->removeRigidBody(groundBody);
     delete groundBody->getMotionState();
     delete groundBody;
  
     delete groundShape;
  
-    delete dynamicsWorld;
+    delete simWorld;
     delete solver;
     delete collisionConfiguration;
     delete dispatcher;
@@ -37,15 +40,34 @@ void World::init()
     this -> solver = new btSequentialImpulseConstraintSolver;
  
     // The simulation world
-    this -> dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-	dynamicsWorld->setGravity(btVector3(0,-10,0));
+    this -> simWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
+	simWorld->setGravity(btVector3(0,-10,0));
 
 	// Build the static ground and add it to the simulation
-	this -> groundShape = new btStaticPlaneShape(btVector3(0,0,0),1);
+	this -> groundShape = new btStaticPlaneShape(btVector3(0,1,0),0);
 	this -> groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
     this -> groundBody = new btRigidBody(groundRigidBodyCI);
-	this -> dynamicsWorld->addRigidBody(groundBody);
+	this -> simWorld->addRigidBody(groundBody);
 
+}
+
+void World::addEntity(Entity* ent)
+{
+	this-> entities.push_back(ent);
+	this -> simWorld -> addRigidBody(ent->body);
+}
+
+void World::removeEntity(Entity* ent)
+{
+	this-> entities.remove(ent);
+}
+
+void World::update(double dt)
+{
+	this -> simWorld -> stepSimulation(dt);
+	for(std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++){
+	
+	}
 }

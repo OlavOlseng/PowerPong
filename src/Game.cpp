@@ -17,6 +17,9 @@ Game::~Game(void)
 }
 #include "Rendering\WallMeshGenerator.h"
 void Game::setup(){
+	//setting up physics
+	this-> world = new World();
+	
 	//init stuff here
 	models = new std::vector<Model*>();
 	cam = new Camera(2.0,20.0,-10,0,0,5,1280,720);
@@ -67,10 +70,6 @@ void Game::setup(){
 	GLTriangleBatch*batch3 = new GLTriangleBatch(model3->getVertexBuffer(),model3->getNormalBuffer(),model3->getTexcoordBuffer(),model3->getElementBuffer(),model->getVao());
 	gltMakeDisk(*batch3,5,10,25,13);*/
 
-	
-
-	
-	
 
 
 }
@@ -94,7 +93,7 @@ void Game::draw(){
 
 void Game::update(double dt){
 	cam->tick();
-	
+	world-> update(dt);
 	postRedisplay();
 	
 }

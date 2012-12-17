@@ -11,12 +11,19 @@
 #include "GLtools\GLTriangleBatch.h"
 #include "Rendering\GeometryRenderer.h"
 #include "Rendering\StaticModel.h"
+
+
+#include "World\World.h"
+#include "Entities\Block.h"
+
+
 class Game: public BaseGame
 {
 public:
 	Game();
 	Game(int argc,char * argv[]);
 	~Game(void);
+	World* world;
 
 private:
 	int width,height;

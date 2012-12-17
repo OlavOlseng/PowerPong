@@ -13,7 +13,9 @@ Entity::~Entity(void)
 	delete body;
 }
 
-btMotionState* Entity::getMotionState()
+btScalar* Entity::getModelMatrix()
 {
-	return this -> motionState;
+	body-> getMotionState()->getWorldTransform(trans);
+	trans.getOpenGLMatrix(&modelMatrix);
+	return &modelMatrix;
 }
