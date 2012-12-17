@@ -56,8 +56,8 @@ void WallRenderer::render(){
 		glDrawArrays(GL_TRIANGLES,0,vertexBuffer->getBufferSize());
 	}
 
-		
-
+	glDisableVertexAttribArray(attribute_coord4);
+	glDisableVertexAttribArray(attribute_color4);
 }
 
 WallRenderer::~WallRenderer(void)

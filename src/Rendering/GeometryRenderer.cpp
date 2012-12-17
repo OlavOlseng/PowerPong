@@ -8,7 +8,7 @@ GeometryRenderer::GeometryRenderer(Camera*cam,std::vector<Model*> * models)
 
 	const char* vs = 
 		"attribute vec3 coord3d;"
-		"attribute vec4 normal3d;"
+		"attribute vec3 normal3d;"
 		"attribute vec2 texcoord2d;"
 		"uniform mat4 mvp;"
 		"varying vec3 f_normal;"
@@ -58,6 +58,10 @@ void GeometryRenderer::render(){
 		
 		glDrawElements(GL_TRIANGLES,model->getElementBuffer()->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
 	}
+
+	glDisableVertexAttribArray(attribute_coord3d);
+	glDisableVertexAttribArray(attribute_texcoord);
+	glDisableVertexAttribArray(attriubte_normal3d);
 
 
 }
