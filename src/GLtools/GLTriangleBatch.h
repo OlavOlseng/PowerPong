@@ -89,7 +89,7 @@ class GLTriangleBatch
 		GLTriangleBatch(Buffer *vertBuffer,Buffer*normalBuffer,Buffer*texCoordBuffer,Buffer*indexBuffer);
         virtual ~GLTriangleBatch(void);
         
-        // Use these three functions to add triangles
+        // Use these these functions to add triangles
         void BeginMesh(GLuint nMaxVerts);
         void AddTriangle(M3DVector3f verts[3], M3DVector3f vNorms[3], M3DVector2f vTexCoords[3]);
         void End();
@@ -109,10 +109,10 @@ class GLTriangleBatch
         GLuint nMaxIndexes;         // Maximum workspace
         GLuint nNumIndexes;         // Number of indexes currently used
         GLuint nNumVerts;           // Number of vertices actually used
-		Buffer *vertBuffer;
-		Buffer*normalBuffer;
-		Buffer*texCoordBuffer;
-		Buffer*indexBuffer;
+		Buffer * vertBuffer;
+		Buffer * normalBuffer;
+		Buffer * texCoordBuffer;
+		Buffer *  indexBuffer;
 
     };
 
