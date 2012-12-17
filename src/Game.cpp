@@ -19,16 +19,16 @@ Game::~Game(void)
 void Game::setup(){
 	//init stuff here
 	cam = new Camera(2.0,20.0,-10,0,0,5,1280,720);
-	walls = new std::vector<Wall*>();
+	walls = new std::vector<gWall*>();
 	
-	Wall *wall = new Wall(1,5,glm::vec3(0,0,5));
+	gWall *wall = new gWall(1,5,glm::vec3(0,0,5));
 	walls->push_back(wall);
 	wall->setBlock(0,1,glm::vec3(1.0,0.0,0.0));
 	
 	wall->setBlock(3,1,glm::vec3(0.0,1.0,0.0));
 
 	
-	Wall *wall2 = new Wall(1,10,glm::vec3(0,0,3));
+	gWall *wall2 = new gWall(1,10,glm::vec3(0,0,3));
 	walls->push_back(wall2);
 	wall2->setBlock(0,1,glm::vec3(1.0,0.0,0.0));
 	wall2->setBlock(1,2,glm::vec3(0,0.0,1.0));

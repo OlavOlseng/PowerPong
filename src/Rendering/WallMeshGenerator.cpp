@@ -5,7 +5,7 @@ WallMeshGenerator::WallMeshGenerator(void)
 {
 }
 
-void WallMeshGenerator::generateMeshFor(Wall *wall){
+void WallMeshGenerator::generateMeshFor(gWall *wall){
 
 	glm::vec4 *vertices = new glm::vec4[wall->getWidth()*36];
 	glm::vec4*colors = new glm::vec4[wall->getWidth()*36];
@@ -13,7 +13,7 @@ void WallMeshGenerator::generateMeshFor(Wall *wall){
 	int x = 0;
 
 	for( x= 0;x<wall->getWidth();x++){
-		Block block = wall->getBlock(x);
+		gBlock block = wall->getBlock(x);
 		
 		if(block.empty)
 			continue;

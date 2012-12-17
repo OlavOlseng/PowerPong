@@ -22,6 +22,7 @@ public:
 	void render();
 	
 	std::list<Entity*> entities;
+	//std::list<Wall*> walls;
 
 	//Simulation wold params
 	btBroadphaseInterface* broadphase;
@@ -33,7 +34,7 @@ public:
 	//Ground plane shape variables
 	btCollisionShape* groundShape;
 	btDefaultMotionState* groundMotionState;
-	btRigidBody* groundRigidBody;
+	btRigidBody* groundBody;
 
 };
 

@@ -1,24 +1,26 @@
-#ifndef wall_h
-#define wall_h
+#ifndef gwall_h
+#define gwall_h
 #include "../Rendering/Buffer.h"
-#include "../Rendering/Block.h"
+#include "gBlock.h"
 #include <glm\glm.hpp>
 #include <vector>
-class Wall
+
+class gWall
 {
 public:
-	Wall(int blockScale,int lenght,glm::vec3 pos);
-	~Wall(void);
+	gWall(int blockScale,int lenght,glm::vec3 pos);
+	~gWall(void);
 	Buffer * getVertexBuffer();
 	Buffer * getColorBuffer();
 	glm::vec3 * getPosition();
 	void setBlock(int x,int width,glm::vec3 color);
-	Block getBlock(int x);
+	gBlock getBlock(int x);
 	int getWidth();
+
 private:
 	int blockScale;
 	int width,height,depth;
-	Block * blocks;
+	gBlock * blocks;
 	Buffer vertexBuffer;
 	Buffer colorBuffer;
 	glm::vec3 pos;

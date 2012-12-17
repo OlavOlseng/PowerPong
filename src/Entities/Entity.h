@@ -10,15 +10,14 @@ public:
 	Entity(void);
 	~Entity(void);
 
-	btMotionState getMotionState();
-	virtual void render() = 0;
-	virtual void update() = 0;
-	virtual void init() = 0;
+	virtual void init() =0;
+
+	btMotionState* getMotionState();
 
 protected:
 	btCollisionShape* colShape;
-	btMotionState* motionShape;
-
+	btMotionState* motionState;
+	btRigidBody* body;
 };
 
 #endif

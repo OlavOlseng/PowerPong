@@ -1,12 +1,12 @@
-#include "Block.h"
+#include "gBlock.h"
 
-Block::Block(){
+gBlock::gBlock(){
 	empty = true;
 	this->color = glm::vec4(0.0,0.0,0.0,1.0);
 
 }
 
-void Block::set(int width, glm::vec3 color){
+void gBlock::set(int width, glm::vec3 color){
 
 	this->color.x = color.x;
 	this->color.y = color.y;
@@ -16,6 +16,6 @@ void Block::set(int width, glm::vec3 color){
 	empty = false;
 
 }
-Block::~Block(void)
+gBlock::~gBlock(void)
 {
 }

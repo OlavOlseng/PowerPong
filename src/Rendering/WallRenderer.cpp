@@ -1,7 +1,7 @@
 #include "WallRenderer.h"
 
 
-WallRenderer::WallRenderer(std::vector<Wall*>*walls,Camera*cam)
+WallRenderer::WallRenderer(std::vector<gWall*>*walls,Camera*cam)
 {
 	this->walls = walls;
 	this->cam = cam;
@@ -38,7 +38,7 @@ void WallRenderer::render(){
 
 	int t = walls->size();
 	for (int i = 0;i<walls->size();i++){
-		Wall*wall = walls->at(i);
+		gWall*wall = walls->at(i);
 		glm::vec3 *pos = wall->getPosition();
 		glm::mat4 model = glm::scale(glm::translate(glm::mat4(1.0),glm::vec3(pos->x,pos->y,pos->z)),glm::vec3(1.0,1.0,1.0));
 		glm::mat4 mvp = cam->getProjXview()*model;

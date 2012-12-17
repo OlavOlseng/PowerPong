@@ -3,7 +3,7 @@
 
 #include "BaseGame.h"
 #include "Rendering\WallRenderer.h"
-#include "Entities\Wall.h"
+#include "Graphics\gWall.h"
 #include "camera\camera.h";
 
 #include "Rendering\Model.h"
@@ -20,7 +20,7 @@ public:
 
 private:
 	int width,height;
-	std::vector<Wall*> *walls;
+	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
 	WallRenderer*renderer;
 	GeometryRenderer * geomRenderer;

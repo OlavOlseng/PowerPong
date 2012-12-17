@@ -9,9 +9,9 @@ World::World(void)
 
 World::~World(void)
 {
-    dynamicsWorld->removeRigidBody(groundRigidBody);
-    delete groundRigidBody->getMotionState();
-    delete groundRigidBody;
+    dynamicsWorld->removeRigidBody(groundBody);
+    delete groundBody->getMotionState();
+    delete groundBody;
  
     delete groundShape;
  
@@ -38,14 +38,14 @@ void World::init()
  
     // The simulation world
     this -> dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher,broadphase,solver,collisionConfiguration);
-	//dynamicsWorld->setGravity(btVector3(0,-10,0));
+	dynamicsWorld->setGravity(btVector3(0,-10,0));
 
 	// Build the static ground and add it to the simulation
 	this -> groundShape = new btStaticPlaneShape(btVector3(0,0,0),1);
 	this -> groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
 	
 	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-    this -> groundRigidBody = new btRigidBody(groundRigidBodyCI);
-	this -> dynamicsWorld->addRigidBody(groundRigidBody);
+    this -> groundBody = new btRigidBody(groundRigidBodyCI);
+	this -> dynamicsWorld->addRigidBody(groundBody);
 
 }

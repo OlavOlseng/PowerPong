@@ -1,7 +1,7 @@
 #ifndef wall_renderer_h
 #define wall_renderer_h
 #include <vector>
-#include "../Entities/Wall.h"
+#include "../Graphics/gWall.h"
 #include <GL\glew.h>
 #include <GL\freeglut.h>;
 #include <GL\GL.h>
@@ -15,11 +15,11 @@
 class WallRenderer
 {
 public:
-	WallRenderer(std::vector<Wall*> *walls,Camera*cam);
+	WallRenderer(std::vector<gWall*> *walls,Camera*cam);
 	~WallRenderer(void);
 	void render();
 private:
-	std::vector<Wall*> * walls;
+	std::vector<gWall*> * walls;
 	GLuint attribute_coord4;
 	GLuint attribute_color4;
 	GLuint unifrom_mvp;

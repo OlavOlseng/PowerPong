@@ -1,12 +1,12 @@
-#ifndef block_h
-#define block_h
+#ifndef gBlock_h
+#define gBlock_h
 #include <glm\glm.hpp>
-class Block
+
+class gBlock
 {
 public:
-	Block();
-	
-	~Block(void);
+	gBlock();
+	~gBlock(void);
 	int width;
 	glm::vec4 color;
 	bool empty;
