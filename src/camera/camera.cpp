@@ -54,7 +54,7 @@ void Camera::move (float dx,float dy,float dz){
 void Camera::setProjection(float width,float height){
 
 
-	_proj = glm::perspective(50.0, 1.0*width/height, 0.1, 100.0);
+	_proj = glm::perspective(50.0, 1.0*width/height, 0.1, 300.0);
 	setDidMove(true);
 	tick();
 

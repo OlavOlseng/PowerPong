@@ -10,26 +10,27 @@
 #include "shader_util.h"
 #include "glm/gtc/type_ptr.hpp"
 #include "Renderer.h"
+#include "Shader.h"
+#include "Pipeline.h"
+#include "Node.h"
+#include "ShaderList.h"
+
+
 class GeometryRenderer:Renderer
 {
 public:
 	GeometryRenderer(Camera*cam,std::vector<Model*> * models);
 	~GeometryRenderer(void);
-	void render();
-	void registerModel(Model*model);
+	void render(Pipeline *pipeline,Node * rootNode);
+	void registerModel(Model*model, Pipeline* pipeline);
 
-	GLuint getAttributeCoord3d();
-	GLuint getAttributenormal3d();
-	GLuint getAttributeTexCoord();
+	
 private:
 	std::vector<Model*> * models;
 	Camera* cam;
 
-	GLint attribute_coord3d;
-	GLint attribute_texcoord;
-	GLint attriubte_normal3d;
-	GLint program;
-	GLint unifrom_mvp;
+	
+
 
 };
 

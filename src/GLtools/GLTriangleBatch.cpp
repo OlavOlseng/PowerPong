@@ -174,7 +174,7 @@ void GLTriangleBatch::End()
     {
 	
 	
-		glBindVertexArray(*vao);
+		glBindVertexArray(*this->vao);
 		vertBuffer->setData(pVerts,sizeof(M3DVector3d)*nNumVerts);
 		normalBuffer->setData(pNorms,sizeof(M3DVector3d)*nNumVerts);
 		texCoordBuffer->setData(pTexCoords,sizeof(M3DVector3d)*nNumVerts);

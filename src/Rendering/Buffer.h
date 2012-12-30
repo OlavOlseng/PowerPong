@@ -11,7 +11,7 @@ public:
 	enum BufferType{ARRAY_BUFFER=GL_ARRAY_BUFFER, ELEMENT_BUFFER = GL_ELEMENT_ARRAY_BUFFER};
 	enum BufferDrawMode{STATIC=GL_STATIC_DRAW};
 
-	Buffer(BufferType bufferType,BufferDrawMode drawingMode);
+	Buffer(BufferType bufferType,BufferDrawMode drawingMode,unsigned int stepsize,int dataType);
 	~Buffer();
 	void setData(GLvoid * data,int size);
 	GLuint getBufferHandle();
@@ -22,6 +22,8 @@ private:
 	GLint vertexAttribute;
 	BufferType _bufferType;
 	BufferDrawMode _drawMode;
+	int dataType;
+	unsigned int stepsize;
 	int _size;
 	bool _needsInit;
 	void init();

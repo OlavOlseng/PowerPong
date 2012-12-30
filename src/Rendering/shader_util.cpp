@@ -10,7 +10,7 @@
 #include "shader_util.h"
 
 
-char* readShaderFile(std::string fName){
+char* ShaderUtil::readShaderFile(std::string fName){
 	std::cout << fName.c_str() << std::endl;
 
     std::ifstream file;
@@ -45,25 +45,22 @@ char* readShaderFile(std::string fName){
     file.close();
     return buffer;
 }
-GLuint loadTexture(std::string fName,GLuint id){
-	/*
+GLuint ShaderUtil::loadTexture(std::string fName,GLuint id){
+	
 
     GLuint tex=  SOIL_load_OGL_texture(fName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_POWER_OF_TWO|SOIL_FLAG_COMPRESS_TO_DXT|SOIL_FLAG_INVERT_Y
                                            );
 
        if(tex == 0){
 		   std::cout<< "error on loading texture: "<<fName.c_str() <<std::endl;
-    }
+		}
     
     
     return tex;
-    
-    */
-	return 0;
 
 
 }
-GLuint compileShaders( const char*vs_source,const char*fs_source){
+GLuint ShaderUtil::compileShaders( const char*vs_source,const char*fs_source){
     GLint link_ok = GL_FALSE,vs_ok = GL_FALSE,fs_ok = GL_FALSE;
     GLuint vs = glCreateShader(GL_VERTEX_SHADER);
     GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
@@ -96,12 +93,12 @@ GLuint compileShaders( const char*vs_source,const char*fs_source){
     }
     return program;
 }
-void prepareBuffer(GLuint &name,GLenum target){
+void ShaderUtil::prepareBuffer(GLuint &name,GLenum target){
     glGenBuffers(1, &name);
     glBindBuffer(target,name);
     
 }
-void bufferStaticArray(GLenum target,GLvoid*data,size_t size){
+void ShaderUtil::bufferStaticArray(GLenum target,GLvoid*data,size_t size){
     
     glBufferData(target, size, data, GL_STATIC_DRAW);
     
@@ -109,14 +106,14 @@ void bufferStaticArray(GLenum target,GLvoid*data,size_t size){
 }
 
 
-GLint bindAttribute(GLuint program,char* attr){
+GLint ShaderUtil::bindAttribute(GLuint program,const char* attr){
     GLint attribute = glGetAttribLocation(program, attr);
     if(attribute == -1){
         printf( "Could not bind attribute %s\n", attr);
         }
     return attribute;
 }
-GLint bindUniform(GLuint program,char *uni){
+GLint ShaderUtil::bindUniform(GLuint program,const char *uni){
     GLint uniform = glGetUniformLocation(program, uni);
     if(uniform == -1){
         printf( "Could not bind uniform %s\n", uni);

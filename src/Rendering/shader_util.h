@@ -15,9 +15,9 @@
 #include <GL\glew.h>
 #include <GL\freeglut.h>
 
+#include "src\SOIL.h";
 
-
-
+namespace ShaderUtil{
 
 char* readShaderFile(std::string fName);
 GLuint compileShaders(const char*vs_source,const char*fs_source);
@@ -26,8 +26,9 @@ void prepareBuffer(GLuint &name,GLenum target);
 void bufferStaticArray(GLenum target,GLvoid*data,size_t size);
 
 
-GLint bindAttribute(GLuint program,char* attr);
-GLint bindUniform(GLuint program,char *uni);
+GLint bindAttribute(GLuint program,const char *attr);
+GLint bindUniform(GLuint program,const char *uni);
 
 GLuint loadTexture(std::string fName,GLuint id);
+}
 #endif

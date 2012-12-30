@@ -22,10 +22,10 @@ WallRenderer::WallRenderer(std::vector<gWall*>*walls,Camera*cam)
 		"void main(){"
 		"gl_FragColor = f_color;"
 		"}";
-	this->program = compileShaders(vs,fs);
-	attribute_coord4 = bindAttribute(program,"coord4d");
-	attribute_color4 = bindAttribute(program,"color4d");
-	unifrom_mvp = bindUniform(program,"mvp");
+	this->program = ShaderUtil::compileShaders(vs,fs);
+	attribute_coord4 = ShaderUtil::bindAttribute(program,"coord4d");
+	attribute_color4 = ShaderUtil::bindAttribute(program,"color4d");
+	unifrom_mvp = ShaderUtil::bindUniform(program,"mvp");
 	
 
 }

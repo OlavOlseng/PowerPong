@@ -12,11 +12,13 @@
 #include "Rendering\GeometryRenderer.h"
 #include "Rendering\StaticModel.h"
 
-
+#include <assimp\scene.h>
+#include <assimp\Importer.hpp>
+#include <assimp\postprocess.h>
 #include "World\World.h"
 #include "Entities\Block.h"
-
-
+#include "Rendering\Pipeline.h"
+#include "Rendering\Node.h"
 class Game: public BaseGame
 {
 public:
@@ -29,9 +31,15 @@ private:
 	int width,height;
 	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
+
 	WallRenderer*renderer;
 	GeometryRenderer * geomRenderer;
 	Camera*cam;
+
+	Pipeline *pipeline;
+	void loadShaders(Pipeline*pipeline);
+
+	Node*rootNode;
 
 protected:
 

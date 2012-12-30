@@ -1,15 +1,17 @@
 #include "Buffer.h"
 
-Buffer::Buffer(BufferType bufferType,BufferDrawMode  drawingMode)
+Buffer::Buffer(BufferType bufferType,BufferDrawMode  drawingMode,unsigned int stepsize,int dataType)
 {
 	_bufferType = bufferType;
 	_drawMode = drawingMode;
 	_needsInit = true;
 	_bufferHandle = 0;
+	this->stepsize = stepsize;
+	this->dataType = dataType;
 }
 
 void Buffer::init(){
-	prepareBuffer(_bufferHandle,_bufferType);
+	ShaderUtil::prepareBuffer(_bufferHandle,_bufferType);
 
 }
 void Buffer::setData(GLvoid * data,int size){
@@ -23,7 +25,7 @@ void Buffer::setData(GLvoid * data,int size){
 	glBindBuffer(_bufferType,_bufferHandle);
 	glBufferData(_bufferType,_size,data,_drawMode);
 	glEnableVertexAttribArray(vertexAttribute);
-	glVertexAttribPointer(vertexAttribute, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(vertexAttribute, stepsize, dataType, GL_FALSE, 0, 0);
 	
 	}else{
 

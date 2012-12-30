@@ -4,6 +4,8 @@
 #include <glm\glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Buffer.h";
+#include "Pipeline.h"
+#include <string>
 class Model
 {
 public:
@@ -14,10 +16,11 @@ public:
 	virtual glm::vec3 *getPosition();
 	virtual void setPosition(glm::vec3 position);
 	virtual glm::mat4 getModelMatrix();
-	virtual void render() = 0;
+	virtual void render(Pipeline *pipeline) = 0;
 	virtual void setAttributes(GLint vertexAttrib,GLint normalAttrib,GLint texAttrib)=0 ;
 	virtual GLuint* getVao() = 0;
-	
+	virtual void setShader(std::string name) = 0;
+	virtual std::string getShader() = 0;
 	
 private:
 	glm::vec4 modelMatrix;
