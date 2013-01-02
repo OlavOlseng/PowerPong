@@ -9,6 +9,13 @@ Game::Game(int argc,char * argv[]):BaseGame()
 {
 	//will not return
 
+	//temp: need a system for filepaths
+	Game* g = (Game*)instance;
+	g->binaryPath = argv[0];
+	int last = g->binaryPath.find_last_of("\\");
+	g->binaryPath.erase(last+1,20);
+	
+
 	init("Game",1280,720);
 }
 
@@ -77,6 +84,8 @@ void Game::loadShaders(Pipeline*pipeline){
 
 }
 void Game::setup(){
+
+	printf("\n BinaryPath: %s \n",binaryPath.c_str());
 	pipeline = new Pipeline();
 	loadShaders(pipeline);
 
@@ -128,8 +137,9 @@ void Game::setup(){
 
 	Assimp::Importer imp = Assimp::Importer();
 	
-	const std::string path = std::string("E:\\programming\\games\\PowerPong\\Debug\\duck.dae");
-	//const std::string path = std::string("E:\\programming\\games\\PowerPong\\Debug\\teapots.dae");
+	const std::string path = std::string(binaryPath+"duck.dae");
+
+	
 
 	const aiScene *scene = imp.ReadFile(path.c_str(),aiProcessPreset_TargetRealtime_Fast);
 

@@ -26,7 +26,7 @@ public:
 	Game(int argc,char * argv[]);
 	~Game(void);
 	World* world;
-
+	std::string binaryPath;
 private:
 	int width,height;
 	std::vector<gWall*> *walls;
@@ -48,6 +48,7 @@ protected:
 	void draw();
 	void update(double dt);
 	void setup();
+	
 };
 
 #endif

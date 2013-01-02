@@ -37,6 +37,8 @@ protected:
 	virtual void reshape(int width, int height) = 0;
 	virtual void setup() = 0;
 	
+
+	
 };
 
 

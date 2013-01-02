@@ -30,6 +30,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 		printf("ok");
 	GLuint vao[4];
 	glGenBuffers(4,vao);
+	
 	BaseGame::instance->setup();
 	glutMainLoop();
 
