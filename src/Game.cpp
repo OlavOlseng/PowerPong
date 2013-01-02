@@ -85,7 +85,7 @@ void Game::loadShaders(Pipeline*pipeline){
 }
 void Game::setup(){
 
-	printf("\n BinaryPath: %s \n",binaryPath.c_str());
+	printf("\n WorkingDir: %s \n",binaryPath.c_str());
 	pipeline = new Pipeline();
 	loadShaders(pipeline);
 
@@ -103,8 +103,8 @@ void Game::setup(){
 	wall->setBlock(1,1,glm::vec3(0.0,1.0,0.0));
 
 	wall->setShader(1);
-	
-	
+	std::shared_ptr<ResourceManager> resManager = std::make_shared<ResourceManager>();
+	resManager->setWorkingDirectory(binaryPath);
 	
 	WallMeshGenerator generator = WallMeshGenerator();
 	
@@ -122,6 +122,10 @@ void Game::setup(){
 	model->setShader(10);
 	model2->setShader(10);
 	model3->setShader(10);
+	model->setResourceManager(resManager);
+	model2->setResourceManager(resManager);
+	model3->setResourceManager(resManager);
+
 
 	geomRenderer->registerModel(wall,pipeline);
 	geomRenderer->registerModel(model2,pipeline);
@@ -137,7 +141,7 @@ void Game::setup(){
 
 	Assimp::Importer imp = Assimp::Importer();
 	
-	const std::string path = std::string(binaryPath+"duck.dae");
+	const std::string path = std::string(resManager->getWorkingDirectiory() +"duck.dae");
 
 	
 

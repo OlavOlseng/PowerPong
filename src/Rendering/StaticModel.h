@@ -14,12 +14,13 @@
 #include "Node.h"
 #include "ShaderUniforms.h"
 #include "ShaderAttributes.h"
+#include "../ResourceManager.h"
+#include <memory>
 class StaticModel:public Model
 {
 public:
 	StaticModel(void);
 	~StaticModel(void);
-
 	Buffer *getVertexBuffer();
 	Buffer*getNormalBuffer();
 	Buffer * getTexcoordBuffer();
@@ -30,11 +31,12 @@ public:
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials);
 	GLuint* getVao();
 	void setVao(GLuint vao);
-
+	void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 
 	void setShader(int id);
 	int getShader();
 private:
+	std::shared_ptr<ResourceManager> resourceManager;
 
 	Buffer *vertexBuffer;
 	Buffer*normalBuffer;

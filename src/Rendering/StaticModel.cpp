@@ -18,6 +18,11 @@ StaticModel::~StaticModel(void)
 {
 }
 
+void StaticModel::setResourceManager(std::shared_ptr<ResourceManager> resourceManager){
+
+	this->resourceManager = resourceManager;
+}
+
 Node* StaticModel::initFromScene(const aiScene * scene){
 	
 	
@@ -33,6 +38,7 @@ Node* StaticModel::initFromScene(const aiScene * scene){
 	
 		return modelRoot;
 }
+#include "../BaseGame.h"
 void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 		
 
@@ -75,8 +81,8 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
-
-	GLuint diffuseTexHandle = ShaderUtil::loadTexture("E:\\programming\\games\\PowerPong\\Debug" +std::string(path.data),0);
+	
+	GLuint diffuseTexHandle = ShaderUtil::loadTexture(resourceManager->getWorkingDirectiory()+ std::string(path.data),0);
 	
 
 	//Need to find the center of the model

@@ -19,6 +19,7 @@
 #include "Entities\Block.h"
 #include "Rendering\Pipeline.h"
 #include "Rendering\Node.h"
+#include "ResourceManager.h"
 class Game: public BaseGame
 {
 public:
