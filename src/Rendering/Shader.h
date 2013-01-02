@@ -6,30 +6,28 @@
 #include <GL\GL.h>
 #include <GL\GLU.h>
 #include "shader_util.h"
-
-
+#include <vector>
+#include <string>
+#include "ShaderUniforms.h"
+#include "ShaderAttributes.h"
 
 class Shader
 {
 public:
 	Shader(std::string vs,std::string fs);
 	~Shader(void);
-	GLuint getAttributeCoord3D();
-	GLuint getAttributeNormal3D();
-	GLuint getAttributeTexCoord2D();
+	
 	void setUniformMat4f(unsigned int uniform,float*value);
 	void bindUniform(unsigned int uniform,std::string name);
+	void bindAttribute(unsigned int attribute,std::string name);
 	void bind();
 	void unbind();
-
+	GLint* getAttributes();
 private:
 	bool bound;
 	GLint program;
-	GLint attributeCoord3D;
-	GLint attributeTexcoord2D;
-	GLint attributeNormal3D;
-	GLint uniformMVP;
 	GLint*uniforms;
+	GLint*attributes;
 
 };
 

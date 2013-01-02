@@ -3,19 +3,26 @@
 #include "../Rendering/Buffer.h"
 #include "gBlock.h"
 #include <glm\glm.hpp>
-#include <vector>
 
-class gWall
+#include <vector>
+#include "../Rendering/Model.h"
+#include "../Rendering/Pipeline.h"
+class gWall:public Model
 {
 public:
 	gWall(int blockScale,int lenght,glm::vec3 pos);
 	~gWall(void);
 	Buffer * getVertexBuffer();
 	Buffer * getColorBuffer();
-	glm::vec3 * getPosition();
 	void setBlock(int x,int width,glm::vec3 color);
 	gBlock getBlock(int x);
 	int getWidth();
+
+	void setAttributes(GLint*attributes);
+	void render(Pipeline *pipeline);
+	GLuint* getVao() ;
+	void setShader(int id);
+	int getShader() ;
 
 private:
 	int blockScale;
@@ -23,7 +30,9 @@ private:
 	gBlock * blocks;
 	Buffer vertexBuffer;
 	Buffer colorBuffer;
-	glm::vec3 pos;
+	
+	GLuint vao;
+	int shaderName;
 	
 };
 

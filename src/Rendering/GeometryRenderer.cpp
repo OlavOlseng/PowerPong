@@ -18,7 +18,7 @@ void GeometryRenderer::registerModel(Model*model, Pipeline* pipeline){
 	pipeline->useShader(model->getShader());
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
-	model->setAttributes(shader->getAttributeCoord3D(),shader->getAttributeNormal3D(),shader->getAttributeTexCoord2D());
+	model->setAttributes(shader->getAttributes());
 	shader->unbind();
 
 }

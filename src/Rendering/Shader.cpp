@@ -4,32 +4,16 @@
 Shader::Shader(std::string vs,std::string fs)
 {
 	this->program = ShaderUtil::compileShaders(vs.c_str(),fs.c_str());
-	
-	attributeCoord3D = ShaderUtil::bindAttribute(program,"coord3d");
-	attributeNormal3D = ShaderUtil::bindAttribute(program,"normal3d");
-	attributeTexcoord2D = ShaderUtil::bindAttribute(program,"texcoord2d");
-	
-	uniforms = new GLint[20];
+		
+	uniforms = new GLint[ShaderUniforms::NUM_UNIFORMS];
+	attributes = new GLint[ShaderAttributes::NUM_ATTRIBUTES];
+
 	bound = false;
 }
 
 
-
-GLuint Shader::getAttributeCoord3D()
-{
-	return this->attributeCoord3D;
-	
-}
-
-GLuint Shader::getAttributeNormal3D()
-{
-
-	return this->attributeNormal3D;
-}
-
-GLuint Shader::getAttributeTexCoord2D()
-{
-	return this->attributeTexcoord2D;
+void Shader::bindAttribute(unsigned int attribute,std::string name){
+	attributes[attribute] = ShaderUtil::bindAttribute(program,name.c_str());
 
 }
 
@@ -46,7 +30,10 @@ void Shader::bindUniform(unsigned int uniform,std::string name)
 
 
 }
+GLint* Shader::getAttributes(){
 
+	return this->attributes;
+}
 void Shader::bind(){
 	if(!bound){
 		glUseProgram(this->program);

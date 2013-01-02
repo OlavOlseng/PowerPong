@@ -3,23 +3,30 @@
 
 Pipeline::Pipeline(void)
 {
-
+	totalRotationTranslation = glm::mat4(1.0);
 }
 
+
+void Pipeline::clear(){
+
+	totalRotationTranslation = glm::mat4(1.0);
+}
 
 Shader *Pipeline::getActiveShader()
 {
 	return this->activeShader;
 }
-void Pipeline::addShader(Shader *shader,std::string id)
+void Pipeline::addShader(Shader *shader,int id)
 {
+	if(id >=shaders.size())
+		shaders.resize(id+1);
 	shaders[id] = shader;
 
 }
-void Pipeline::useShader(std::string name){
+void Pipeline::useShader(int id){
 	
-
-	this->activeShader = shaders[name];
+	if(id < shaders.size())
+	this->activeShader = shaders[id];
 
 }
 
@@ -43,6 +50,15 @@ glm::mat4 Pipeline::getProjection(){
 
 }
 
+
+void Pipeline::setTotalRotationTranslation(glm::mat4 value){
+	this->totalRotationTranslation = value;
+
+}
+glm::mat4 Pipeline::getTotalRotationTranslation(){
+
+	return this->totalRotationTranslation;
+}
 
 Pipeline::~Pipeline(void)
 {

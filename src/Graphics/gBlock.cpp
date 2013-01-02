@@ -2,7 +2,7 @@
 
 gBlock::gBlock(){
 	empty = true;
-	this->color = glm::vec4(0.0,0.0,0.0,1.0);
+	this->color = glm::vec3(0.0,0.0,0.0);
 
 }
 

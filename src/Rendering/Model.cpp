@@ -4,16 +4,33 @@
 Model::Model()
 {
 
-
+	scale = glm::vec3(1.0,1.0,1.0);
 
 }
 
-glm::vec3 *Model::getPosition(){
-	return &this->position;
+glm::vec3 Model::getPosition(){
+	return this->position;
 }
+
+glm::vec3  Model::getRotation(){
+	return this->rotation;
+
+}
+glm::vec3  Model::getScale(){
+	return this->scale;
+
+}
+
+
 glm::mat4 Model::getModelMatrix(){
-	glm::vec3 *pos = getPosition();
-	return glm::scale(glm::translate(glm::mat4(1.0),glm::vec3(pos->x,pos->y,pos->z)),glm::vec3(1.0,1.0,1.0));
+	glm::vec3 pos = getPosition();
+	//scale-rotate-translate
+	
+	glm::mat4 matScale =glm::scale(glm::mat4(1.0),scale);
+	glm::mat4 matRot = glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0),position);
+
+	return trans*matRot*matScale;
 	
 }
 
@@ -22,11 +39,16 @@ void Model::setPosition(glm::vec3 position){
 
 }
 
+void Model::setRotation(glm::vec3 rotation){
+	this->rotation = rotation;
 
-void Model::setAttributes(GLint vertexAttrib,GLint normalAttrib,GLint texAttrib) {
-
-	throw "error 500";
 }
+void Model::setScale(glm::vec3 scale){
+	this->scale = scale;
+}
+
+
+
 Model::~Model(void)
 {
 }

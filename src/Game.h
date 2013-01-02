@@ -2,7 +2,7 @@
 #define game_h
 
 #include "BaseGame.h"
-#include "Rendering\WallRenderer.h"
+
 #include "Graphics\gWall.h"
 #include "camera\camera.h";
 
@@ -32,7 +32,7 @@ private:
 	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
 
-	WallRenderer*renderer;
+
 	GeometryRenderer * geomRenderer;
 	Camera*cam;
 
@@ -40,6 +40,7 @@ private:
 	void loadShaders(Pipeline*pipeline);
 
 	Node*rootNode;
+	StaticModel*model;
 
 protected:
 

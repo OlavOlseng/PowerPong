@@ -8,7 +8,7 @@ public:
 	gBlock();
 	~gBlock(void);
 	int width;
-	glm::vec4 color;
+	glm::vec3 color;
 	bool empty;
 	void set(int width,glm::vec3 color);
 

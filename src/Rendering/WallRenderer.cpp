@@ -5,23 +5,7 @@ WallRenderer::WallRenderer(std::vector<gWall*>*walls,Camera*cam)
 {
 	this->walls = walls;
 	this->cam = cam;
-	const char* vs = 
-		"attribute vec4 coord4d;"
-		"attribute vec4 color4d;"
-		"uniform mat4 mvp;"
-		"varying vec4 f_color;"
 
-		"void main()"
-		"{"
-		"f_color = color4d;"
-		"gl_Position = mvp*vec4(coord4d.xyz,1.0);"
-
-		"}";
-	const char*fs = 
-		"varying vec4 f_color;"
-		"void main(){"
-		"gl_FragColor = f_color;"
-		"}";
 	this->program = ShaderUtil::compileShaders(vs,fs);
 	attribute_coord4 = ShaderUtil::bindAttribute(program,"coord4d");
 	attribute_color4 = ShaderUtil::bindAttribute(program,"color4d");

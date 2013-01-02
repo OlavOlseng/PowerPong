@@ -10,8 +10,7 @@ StaticModel::StaticModel(void)
 	this->elementBuffer= new Buffer(Buffer::ELEMENT_BUFFER,Buffer::STATIC,0,0);
 
 	glGenVertexArrays(1,&vao);
-	glBindVertexArray(vao);
-	glBindVertexArray(0);
+	
 }
 
 
@@ -41,6 +40,7 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 	GLushort * indices = new GLushort[mesh->mNumFaces*3];
 	glm::vec2 *texCoord = new glm::vec2[mesh->mNumVertices];
 	glm::vec3 * normals = new glm::vec3[mesh->mNumVertices];
+
 	for(int i = 0;i<mesh->mNumVertices;i++){
 	
 			aiVector3D p1 = mesh->mVertices[i];
@@ -79,9 +79,44 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 	GLuint diffuseTexHandle = ShaderUtil::loadTexture("E:\\programming\\games\\PowerPong\\Debug" +std::string(path.data),0);
 	
 
+	//Need to find the center of the model
+	//and then adjust the vertices
 	
-	glBindVertexArray(vao);
+	//to do that i will build a boundingbox
+	glm::vec3 min(vertices[0]),max(vertices[0]);
+	for(int i = 0;i<mesh->mNumVertices;i++){
+		glm::vec3 &vertex = vertices[i];
+		if(vertex.x < min.x) min.x = vertex.x;
+		if(vertex.y < min.y) min.y = vertex.y;
+		if(vertex.z < min.z) min.z = vertex.z;
 
+		if(vertex.x > max.x) max.x = vertex.x;
+		if(vertex.y > max.y) max.y = vertex.y;
+		if(vertex.z > max.z) max.z = vertex.z;
+	}
+	glm::vec3 avg = (min + max);
+	avg /=2;
+	for(int i = 0;i<mesh->mNumVertices;i++){
+		vertices[i] -= avg;
+	}
+
+	min = vertices[0];
+	max = vertices[0];
+	for(int i = 0;i<mesh->mNumVertices;i++){
+		glm::vec3 &vertex = vertices[i];
+		if(vertex.x < min.x) min.x = vertex.x;
+		if(vertex.y < min.y) min.y = vertex.y;
+		if(vertex.z < min.z) min.z = vertex.z;
+
+		if(vertex.x > max.x) max.x = vertex.x;
+		if(vertex.y > max.y) max.y = vertex.y;
+		if(vertex.z > max.z) max.z = vertex.z;
+	}
+
+	 avg = (min + max);
+	avg /=2;
+
+	glBindVertexArray(vao);
 	glBindTexture(GL_TEXTURE_2D,diffuseTexHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
@@ -109,22 +144,22 @@ GLuint* StaticModel::getVao(){
 
 }
 
-void StaticModel::setAttributes(GLint vertexAttrib,GLint normalAttrib,GLint texAttrib){
+void StaticModel::setAttributes(GLint*attributes){
 
 
-	this->vertexBuffer->setVertexAttribute(vertexAttrib);
-	this->normalBuffer->setVertexAttribute(normalAttrib);
-	this->texcoordBuffer->setVertexAttribute(texAttrib);
+	this->vertexBuffer->setVertexAttribute(attributes[ShaderAttributes::COORD3D]);
+	this->normalBuffer->setVertexAttribute(attributes[ShaderAttributes::NORMAL3D]);
+	this->texcoordBuffer->setVertexAttribute(attributes[ShaderAttributes::TEXCOORD2D]);
 	this->elementBuffer->setVertexAttribute(-1);
 	
 };
 
 
-void StaticModel::setShader(std::string name){
-	this->shaderName = name;
+void StaticModel::setShader(int id){
+	this->shaderName = id;
 
 }
-std::string StaticModel::getShader(){
+int StaticModel::getShader(){
 	return this->shaderName;
 
 }
@@ -133,11 +168,18 @@ void StaticModel::setVao(GLuint vao){
 }
 void StaticModel::render(Pipeline *pipeline){
 
+
+
 	pipeline->useShader(shaderName);
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
-	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*this->getModelMatrix();
-	shader->setUniformMat4f(0,glm::value_ptr(mvp));
+	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
+
+
+	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
+	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
+	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
+
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
 	glBindVertexArray(0);

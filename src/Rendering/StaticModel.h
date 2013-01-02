@@ -10,8 +10,10 @@
 #include "Buffer.h"
 
 #include <assimp\scene.h>
-#include "glm/gtc/type_ptr.hpp"
+
 #include "Node.h"
+#include "ShaderUniforms.h"
+#include "ShaderAttributes.h"
 class StaticModel:public Model
 {
 public:
@@ -22,7 +24,7 @@ public:
 	Buffer*getNormalBuffer();
 	Buffer * getTexcoordBuffer();
 	Buffer * getElementBuffer();
-	void setAttributes(GLint vertexAttrib,GLint normalAttrib,GLint texAttrib);
+	void setAttributes(GLint*attributes);
 	void render(Pipeline *pipeline);
 	Node* initFromScene(const aiScene * scene);
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials);
@@ -30,8 +32,8 @@ public:
 	void setVao(GLuint vao);
 
 
-	void setShader(std::string name);
-	std::string getShader();
+	void setShader(int id);
+	int getShader();
 private:
 
 	Buffer *vertexBuffer;
@@ -42,7 +44,7 @@ private:
 	GLuint vao;
 	int numVertices;
 	int numIdices;
-	std::string shaderName;
+	int shaderName;
 	GLuint textureHandle;
 
 };

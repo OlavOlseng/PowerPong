@@ -1,17 +1,18 @@
 #include "gWall.h"
 
 
-gWall::gWall(int blockScale,int lenght,glm::vec3 pos):vertexBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_FLOAT),colorBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_FLOAT)
+gWall::gWall(int blockScale,int lenght,glm::vec3 pos):vertexBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT),colorBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT)
 {
 
 
-	this->pos = pos;
+	setPosition(pos);
 	this->blockScale = blockScale;
 
 	this->width = lenght;
 	
 	blocks = new gBlock[width];
 	
+	glGenVertexArrays(1,&vao);
 	//Physics init
 	
 }
@@ -34,10 +35,7 @@ gBlock gWall::getBlock(int x){
 	return block;
 
 }
-glm::vec3 * gWall::getPosition(){
-	return &this->pos;
 
-}
 Buffer *gWall::getVertexBuffer(){
 	
 	return &this->vertexBuffer;
@@ -48,6 +46,41 @@ Buffer*gWall::getColorBuffer(){
 	return &this->colorBuffer;
 
 }
+
+
+void gWall::setAttributes(GLint*attributes){
+	this->vertexBuffer.setVertexAttribute(attributes[ShaderAttributes::COORD3D]);
+	this->colorBuffer.setVertexAttribute(attributes[ShaderAttributes::COLOR3D]);
+
+}
+GLuint* gWall::getVao(){
+	return &vao;
+}
+void gWall::setShader(int id){
+	this->shaderName = id;
+}
+int gWall::getShader(){
+	return this->shaderName;
+}
+
+
+
+void gWall::render(Pipeline *pipeline){
+	pipeline->useShader(shaderName);
+	Shader*shader = pipeline->getActiveShader();
+	shader->bind();
+	glm::mat4 model = pipeline->getTotalRotationTranslation()*getModelMatrix();
+
+	glm::mat4 mvp = pipeline->getProjection()*pipeline->getView()*model;
+	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
+	glBindVertexArray(vao);
+
+	glDrawArrays(GL_TRIANGLES,0,vertexBuffer.getBufferSize());
+
+	glBindVertexArray(0);
+	shader->unbind();
+	
+};
 gWall::~gWall(void)
 {
 

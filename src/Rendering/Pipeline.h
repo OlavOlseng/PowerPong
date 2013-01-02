@@ -12,16 +12,21 @@ public:
 	glm::mat4 getView();
 	void setProjection(glm::mat4  projection);
 	glm::mat4 getProjection();
-	void useShader(std::string name);
+	void useShader(int id);
 	Shader*getActiveShader();
-	void addShader(Shader*shader,std::string id);
+	void addShader(Shader*shader,int id);
+	glm::mat4 getTotalRotationTranslation();
+	void setTotalRotationTranslation(glm::mat4 value);
 
+	void clear();
+	
 private:
 	Shader*activeShader;
+	glm::mat4 totalRotationTranslation;
 	glm::mat4 view;
 	glm::mat4 projection;
-	std::hash_map<std::string,Shader*> shaders;
-
+	std::vector<Shader*> shaders;
+	
 };
 
 #endif
