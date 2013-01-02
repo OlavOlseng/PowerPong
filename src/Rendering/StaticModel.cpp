@@ -88,7 +88,7 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 	//Need to find the center of the model
 	//and then adjust the vertices
 	
-	//to do that i will build a boundingbox
+	//Can find the center by finding the average of min/max
 	glm::vec3 min(vertices[0]),max(vertices[0]);
 	for(int i = 0;i<mesh->mNumVertices;i++){
 		glm::vec3 &vertex = vertices[i];
