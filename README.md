@@ -9,13 +9,14 @@ Programmed by Eirik Jacobsen and Olav Olseng
 1. Requirements.
 ==============================================
 	
-Unsupplied libs and includes:
-	1. 	OpenGL & glew 
-	2.	freeglut
-	3.	glm
+	Unsupplied libs and includes:
+		1. 	OpenGL & glew 
+		2.	freeglut
+		3.	glm
+		4.	assimp
 
-Supplied libs and includes:
-	Bullet physics
+	Supplied libs and includes:
+		Bullet physics
 	
 	
 
@@ -25,7 +26,7 @@ Supplied libs and includes:
 =============================================
 
 	Graphics:
-		Everything
+		Lighting and wall texturing
 		
 	Physics Simulation:
 		Collision handling
