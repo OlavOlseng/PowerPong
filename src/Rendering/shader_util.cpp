@@ -48,13 +48,11 @@ char* ShaderUtil::readShaderFile(std::string fName){
 GLuint ShaderUtil::loadTexture(std::string fName,GLuint id){
 	
 
-    GLuint tex=  SOIL_load_OGL_texture(fName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_POWER_OF_TWO|SOIL_FLAG_COMPRESS_TO_DXT|SOIL_FLAG_INVERT_Y
-                                           );
+	GLuint tex=  SOIL_load_OGL_texture(fName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_POWER_OF_TWO|SOIL_FLAG_COMPRESS_TO_DXT|SOIL_FLAG_INVERT_Y|SOIL_FLAG_MIPMAPS);
 
        if(tex == 0){
 		   std::cout<< "error on loading texture: "<<fName.c_str() <<std::endl;
 		}
-    
     
     return tex;
 
@@ -68,7 +66,7 @@ GLuint ShaderUtil::compileShaders( const char*vs_source,const char*fs_source){
 
     
   
-      glShaderSource(fs, 1, &fs_source, NULL);
+    glShaderSource(fs, 1, &fs_source, NULL);
     glCompileShader(fs);
     glGetShaderiv(fs, GL_COMPILE_STATUS, &fs_ok);
     if (!fs_ok) {

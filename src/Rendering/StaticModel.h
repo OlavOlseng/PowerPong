@@ -31,13 +31,13 @@ public:
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials);
 	GLuint* getVao();
 	void setVao(GLuint vao);
-	void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
+	
 
 	void setShader(int id);
 	int getShader();
 private:
-	std::shared_ptr<ResourceManager> resourceManager;
-
+	
+	GLuint textureHandle;
 	Buffer *vertexBuffer;
 	Buffer*normalBuffer;
 	Buffer * texcoordBuffer;
@@ -47,7 +47,7 @@ private:
 	int numVertices;
 	int numIdices;
 	int shaderName;
-	GLuint textureHandle;
+	
 
 };
 

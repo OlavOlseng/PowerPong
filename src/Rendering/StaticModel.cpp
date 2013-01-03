@@ -18,10 +18,7 @@ StaticModel::~StaticModel(void)
 {
 }
 
-void StaticModel::setResourceManager(std::shared_ptr<ResourceManager> resourceManager){
 
-	this->resourceManager = resourceManager;
-}
 
 Node* StaticModel::initFromScene(const aiScene * scene){
 	
@@ -82,7 +79,7 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
 	
-	GLuint diffuseTexHandle = ShaderUtil::loadTexture(resourceManager->getWorkingDirectiory()+ std::string(path.data),0);
+	textureHandle= ShaderUtil::loadTexture(getResourceManager()->getWorkingDirectiory()+ std::string(path.data),0);
 	
 
 	//Need to find the center of the model
@@ -106,26 +103,11 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 		vertices[i] -= avg;
 	}
 
-	min = vertices[0];
-	max = vertices[0];
-	for(int i = 0;i<mesh->mNumVertices;i++){
-		glm::vec3 &vertex = vertices[i];
-		if(vertex.x < min.x) min.x = vertex.x;
-		if(vertex.y < min.y) min.y = vertex.y;
-		if(vertex.z < min.z) min.z = vertex.z;
-
-		if(vertex.x > max.x) max.x = vertex.x;
-		if(vertex.y > max.y) max.y = vertex.y;
-		if(vertex.z > max.z) max.z = vertex.z;
-	}
-
-	 avg = (min + max);
-	avg /=2;
-
-	glBindVertexArray(vao);
-	glBindTexture(GL_TEXTURE_2D,diffuseTexHandle);
+	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	glBindVertexArray(vao);
+	
 	vertexBuffer->setData(vertices,sizeof(glm::vec3)*mesh->mNumVertices);
 	texcoordBuffer->setData(texCoord,sizeof(glm::vec2)*mesh->mNumVertices);
 	normalBuffer->setData(normals,sizeof(glm::vec3)*mesh->mNumVertices);
@@ -185,6 +167,8 @@ void StaticModel::render(Pipeline *pipeline){
 	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,textureHandle);
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);

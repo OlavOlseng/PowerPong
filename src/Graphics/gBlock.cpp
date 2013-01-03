@@ -1,9 +1,9 @@
 #include "gBlock.h"
 
 gBlock::gBlock(){
-	empty = true;
+	empty = false;
 	this->color = glm::vec3(0.0,0.0,0.0);
-
+	this->type = BlockType::NONE;
 }
 
 void gBlock::set(int width, glm::vec3 color){
@@ -14,6 +14,15 @@ void gBlock::set(int width, glm::vec3 color){
 	this->width = width;
 
 	empty = false;
+
+}
+void gBlock::set(int width,BlockType type){
+
+	this->type = type;
+	this->width = width;
+	empty = false;
+
+
 
 }
 gBlock::~gBlock(void)

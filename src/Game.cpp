@@ -61,24 +61,50 @@ void Game::loadShaders(Pipeline*pipeline){
 	vs = 
 		"attribute vec3 coord3d;"
 		"attribute vec3 color3d;"
+		"attribute float blockType;"
 		"uniform mat4 mvp;"
 		"varying vec3 f_color;"
+		"varying vec4 texcoord;"
+		"varying float type;"
 		"void main()"
 		"{"
+		"texcoord = vec4(coord3d,blockType);"
+		"type = blockType;"
 		"f_color = color3d;"
 		"gl_Position = mvp*vec4(coord3d.xyz,1.0);"
 
 		"}";
 	fs = 
 		"varying vec3 f_color;"
+
+		"varying vec4 texcoord;"
+		"varying float type;"
+		"uniform sampler2D tex;"
+		"uniform float stepSize;"
 		"void main(){"
-		"gl_FragColor = vec4(f_color.xyz,0.0);"
+		"vec4 color = vec4(0.0,0.0,0.0,0.0);"
+		"if(texcoord.w == 0.0) "
+		"{"
+		"	gl_FragColor = vec4(f_color,1.0);"
+			"return;"
+		"}"
+		"	if(texcoord.w >=0.0){"
+		"		color = texture2D(tex,vec2((fract(texcoord.x + texcoord.z)+ texcoord.w)*stepSize ,fract(texcoord.y)));"
+		"	}else{"
+		"		color = texture2D(tex,vec2((fract(texcoord.x) - texcoord.w)*stepSize ,fract(texcoord.z)));"
+		"}"
+		"gl_FragColor = color;"
 		"}";
+	
+
 
 	Shader* wallShader = new Shader(vs,fs);
+
 	wallShader->bindUniform(ShaderUniforms::MVP,"mvp");
+	wallShader->bindUniform(ShaderUniforms::STEP_SIZE,"stepSize");
 	wallShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 	wallShader->bindAttribute(ShaderAttributes::COLOR3D,"color3d");
+	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
 
 	pipeline->addShader(wallShader,1);
 
@@ -94,20 +120,22 @@ void Game::setup(){
 	
 	//init stuff here
 	models = new std::vector<Model*>();
-	cam = new Camera(4,5,-10,2,0,0,1280,720);
+	cam = new Camera(4,5,-5,2,0,0,1280,720);
 	
 	
 	gWall *wall = new gWall(1,5,glm::vec3(0,0,0));
-
-	wall->setBlock(0,1,glm::vec3(1.0,0.0,0.0));
+	
+	wall->setBlock(0,1,gBlock::BlockType::ROCK);
 	wall->setBlock(1,1,glm::vec3(0.0,1.0,0.0));
+	wall->setBlock(2,1,gBlock::BlockType::DIRT);
 
 	wall->setShader(1);
 	std::shared_ptr<ResourceManager> resManager = std::make_shared<ResourceManager>();
 	resManager->setWorkingDirectory(binaryPath);
-	
+	wall->setResourceManager(resManager);
+	wall->init();
+
 	WallMeshGenerator generator = WallMeshGenerator();
-	
 	
 	geomRenderer = new GeometryRenderer(cam,models);
 
@@ -127,11 +155,11 @@ void Game::setup(){
 	model3->setResourceManager(resManager);
 
 
-	geomRenderer->registerModel(wall,pipeline);
+
 	geomRenderer->registerModel(model2,pipeline);
 	geomRenderer->registerModel(model,pipeline);
 	geomRenderer->registerModel(model3,pipeline);
-
+	geomRenderer->registerModel(wall,pipeline);
 
 	generator.generateMeshFor(wall);
 	
@@ -170,7 +198,7 @@ void Game::setup(){
 	modelNode->move(glm::vec3(2.0,0.0,.0));
 	model2Node->move(glm::vec3(-2.0,0.0,0.0));
 	model2Node->rotate(glm::vec3(0,3.14,0));
-	wallNode->move(glm::vec3(4,0.0,0.0));
+	//wallNode->move(glm::vec3(4,0.0,0.0));
 
 	
 		
@@ -207,7 +235,7 @@ void Game::update(double dt){
 	//rootNode->rotate(glm::vec3(0.0,0.01,0.0));
 	rootNode->getChildren()->at(0)->rotate(glm::vec3(0.0,0.01,0.0));
 	rootNode->getChildren()->at(1)->rotate(glm::vec3(0.01,0.00,0.0));
-	rootNode->getChildren()->at(2)->rotate(glm::vec3(0.01,0.00,0.0));
+	rootNode->getChildren()->at(2)->rotate(glm::vec3(0.00,0.01,0.0));
 	xrot+= 0.001;
 	cam->tick();
 	//world-> update(dt);

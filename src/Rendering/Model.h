@@ -8,8 +8,8 @@
 #include "Buffer.h";
 #include "Pipeline.h"
 #include <string>
-
-
+#include <memory>
+#include "../ResourceManager.h"
 class Model
 {
 public:
@@ -31,12 +31,14 @@ public:
 	virtual GLuint* getVao() = 0;
 	virtual void setShader(int id) = 0;
 	virtual int getShader() = 0;
-	
+	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
+	virtual std::shared_ptr<ResourceManager> getResourceManager();
 protected:
 	glm::vec4 modelMatrix;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
+	std::shared_ptr<ResourceManager> resourceManager;
 	
 	
 };

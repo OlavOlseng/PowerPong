@@ -6,11 +6,6 @@ GeometryRenderer::GeometryRenderer(Camera*cam,std::vector<Model*> * models)
 	this->models = models;
 	this->cam = cam;
 
-
-
-	
-	
-
 }
 
 

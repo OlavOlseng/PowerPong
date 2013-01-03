@@ -18,6 +18,7 @@ public:
 	~Shader(void);
 	
 	void setUniformMat4f(unsigned int uniform,float*value);
+	void setUniformFloat(unsigned int uniform,float value);
 	void bindUniform(unsigned int uniform,std::string name);
 	void bindAttribute(unsigned int attribute,std::string name);
 	void bind();

@@ -28,12 +28,22 @@ glm::mat4 Model::getModelMatrix(){
 	
 	glm::mat4 matScale =glm::scale(glm::mat4(1.0),scale);
 	glm::mat4 matRot = glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z);
-	glm::mat4 trans = glm::translate(glm::mat4(1.0),position);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0),pos);
 
 	return trans*matRot*matScale;
 	
 }
 
+
+ void Model::setResourceManager(std::shared_ptr<ResourceManager> resourceManager){
+	
+	 this->resourceManager =  resourceManager;
+}
+std::shared_ptr<ResourceManager> Model::getResourceManager(){
+	
+	return resourceManager;
+
+}
 void Model::setPosition(glm::vec3 position){
 	this->position = position;
 

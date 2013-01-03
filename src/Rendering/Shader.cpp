@@ -23,7 +23,10 @@ void Shader::setUniformMat4f(unsigned int uniform,float*value)
 	glUniformMatrix4fv(uniforms[uniform],1,GL_FALSE,value);
 
 }
+void Shader::setUniformFloat(unsigned int uniform,float value){
+	glUniform1f(uniforms[uniform],value);
 
+}
 void Shader::bindUniform(unsigned int uniform,std::string name)
 {
 	uniforms[uniform] = ShaderUtil::bindUniform(this->program,name.c_str());

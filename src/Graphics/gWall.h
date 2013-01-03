@@ -7,6 +7,8 @@
 #include <vector>
 #include "../Rendering/Model.h"
 #include "../Rendering/Pipeline.h"
+#include "../ResourceManager.h"
+#include <memory>
 class gWall:public Model
 {
 public:
@@ -14,15 +16,20 @@ public:
 	~gWall(void);
 	Buffer * getVertexBuffer();
 	Buffer * getColorBuffer();
+	Buffer * getTypeBuffer();
+
+
 	void setBlock(int x,int width,glm::vec3 color);
+	void setBlock(int x,int width,gBlock::BlockType type);
 	gBlock getBlock(int x);
 	int getWidth();
-
+	void init();
 	void setAttributes(GLint*attributes);
 	void render(Pipeline *pipeline);
 	GLuint* getVao() ;
 	void setShader(int id);
 	int getShader() ;
+	
 
 private:
 	int blockScale;
@@ -30,8 +37,10 @@ private:
 	gBlock * blocks;
 	Buffer vertexBuffer;
 	Buffer colorBuffer;
-	
+	Buffer typeBuffer;
+	GLuint textureHandle;
 	GLuint vao;
+
 	int shaderName;
 	
 };
