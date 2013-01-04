@@ -26,7 +26,7 @@ Programmed by Eirik Jacobsen and Olav Olseng
 =============================================
 
 	Graphics:
-		Lighting and wall texturing
+		Lighting and resource manager
 		
 	Physics Simulation:
 		Collision handling
