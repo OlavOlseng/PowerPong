@@ -19,13 +19,14 @@
 class StaticModel:public Model
 {
 public:
-	StaticModel(void);
+	StaticModel(GLint*attributes = nullptr);
 	~StaticModel(void);
 	Buffer *getVertexBuffer();
 	Buffer*getNormalBuffer();
 	Buffer * getTexcoordBuffer();
 	Buffer * getElementBuffer();
 	void setAttributes(GLint*attributes);
+	void setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D);
 	void render(Pipeline *pipeline);
 	Node* initFromScene(const aiScene * scene);
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials);

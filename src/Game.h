@@ -45,7 +45,8 @@ private:
 	StaticModel*model;
 
 protected:
-
+	unsigned int diffuseSpecularHandle;
+	unsigned int wallShaderHandle;
 	void reshape(int width, int height);
 	void draw();
 	void update(double dt);

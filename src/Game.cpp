@@ -26,6 +26,9 @@ Game::~Game(void)
 #include "Rendering\WallMeshGenerator.h"
 
 void Game::loadShaders(Pipeline*pipeline){
+	wallShaderHandle = 0;
+	diffuseSpecularHandle = 1;
+
 		char* vs = 
 		"attribute vec3 coord3d;"
 		"attribute vec3 normal3d;"
@@ -57,7 +60,7 @@ void Game::loadShaders(Pipeline*pipeline){
 	diffuseSpecular->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
 	diffuseSpecular->bindAttribute(ShaderAttributes::TEXCOORD2D,"texcoord2d");
 
-	pipeline->addShader(diffuseSpecular,10);
+	pipeline->addShader(diffuseSpecular,diffuseSpecularHandle);
 
 	vs = 
 		"attribute vec3 coord3d;"
@@ -107,7 +110,7 @@ void Game::loadShaders(Pipeline*pipeline){
 	wallShader->bindAttribute(ShaderAttributes::COLOR3D,"color3d");
 	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
 
-	pipeline->addShader(wallShader,1);
+	pipeline->addShader(wallShader,wallShaderHandle);
 
 }
 void Game::setup(){
@@ -124,7 +127,7 @@ void Game::setup(){
 	
 	//init stuff here
 	models = new std::vector<Model*>();
-	cam = new Camera(4,20,-5,2,0,0,1280,720);
+	cam = new Camera(4,40,-5,2,0,0,1280,720);
 	geomRenderer = new GeometryRenderer(cam,models);
 	
 	WallMeshGenerator generator = WallMeshGenerator();
@@ -134,7 +137,7 @@ void Game::setup(){
 
 	gWall *wall = new gWall(1,5,glm::vec3(0,0,0));
 	wall->setBlock(0,5,gBlock::BlockType::PLANK);
-	wall->setShader(1);
+	wall->setShader(wallShaderHandle);
 	wall->setResourceManager(resManager);
 	wall->init();
 	
@@ -162,9 +165,9 @@ void Game::setup(){
 	model2->setPosition(glm::vec3(0,2,4));
 	model3->setPosition(glm::vec3(0,2,2));
 
-	model->setShader(10);
-	model2->setShader(10);
-	model3->setShader(10);
+	model->setShader(diffuseSpecularHandle);
+	model2->setShader(diffuseSpecularHandle);
+	model3->setShader(diffuseSpecularHandle);
 
 	model->setResourceManager(resManager);
 	model2->setResourceManager(resManager);
@@ -189,9 +192,20 @@ void Game::setup(){
 	rootNode->addChild(model2Node);
 	rootNode->addChild(model3Node);	
 	imp.FreeScene();
+	Assimp::Importer imp2;
 
-	const aiScene * spiderScene = imp.ReadFile(resManager->getWorkingDirectiory()+"spider.obj",aiProcessPreset_TargetRealtime_Fast);
+	const aiScene * spiderScene = imp2.ReadFile(resManager->getWorkingDirectiory()+"sphere.irr",aiProcessPreset_TargetRealtime_Fast);
+	
 
+	StaticModel*spiderModel = new StaticModel(diffuseSpecular->getAttributes());
+	spiderModel->setResourceManager(resManager);
+	spiderModel->setShader(diffuseSpecularHandle);
+	
+	Node*spidernode = spiderModel->initFromScene(spiderScene);
+	spidernode->setScale(glm::vec3(20,20,20));
+	spidernode->move(glm::vec3(0,-20,20));
+
+	rootNode->addChild(spidernode);
 
 }
 void Game::reshape(int width, int height){
@@ -205,11 +219,13 @@ void Game::reshape(int width, int height){
 void Game::draw(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
-	
-	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	glEnable(GL_DEPTH_TEST);
+	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	pipeline->clear();
-
-	geomRenderer->render(pipeline,rootNode);
+	pipeline->setView(cam->getView());
+	pipeline->setProjection(cam->getProjection());
+	
+	rootNode->render(pipeline);
 
 	swapBuffers();
 }
@@ -222,11 +238,12 @@ void Game::update(double dt){
 	static bool right = true;
 	//model->setRotation(glm::vec3(0.0,rot,0.0));
 	
-	//rootNode->rotate(glm::vec3(0.0,0.01,0.0));
+	
 	rootNode->rotate(glm::vec3(0,0.0001*dt,0));
 	rootNode->getChildren()->at(1)->setRotation(glm::vec3(0,-xrot,0));
 	rootNode->getChildren()->at(2)->rotate(glm::vec3(0,0.001*dt,0));
 	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,0.001*dt,0));
+	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,0.002*dt,0));
 	xrot+= 0.01*dt;
 
 	cam->tick();

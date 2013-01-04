@@ -17,6 +17,7 @@ public:
 	GLuint getBufferHandle();
 	int getBufferSize();
 	void setVertexAttribute(GLint attrib);
+	GLint getVertexAttribute();
 private:
 	GLuint  _bufferHandle;
 	GLint vertexAttribute;

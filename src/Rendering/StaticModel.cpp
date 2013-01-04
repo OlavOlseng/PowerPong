@@ -1,7 +1,7 @@
 #include "StaticModel.h"
 
 
-StaticModel::StaticModel(void)
+StaticModel::StaticModel(GLint*attributes)
 {
 
 	this->vertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
@@ -9,6 +9,8 @@ StaticModel::StaticModel(void)
 	this->texcoordBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,2,GL_FLOAT);
 	this->elementBuffer= new Buffer(Buffer::ELEMENT_BUFFER,Buffer::STATIC,0,0);
 
+	if(attributes)
+		setAttributes(attributes);
 	glGenVertexArrays(1,&vao);
 	
 }
@@ -16,6 +18,10 @@ StaticModel::StaticModel(void)
 
 StaticModel::~StaticModel(void)
 {
+	delete vertexBuffer;
+	delete normalBuffer;
+	delete texcoordBuffer;
+	delete elementBuffer;
 }
 
 
@@ -24,14 +30,14 @@ Node* StaticModel::initFromScene(const aiScene * scene){
 	
 	
 		modelRoot = new Node();
-		
-			for (int i = 1;i<scene->mNumMeshes;i++){
+		/*	for (int i = 1;i<scene->mNumMeshes;i++){
 				StaticModel*model = new StaticModel();
 				model->setShader(shaderName);
 				model->setResourceManager(getResourceManager());
+				model->setAttributes(vertexBuffer->getVertexAttribute(),normalBuffer->getVertexAttribute(),texcoordBuffer->getVertexAttribute());
 				model->initFromMesh(scene->mMeshes[i],scene->mMaterials);
 				modelRoot->addChild(model);
-			}
+			}*/
 		
 		initFromMesh(scene->mMeshes[0],scene->mMaterials);
 		
@@ -76,10 +82,8 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 
 
 	aiMaterial* material = materials[mesh->mMaterialIndex];
-	aiColor3D diffuseColor(1.0,1.0,1.0);
-	material->Get(AI_MATKEY_COLOR_DIFFUSE,diffuseColor);
 
-
+	
 
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
@@ -91,6 +95,7 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 	//and then adjust the vertices
 	
 	//Can find the center by finding the average of min/max
+
 	glm::vec3 min(vertices[0]),max(vertices[0]);
 	for(int i = 0;i<mesh->mNumVertices;i++){
 		glm::vec3 &vertex = vertices[i];
@@ -146,7 +151,13 @@ void StaticModel::setAttributes(GLint*attributes){
 	this->elementBuffer->setVertexAttribute(-1);
 	
 };
+void StaticModel::setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D){
+	this->vertexBuffer->setVertexAttribute(coord3D);
+	this->normalBuffer->setVertexAttribute(normal3D);
+	this->texcoordBuffer->setVertexAttribute(texcoord2D);
+	this->elementBuffer->setVertexAttribute(-1);
 
+}
 
 void StaticModel::setShader(int id){
 	this->shaderName = id;
