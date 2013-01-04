@@ -220,7 +220,7 @@ void Game::draw(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 	pipeline->clear();
 	pipeline->setView(cam->getView());
 	pipeline->setProjection(cam->getProjection());
