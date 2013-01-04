@@ -23,19 +23,24 @@ StaticModel::~StaticModel(void)
 Node* StaticModel::initFromScene(const aiScene * scene){
 	
 	
-		Node * modelRoot = new Node();
-		if(scene->mNumMeshes > 1){
-
-		}else{
-
-			initFromMesh(scene->mMeshes[0],scene->mMaterials);
-		}
+		modelRoot = new Node();
+		
+			for (int i = 1;i<scene->mNumMeshes;i++){
+				StaticModel*model = new StaticModel();
+				model->setShader(shaderName);
+				model->setResourceManager(getResourceManager());
+				model->initFromMesh(scene->mMeshes[i],scene->mMaterials);
+				modelRoot->addChild(model);
+			}
+		
+		initFromMesh(scene->mMeshes[0],scene->mMaterials);
+		
 		modelRoot->addChild(this);
 	
 	
 		return modelRoot;
 }
-#include "../BaseGame.h"
+
 void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 		
 
@@ -134,7 +139,7 @@ GLuint* StaticModel::getVao(){
 
 void StaticModel::setAttributes(GLint*attributes){
 
-
+	
 	this->vertexBuffer->setVertexAttribute(attributes[ShaderAttributes::COORD3D]);
 	this->normalBuffer->setVertexAttribute(attributes[ShaderAttributes::NORMAL3D]);
 	this->texcoordBuffer->setVertexAttribute(attributes[ShaderAttributes::TEXCOORD2D]);

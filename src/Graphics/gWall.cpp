@@ -95,7 +95,7 @@ void gWall::render(Pipeline *pipeline){
 	pipeline->useShader(shaderName);
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
-	pipeline->setTotalRotationTranslation(pipeline->getTotalRotationTranslation()*glm::translate(glm::mat4(1.0),glm::vec3(-((float)this->width)/2.0,-0.5,-0.5)));
+	
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*getModelMatrix();
 	glm::mat4 mvp = pipeline->getProjection()*pipeline->getView()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));

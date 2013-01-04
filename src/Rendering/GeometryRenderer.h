@@ -16,13 +16,13 @@
 #include "ShaderList.h"
 
 
-class GeometryRenderer:Renderer
+class GeometryRenderer
 {
 public:
 	GeometryRenderer(Camera*cam,std::vector<Model*> * models);
 	~GeometryRenderer(void);
 	void render(Pipeline *pipeline,Node * rootNode);
-	void registerModel(Model*model, Pipeline* pipeline);
+
 
 	
 private:

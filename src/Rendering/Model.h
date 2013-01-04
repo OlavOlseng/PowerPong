@@ -10,6 +10,7 @@
 #include <string>
 #include <memory>
 #include "../ResourceManager.h"
+
 class Model
 {
 public:

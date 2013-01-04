@@ -9,14 +9,7 @@ GeometryRenderer::GeometryRenderer(Camera*cam,std::vector<Model*> * models)
 }
 
 
-void GeometryRenderer::registerModel(Model*model, Pipeline* pipeline){
-	pipeline->useShader(model->getShader());
-	Shader*shader = pipeline->getActiveShader();
-	shader->bind();
-	model->setAttributes(shader->getAttributes());
-	shader->unbind();
 
-}
 void GeometryRenderer::render(Pipeline *pipeline,Node*rootNode){
 	pipeline->setView(cam->getView());
 	pipeline->setProjection(cam->getProjection());

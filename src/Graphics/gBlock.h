@@ -5,7 +5,7 @@
 class gBlock
 {
 public:
-	enum BlockType{NONE,GRASS,DIRT,ROCK};
+	enum BlockType{NONE,GRASS,DIRT,PLANK};
 	gBlock();
 	~gBlock(void);
 	int width;

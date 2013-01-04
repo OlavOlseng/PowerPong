@@ -33,7 +33,8 @@ private:
 	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
 
-
+	Shader*diffuseSpecular;
+	Shader*wallShader;
 	GeometryRenderer * geomRenderer;
 	Camera*cam;
 

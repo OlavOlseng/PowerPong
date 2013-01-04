@@ -3,6 +3,7 @@
 
 Node::Node(void)
 {
+	localScale = glm::vec3(1,1,1);
 	leaves = new std::vector<Model*>();
 	children = new std::vector<Node*>();
 	parent = nullptr;
@@ -30,6 +31,25 @@ void Node::move(glm::vec3 amount)
 }
 
 
+void Node::scale(glm::vec3 amount){
+	this->localScale += amount;
+
+}
+
+void Node::setPosition(glm::vec3 position){
+	this->localPosition = position;
+
+}
+void Node::setRotation(glm::vec3 rotation){
+	this->localRotation = rotation;
+
+}
+void Node::setScale(glm::vec3 scale){
+
+	this->localScale = scale;
+}
+
+
 void Node::rotate(glm::vec3 amount)
 {
 	this->localRotation += amount;
@@ -37,16 +57,7 @@ void Node::rotate(glm::vec3 amount)
 	
 
 }
-glm::vec3 Node::getGlobalPosition()
-{
 
-	return this->globalPosition;
-
-}
-glm::vec3 Node::getGlobalRotation(){
-	return this->globalRotation;
-
-}
 
 std::vector<Node*> *Node::getChildren(){
 
@@ -65,8 +76,9 @@ void Node::render(Pipeline *pipeline)
 	
 	glm::mat4 rot = glm::eulerAngleYXZ(localRotation.y,localRotation.x,localRotation.z);
 	glm::mat4 trans = glm::translate(glm::mat4(1.0),localPosition);
+	glm::mat4 scale = glm::scale(glm::mat4(1.0),this->localScale);
 	
-	pipeline->setTotalRotationTranslation(pipeline->getTotalRotationTranslation()*trans*rot);
+	pipeline->setTotalRotationTranslation(pipeline->getTotalRotationTranslation()*trans*rot*scale);
 	
 	glm::mat4 oldRotTrans = pipeline->getTotalRotationTranslation();
 	

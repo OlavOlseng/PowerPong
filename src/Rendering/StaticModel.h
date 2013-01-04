@@ -36,7 +36,7 @@ public:
 	void setShader(int id);
 	int getShader();
 private:
-	
+	Node*modelRoot;
 	GLuint textureHandle;
 	Buffer *vertexBuffer;
 	Buffer*normalBuffer;

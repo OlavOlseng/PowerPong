@@ -11,6 +11,7 @@ Game::Game(int argc,char * argv[]):BaseGame()
 
 	//temp: need a system for filepaths
 	Game* g = (Game*)instance;
+	
 	g->binaryPath = argv[0];
 	int last = g->binaryPath.find_last_of("\\");
 	g->binaryPath.erase(last+1,20);
@@ -49,7 +50,7 @@ void Game::loadShaders(Pipeline*pipeline){
 		"void main(){"
 		"gl_FragColor = texture2D(tex,f_texcoord)*(vec4(lightColor.xyz,0)*dot(f_normal,-lightDir)*0.7);"
 		"}";
-	Shader* diffuseSpecular = new Shader(vs,fs);
+	diffuseSpecular = new Shader(vs,fs);
 	diffuseSpecular->bindUniform(ShaderUniforms::MVP,"mvp");
 	diffuseSpecular->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
 	diffuseSpecular->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
@@ -98,7 +99,7 @@ void Game::loadShaders(Pipeline*pipeline){
 	
 
 
-	Shader* wallShader = new Shader(vs,fs);
+	wallShader = new Shader(vs,fs);
 
 	wallShader->bindUniform(ShaderUniforms::MVP,"mvp");
 	wallShader->bindUniform(ShaderUniforms::STEP_SIZE,"stepSize");
@@ -110,59 +111,69 @@ void Game::loadShaders(Pipeline*pipeline){
 
 }
 void Game::setup(){
-
-	printf("\n WorkingDir: %s \n",binaryPath.c_str());
+	rootNode = new Node();
+	
 	pipeline = new Pipeline();
-	loadShaders(pipeline);
 
+	loadShaders(pipeline);
+	std::shared_ptr<ResourceManager> resManager = std::make_shared<ResourceManager>();
+	resManager->setWorkingDirectory(binaryPath + "\Assets\\");
+	printf("\n WorkingDir: %s \n",resManager->getWorkingDirectiory().c_str());
 	//setting up physics
 	this-> world = new World();
 	
 	//init stuff here
 	models = new std::vector<Model*>();
-	cam = new Camera(4,5,-5,2,0,0,1280,720);
+	cam = new Camera(4,20,-5,2,0,0,1280,720);
+	geomRenderer = new GeometryRenderer(cam,models);
 	
+	WallMeshGenerator generator = WallMeshGenerator();
+	Node*wallNode = new Node();
 	
-	gWall *wall = new gWall(1,5,glm::vec3(0,0,0));
-	
-	wall->setBlock(0,1,gBlock::BlockType::ROCK);
-	wall->setBlock(1,1,glm::vec3(0.0,1.0,0.0));
-	wall->setBlock(2,1,gBlock::BlockType::DIRT);
+	for(int i = 0;i<5;i++){
 
+	gWall *wall = new gWall(1,5,glm::vec3(0,0,0));
+	wall->setBlock(0,5,gBlock::BlockType::PLANK);
 	wall->setShader(1);
-	std::shared_ptr<ResourceManager> resManager = std::make_shared<ResourceManager>();
-	resManager->setWorkingDirectory(binaryPath);
 	wall->setResourceManager(resManager);
 	wall->init();
-
-	WallMeshGenerator generator = WallMeshGenerator();
 	
-	geomRenderer = new GeometryRenderer(cam,models);
+	wall->setAttributes(wallShader->getAttributes());
+	wall->setPosition(glm::vec3(-2.5,0,-2.5+i));
+	wallNode->addChild(wall);
+	generator.generateMeshFor(wall);
+	
+	}
+	
+	rootNode->addChild(wallNode);
+	wallNode->scale(glm::vec3(1.0,0,2.0));
+	
+
 
 	
 	model = new StaticModel();
-	
 	model->setScale(glm::vec3(0.01,0.01,0.01));
 	StaticModel*model2 = new StaticModel();
 	model2->setScale(glm::vec3(0.01,0.01,0.01));
 	StaticModel* model3 = new StaticModel();
+	model3->setScale(glm::vec3(0.01,0.01,0.01));
+
+	model->setPosition(glm::vec3(0,2,0));
+	model2->setPosition(glm::vec3(0,2,4));
+	model3->setPosition(glm::vec3(0,2,2));
 
 	model->setShader(10);
 	model2->setShader(10);
 	model3->setShader(10);
+
 	model->setResourceManager(resManager);
 	model2->setResourceManager(resManager);
 	model3->setResourceManager(resManager);
 
 
-
-	geomRenderer->registerModel(model2,pipeline);
-	geomRenderer->registerModel(model,pipeline);
-	geomRenderer->registerModel(model3,pipeline);
-	geomRenderer->registerModel(wall,pipeline);
-
-	generator.generateMeshFor(wall);
-	
+	model->setAttributes(diffuseSpecular->getAttributes());
+	model2->setAttributes(diffuseSpecular->getAttributes());
+	model3->setAttributes(diffuseSpecular->getAttributes());
 
 	//geomRenderer->registerModel(model2);
 
@@ -170,39 +181,16 @@ void Game::setup(){
 	Assimp::Importer imp = Assimp::Importer();
 	
 	const std::string path = std::string(resManager->getWorkingDirectiory() +"duck.dae");
-
-	
-
 	const aiScene *scene = imp.ReadFile(path.c_str(),aiProcessPreset_TargetRealtime_Fast);
-
-
-
 	Node* modelNode = model->initFromScene(scene);
-	//modelNode->move(glm::vec3(2,0,10));
 	Node*model2Node = model2->initFromScene(scene);
-	//model2Node->move(glm::vec3(100,0,10));
 	Node*model3Node = model3->initFromScene(scene);
-	model3Node->move(glm::vec3(-100,0,10));
-
-	Node*wallNode = new Node();
-	wallNode->addChild(wall);
-	
-	
-	rootNode = new Node();
 	rootNode->addChild(modelNode);
 	rootNode->addChild(model2Node);
-	rootNode->addChild(wallNode);
-	//rootNode->addChild(model3Node);
-
-	rootNode->move(glm::vec3(2,0,0));
-	modelNode->move(glm::vec3(2.0,0.0,.0));
-	model2Node->move(glm::vec3(-2.0,0.0,0.0));
-	model2Node->rotate(glm::vec3(0,3.14,0));
-	//wallNode->move(glm::vec3(4,0.0,0.0));
-
-	
-		
+	rootNode->addChild(model3Node);	
 	imp.FreeScene();
+
+	const aiScene * spiderScene = imp.ReadFile(resManager->getWorkingDirectiory()+"spider.obj",aiProcessPreset_TargetRealtime_Fast);
 
 
 }
@@ -228,15 +216,19 @@ void Game::draw(){
 
 
 void Game::update(double dt){
-	static double rot;
+	static double x = 0;
 	static double xrot;
+	static double dx = 0.001;
+	static bool right = true;
 	//model->setRotation(glm::vec3(0.0,rot,0.0));
-	rot+= 0.01;
+	
 	//rootNode->rotate(glm::vec3(0.0,0.01,0.0));
-	rootNode->getChildren()->at(0)->rotate(glm::vec3(0.0,0.01,0.0));
-	rootNode->getChildren()->at(1)->rotate(glm::vec3(0.01,0.00,0.0));
-	rootNode->getChildren()->at(2)->rotate(glm::vec3(0.00,0.01,0.0));
-	xrot+= 0.001;
+	rootNode->rotate(glm::vec3(0,0.0001*dt,0));
+	rootNode->getChildren()->at(1)->setRotation(glm::vec3(0,-xrot,0));
+	rootNode->getChildren()->at(2)->rotate(glm::vec3(0,0.001*dt,0));
+	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,0.001*dt,0));
+	xrot+= 0.01*dt;
+
 	cam->tick();
 	//world-> update(dt);
 	postRedisplay();

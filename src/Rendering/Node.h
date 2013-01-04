@@ -15,22 +15,26 @@ public:
 	void render(Pipeline *pipeline);
 
 	void setParent(Node *parent);
+
 	void move(glm::vec3 amount);
 	void rotate(glm::vec3 amount);
-	
-	glm::vec3 getGlobalPosition();
-	glm::vec3 getGlobalRotation();
+	void scale(glm::vec3 amount);
+
+	void setPosition(glm::vec3 position);
+	void setRotation(glm::vec3 rotation);
+	void setScale(glm::vec3 scale);
+
 	std::vector<Node*> *getChildren();
 
 private:
 	std::vector<Node*> *children;
 	Node *parent;
 	std::vector<Model*> *leaves;
-	glm::vec3 globalPosition;
-	glm::vec3 localPosition;
 
-	glm::vec3 globalRotation;
+	glm::vec3 localPosition;
 	glm::vec3 localRotation;
+	glm::vec3 localScale;
+
 
 };
 
