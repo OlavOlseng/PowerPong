@@ -19,7 +19,7 @@ void Buffer::setData(GLvoid * data,int size){
 		init();
 	_size = size;
 	if(vertexAttribute < 0 && _bufferType != Buffer::ELEMENT_BUFFER)
-		throw "No vertex attribute set";
+		return;
 	if(_bufferType == Buffer::ARRAY_BUFFER){
 	
 	glBindBuffer(_bufferType,_bufferHandle);

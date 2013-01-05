@@ -96,6 +96,24 @@ void gWall::render(Pipeline *pipeline){
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
 	
+	unsigned int numDirLights = pipeline->getNumDirectionalLights();
+	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
+
+	for(int i = 0;i<numDirLights;i++){
+		
+		DirectionalLight*light = pipeline->getDirectionalLight(i);
+		//color
+		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->color.x,light->color.y,light->color.z);
+		//direction
+		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->direction.x,light->direction.y,light->direction.z);
+		//diffuseIntensity
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->diffuseIntensity);
+		
+	}
+
+
+
+
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*getModelMatrix();
 	glm::mat4 mvp = pipeline->getProjection()*pipeline->getView()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));

@@ -1,14 +1,17 @@
 #include "Pipeline.h"
 
 
-Pipeline::Pipeline(void)
+Pipeline::Pipeline(unsigned int maxDirectionalLights)
 {
+	
+	directionalLights = new DirectionalLight*[maxDirectionalLights];
+	numDirectionalLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
 }
 
 
 void Pipeline::clear(){
-
+	numDirectionalLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
 }
 
@@ -59,7 +62,25 @@ glm::mat4 Pipeline::getTotalRotationTranslation(){
 
 	return this->totalRotationTranslation;
 }
+unsigned int Pipeline::getNumDirectionalLights()
+{
+	return this->numDirectionalLights;
 
+}
+
+void Pipeline::addDirectionalLight(DirectionalLight * light){
+	directionalLights[numDirectionalLights] = light;
+	numDirectionalLights++;
+
+}
+
+DirectionalLight* Pipeline::getDirectionalLight(unsigned int index){
+	return this->directionalLights[index];
+
+}
+void Pipeline::popDirectionalLight(unsigned int pops){
+	numDirectionalLights-=pops;
+}
 Pipeline::~Pipeline(void)
 {
 }

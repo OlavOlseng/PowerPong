@@ -14,6 +14,7 @@
 
 #include <assimp\scene.h>
 #include <assimp\Importer.hpp>
+#include <assimp\DefaultLogger.hpp>
 #include <assimp\postprocess.h>
 #include "World\World.h"
 #include "Entities\Block.h"
@@ -43,6 +44,7 @@ private:
 
 	Node*rootNode;
 	StaticModel*model;
+	DirectionalLight * sun;
 
 protected:
 	unsigned int diffuseSpecularHandle;

@@ -44,18 +44,34 @@ void Game::loadShaders(Pipeline*pipeline){
 		"gl_Position = mvp*vec4(coord3d.xyz,1.0);"
 		"}";
 	 char*fs = 
+	
 		"varying vec3 f_normal;"
 		"varying vec2 f_texcoord;"
 		"uniform sampler2D tex;"
-		"const vec3 lightColor = vec3(1.0,1.0,1.0);"
-		"const vec3 lightDir = vec3(0.0,-1.0,0.0);"
+		"uniform int numDirLights;"
+		"struct Light{"
+		"vec3 color;"
+		"vec3 direction;"
+		"float diffuseIntensity;"
+		"};"
+		"uniform Light lights[10];"
 		"uniform vec3 diffuseColor;"
 		"void main(){"
-		"gl_FragColor = texture2D(tex,f_texcoord)*(vec4(lightColor.xyz,0)*dot(f_normal,-lightDir)*0.7);"
+		"vec4 diffuseLight = 0.0;"
+		"Light light;"
+		"for(int i = 0;i<numDirLights;i++){"
+		"	light = lights[i];"
+		"	diffuseLight += vec4(light.color.xyz,0)*clamp(dot(f_normal,-light.direction),0.0,1.0)*light.diffuseIntensity;"
+		"}"
+		"gl_FragColor = texture2D(tex,f_texcoord)*diffuseLight*0.7;"
 		"}";
+
 	diffuseSpecular = new Shader(vs,fs);
 	diffuseSpecular->bindUniform(ShaderUniforms::MVP,"mvp");
 	diffuseSpecular->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
+	diffuseSpecular->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
+	const char * memberNames[] = {"color","direction","diffuseIntensity"};
+	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"lights",memberNames);
 	diffuseSpecular->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 	diffuseSpecular->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
 	diffuseSpecular->bindAttribute(ShaderAttributes::TEXCOORD2D,"texcoord2d");
@@ -80,24 +96,36 @@ void Game::loadShaders(Pipeline*pipeline){
 		"}";
 	fs = 
 		"varying vec3 f_color;"
-
 		"varying vec4 texcoord;"
 		"varying float type;"
+		"struct Light{"
+		"vec3 color;"
+		"vec3 direction;"
+		"float diffuseIntensity;"
+		"};"
+		"uniform int numDirLights;"
+		"uniform Light lights[10];"
 		"uniform sampler2D tex;"
 		"uniform float stepSize;"
+		"const vec3 f_normal = vec3(0.0,1.0,0.0);"
 		"void main(){"
 		"vec4 color = vec4(0.0,0.0,0.0,0.0);"
-		"if(texcoord.w == 0.0) "
-		"{"
-		"	gl_FragColor = vec4(f_color,1.0);"
-			"return;"
+		"vec4 diffuseLight = 0.0;"
+		"Light light;"
+		"for(int i = 0;i<numDirLights;i++){"
+		"	light = lights[i];"
+		"	diffuseLight += vec4(light.color.xyz,0)*clamp(dot(f_normal,-light.direction),0.0,1.0)*light.diffuseIntensity;"
 		"}"
 		"	if(texcoord.w >=0.0){"
 		"		color = texture2D(tex,vec2((fract(texcoord.x + texcoord.z)+ texcoord.w)*stepSize ,fract(texcoord.y)));"
 		"	}else{"
 		"		color = texture2D(tex,vec2((fract(texcoord.x) - texcoord.w)*stepSize ,fract(texcoord.z)));"
 		"}"
-		"gl_FragColor = color;"
+		"if(texcoord.w == 0.0) "
+		"{"
+		"	color = vec4(f_color,1.0);"
+		"}"
+		"gl_FragColor = color*diffuseLight;"
 		"}";
 	
 
@@ -106,6 +134,9 @@ void Game::loadShaders(Pipeline*pipeline){
 
 	wallShader->bindUniform(ShaderUniforms::MVP,"mvp");
 	wallShader->bindUniform(ShaderUniforms::STEP_SIZE,"stepSize");
+	wallShader->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
+	const char * memberNamesWall[] = {"color","direction","diffuseIntensity"};
+	wallShader->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"lights",memberNamesWall);
 	wallShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 	wallShader->bindAttribute(ShaderAttributes::COLOR3D,"color3d");
 	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
@@ -114,9 +145,16 @@ void Game::loadShaders(Pipeline*pipeline){
 
 }
 void Game::setup(){
+
+	
+	Assimp::DefaultLogger::create("",Assimp::Logger::VERBOSE);
+
+	
+
+	
 	rootNode = new Node();
 	
-	pipeline = new Pipeline();
+	pipeline = new Pipeline(10);
 
 	loadShaders(pipeline);
 	std::shared_ptr<ResourceManager> resManager = std::make_shared<ResourceManager>();
@@ -127,7 +165,7 @@ void Game::setup(){
 	
 	//init stuff here
 	models = new std::vector<Model*>();
-	cam = new Camera(4,40,-5,2,0,0,1280,720);
+	cam = new Camera(4,25,-5,2,0,0,1280,720);
 	geomRenderer = new GeometryRenderer(cam,models);
 	
 	WallMeshGenerator generator = WallMeshGenerator();
@@ -184,7 +222,7 @@ void Game::setup(){
 	Assimp::Importer imp = Assimp::Importer();
 	
 	const std::string path = std::string(resManager->getWorkingDirectiory() +"duck.dae");
-	const aiScene *scene = imp.ReadFile(path.c_str(),aiProcessPreset_TargetRealtime_Fast);
+	const aiScene *scene = imp.ReadFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
 	Node* modelNode = model->initFromScene(scene);
 	Node*model2Node = model2->initFromScene(scene);
 	Node*model3Node = model3->initFromScene(scene);
@@ -192,20 +230,43 @@ void Game::setup(){
 	rootNode->addChild(model2Node);
 	rootNode->addChild(model3Node);	
 	imp.FreeScene();
-	Assimp::Importer imp2;
-
-	const aiScene * spiderScene = imp2.ReadFile(resManager->getWorkingDirectiory()+"sphere.irr",aiProcessPreset_TargetRealtime_Fast);
 	
 
-	StaticModel*spiderModel = new StaticModel(diffuseSpecular->getAttributes());
+	const aiScene * sphereScene = imp.ReadFile(resManager->getWorkingDirectiory()+"sphere.irr",aiProcessPreset_TargetRealtime_Quality);
+	
+	
+	StaticModel*sphereModel = new StaticModel(diffuseSpecular->getAttributes());
+	sphereModel->setResourceManager(resManager);
+	sphereModel->setShader(diffuseSpecularHandle);
+	
+	Node*sphereNode = sphereModel->initFromScene(sphereScene);
+	sphereNode->setScale(glm::vec3(20,20,20));
+	sphereNode->move(glm::vec3(0,-20,20));
+	rootNode->addChild(sphereNode);
+	imp.FreeScene();
+	
+	/*
+	
+	const aiScene * spiderScene= imp.ReadFile(resManager->getWorkingDirectiory()+"spider.obj",aiProcessPreset_TargetRealtime_Quality);
+
+	StaticModel*spiderModel= new StaticModel(diffuseSpecular->getAttributes());
 	spiderModel->setResourceManager(resManager);
 	spiderModel->setShader(diffuseSpecularHandle);
 	
-	Node*spidernode = spiderModel->initFromScene(spiderScene);
-	spidernode->setScale(glm::vec3(20,20,20));
-	spidernode->move(glm::vec3(0,-20,20));
+	Node*spiderNode = spiderModel->initFromScene(spiderScene);
+	spiderNode->setScale(glm::vec3(0.1,0.1,0.1));
+	spiderNode->move(glm::vec3(0,5,0));
+	rootNode->addChild(spiderNode);
 
-	rootNode->addChild(spidernode);
+	imp.FreeScene();
+	*/
+	 sun = new DirectionalLight();
+	sun->color = glm::vec3(1.0,1.0,1.0);
+	sun->direction = glm::normalize(glm::vec3(0.3,-1.0,0.0));
+	sun->diffuseIntensity = 3.0;
+	rootNode->addLight(sun);
+
+	
 
 }
 void Game::reshape(int width, int height){
@@ -236,6 +297,7 @@ void Game::update(double dt){
 	static double xrot;
 	static double dx = 0.001;
 	static bool right = true;
+	static float intensity = 0;
 	//model->setRotation(glm::vec3(0.0,rot,0.0));
 	
 	
@@ -246,6 +308,10 @@ void Game::update(double dt){
 	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,0.002*dt,0));
 	xrot+= 0.01*dt;
 
+	intensity+= 0.0001*dt;
+	sun->diffuseIntensity = intensity;
+	if(intensity > 5)
+		intensity = 0;
 	cam->tick();
 	//world-> update(dt);
 	postRedisplay();

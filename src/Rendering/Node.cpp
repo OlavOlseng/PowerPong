@@ -30,7 +30,10 @@ void Node::move(glm::vec3 amount)
 
 }
 
+void Node::addLight(DirectionalLight*light){
+	directionalLights.push_back(light);
 
+}
 void Node::scale(glm::vec3 amount){
 	this->localScale += amount;
 
@@ -82,6 +85,12 @@ void Node::render(Pipeline *pipeline)
 	
 	glm::mat4 oldRotTrans = pipeline->getTotalRotationTranslation();
 	
+	for(DirectionalLight*light:this->directionalLights){
+		pipeline->addDirectionalLight(light);
+
+	}
+
+
 	for(Model* model:*this->leaves){
 		
 		model->render(pipeline);

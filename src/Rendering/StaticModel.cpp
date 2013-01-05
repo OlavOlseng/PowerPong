@@ -30,16 +30,17 @@ Node* StaticModel::initFromScene(const aiScene * scene){
 	
 	
 		modelRoot = new Node();
-		/*	for (int i = 1;i<scene->mNumMeshes;i++){
+			for (int i = 1;i<scene->mNumMeshes;i++){
 				StaticModel*model = new StaticModel();
 				model->setShader(shaderName);
 				model->setResourceManager(getResourceManager());
 				model->setAttributes(vertexBuffer->getVertexAttribute(),normalBuffer->getVertexAttribute(),texcoordBuffer->getVertexAttribute());
-				model->initFromMesh(scene->mMeshes[i],scene->mMaterials);
+				model->initFromMesh(scene->mMeshes[i],scene->mMaterials,false);
 				modelRoot->addChild(model);
-			}*/
+			}
+
 		
-		initFromMesh(scene->mMeshes[0],scene->mMaterials);
+			initFromMesh(scene->mMeshes[0],scene->mMaterials,scene->mNumMeshes == 0);
 		
 		modelRoot->addChild(this);
 	
@@ -47,7 +48,7 @@ Node* StaticModel::initFromScene(const aiScene * scene){
 		return modelRoot;
 }
 
-void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
+void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveTocenter){
 		
 
 	glm::vec3* vertices = new glm::vec3[mesh->mNumVertices];
@@ -87,32 +88,30 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
-	
 	textureHandle= ShaderUtil::loadTexture(getResourceManager()->getWorkingDirectiory()+ std::string(path.data),0);
 	
-
-	//Need to find the center of the model
-	//and then adjust the vertices
+	if(moveTocenter){
+		//Need to find the center of the model
+		//and then adjust the vertices
 	
-	//Can find the center by finding the average of min/max
+		//Can find the center by finding the average of min/max
+		glm::vec3 min(vertices[0]),max(vertices[0]);
+		for(int i = 0;i<mesh->mNumVertices;i++){
+			glm::vec3 &vertex = vertices[i];
+			if(vertex.x < min.x) min.x = vertex.x;
+			if(vertex.y < min.y) min.y = vertex.y;
+			if(vertex.z < min.z) min.z = vertex.z;
 
-	glm::vec3 min(vertices[0]),max(vertices[0]);
-	for(int i = 0;i<mesh->mNumVertices;i++){
-		glm::vec3 &vertex = vertices[i];
-		if(vertex.x < min.x) min.x = vertex.x;
-		if(vertex.y < min.y) min.y = vertex.y;
-		if(vertex.z < min.z) min.z = vertex.z;
-
-		if(vertex.x > max.x) max.x = vertex.x;
-		if(vertex.y > max.y) max.y = vertex.y;
-		if(vertex.z > max.z) max.z = vertex.z;
+			if(vertex.x > max.x) max.x = vertex.x;
+			if(vertex.y > max.y) max.y = vertex.y;
+			if(vertex.z > max.z) max.z = vertex.z;
+		}
+		glm::vec3 avg = (min + max);
+		avg /=2;
+		for(int i = 0;i<mesh->mNumVertices;i++){
+			vertices[i] -= avg;
+		}
 	}
-	glm::vec3 avg = (min + max);
-	avg /=2;
-	for(int i = 0;i<mesh->mNumVertices;i++){
-		vertices[i] -= avg;
-	}
-
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
@@ -129,6 +128,11 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials){
 
 	this->numIdices = mesh->mNumFaces*3;
 
+
+	if(mesh->HasPositions()){
+
+
+	}
 
 	delete[] vertices;
 	delete[] texCoord;
@@ -170,6 +174,7 @@ int StaticModel::getShader(){
 void StaticModel::setVao(GLuint vao){
 	this->vao = vao;
 }
+
 void StaticModel::render(Pipeline *pipeline){
 
 
@@ -178,7 +183,22 @@ void StaticModel::render(Pipeline *pipeline){
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
-
+	
+	unsigned int numDirLights = pipeline->getNumDirectionalLights();
+	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
+	
+	for(int i = 0;i<numDirLights;i++){
+		
+		DirectionalLight*light = pipeline->getDirectionalLight(i);
+		//color
+		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->color.x,light->color.y,light->color.z);
+		//direction
+		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->direction.x,light->direction.y,light->direction.z);
+		//diffuseIntensity
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->diffuseIntensity);
+		
+		
+	}
 
 	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));

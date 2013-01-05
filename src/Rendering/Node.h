@@ -4,6 +4,9 @@
 #include "Pipeline.h"
 #include <vector>
 #include <glm\glm.hpp>
+
+
+#include "Light.h"
 class Node
 {
 public:
@@ -12,6 +15,7 @@ public:
 
 	void addChild(Node *node);
 	void addChild(Model*model);
+	void addLight(DirectionalLight*light);
 	void render(Pipeline *pipeline);
 
 	void setParent(Node *parent);
@@ -30,6 +34,7 @@ private:
 	std::vector<Node*> *children;
 	Node *parent;
 	std::vector<Model*> *leaves;
+	std::vector<DirectionalLight*> directionalLights;
 
 	glm::vec3 localPosition;
 	glm::vec3 localRotation;
@@ -37,5 +42,7 @@ private:
 
 
 };
+
+
 
 #endif
