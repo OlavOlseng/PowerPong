@@ -84,12 +84,30 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 
 	aiMaterial* material = materials[mesh->mMaterialIndex];
 
-	
-
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
 	textureHandle= ShaderUtil::loadTexture(getResourceManager()->getWorkingDirectiory()+ std::string(path.data),0);
 	
+
+
+	aiColor3D diffuse(0.0,0.0,0.0);
+	material->Get(AI_MATKEY_COLOR_DIFFUSE,diffuse);
+	aiColor3D ambient(1.0,1.0,1.0);
+	material->Get(AI_MATKEY_COLOR_AMBIENT,ambient);
+	aiColor3D specular(1.0,1.0,1.0);
+	material->Get(AI_MATKEY_COLOR_SPECULAR,specular);
+	float shininess=1.0,strength =1.0;
+	material->Get(AI_MATKEY_SHININESS,shininess);
+	material->Get(AI_MATKEY_SHININESS_STRENGTH,strength);
+	Material * mat = getMaterial();
+	mat->ambient = glm::vec3(ambient.r,ambient.g,ambient.b);
+	mat->diffuse = glm::vec3(diffuse.r,diffuse.g,diffuse.b);
+	mat->specular = glm::vec3(specular.r,specular.g,specular.b);
+	if(shininess == 0)
+		shininess = 1000.0;
+	mat->shininess = shininess;
+
+
 	if(moveTocenter){
 		//Need to find the center of the model
 		//and then adjust the vertices
@@ -186,20 +204,37 @@ void StaticModel::render(Pipeline *pipeline){
 	
 	unsigned int numDirLights = pipeline->getNumDirectionalLights();
 	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
-	
+	glm::vec4 viewDirection = pipeline->getViewDirection();
+	shader->setUniformVec4f(ShaderUniforms::VIEW_DIRECTION,viewDirection.x,viewDirection.y,viewDirection.z,1.0);
+
+
+
+	//set lights
 	for(int i = 0;i<numDirLights;i++){
-		
 		DirectionalLight*light = pipeline->getDirectionalLight(i);
-		//color
-		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->color.x,light->color.y,light->color.z);
+		//diffuse
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
+		//specular
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
+		//ambient
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->ambient.x,light->ambient.y,light->ambient.z,light->ambient.w);
 		//direction
-		shader->setUniformStructVec3f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->direction.x,light->direction.y,light->direction.z);
-		//diffuseIntensity
-		shader->setUniformStructFloat(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->diffuseIntensity);
-		
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,3,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
 		
 	}
 
+	//set Material
+	Material * material = getMaterial();
+	glm::vec3 diffuse = material->diffuse;
+	glm::vec3 ambient = material->ambient;
+	glm::vec3 specular = material->specular;
+	float shininess = material->shininess;
+
+	shader->setUniformVec4f(ShaderUniforms::MATERIAL_DIFFUSE,diffuse.x,diffuse.y,diffuse.z,1.0);
+	shader->setUniformVec4f(ShaderUniforms::MATERIAL_AMBIENT,ambient.x,ambient.y,ambient.z,1.0);
+	shader->setUniformVec4f(ShaderUniforms::MATERIAL_SPECULAR,specular.x,specular.y,specular.z,1.0);
+	shader->setUniformFloat(ShaderUniforms::MATERIAL_SHININESS,shininess);
+	//set mvp and modelMatrix
 	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));

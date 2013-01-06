@@ -11,10 +11,25 @@ Pipeline::Pipeline(unsigned int maxDirectionalLights)
 
 
 void Pipeline::clear(){
+
+	for(int i=0;i<numDirectionalLights;i++){
+		DirectionalLight * light = directionalLights[i];
+		light->transformedDirection = light->direction;
+	}
+
 	numDirectionalLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
+
 }
 
+void Pipeline::setViewDirection(glm::vec4 direction){
+	this->viewDirection = direction;
+
+}
+glm::vec4 Pipeline::getViewDirection(){
+
+	return this->viewDirection;
+}
 Shader *Pipeline::getActiveShader()
 {
 	return this->activeShader;

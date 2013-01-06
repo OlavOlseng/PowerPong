@@ -84,12 +84,12 @@ void Node::render(Pipeline *pipeline)
 	pipeline->setTotalRotationTranslation(pipeline->getTotalRotationTranslation()*trans*rot*scale);
 	
 	glm::mat4 oldRotTrans = pipeline->getTotalRotationTranslation();
-	
 	for(DirectionalLight*light:this->directionalLights){
+
+		light->transformedDirection = oldRotTrans*light->direction;
 		pipeline->addDirectionalLight(light);
 
 	}
-
 
 	for(Model* model:*this->leaves){
 		
@@ -102,7 +102,7 @@ void Node::render(Pipeline *pipeline)
 
 		pipeline->setTotalRotationTranslation(oldRotTrans);
 	}
-
+	
 }
 
 Node::~Node(void)

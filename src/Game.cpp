@@ -35,7 +35,7 @@ void Game::loadShaders(Pipeline*pipeline){
 		"attribute vec2 texcoord2d;"
 		"uniform mat4 mvp;"
 		"uniform mat4 modelMatrix;"
-		"varying vec3 f_normal;"
+		"varying vec4 f_normal;"
 		"varying vec2 f_texcoord;"
 		"void main()"
 		"{"
@@ -44,34 +44,58 @@ void Game::loadShaders(Pipeline*pipeline){
 		"gl_Position = mvp*vec4(coord3d.xyz,1.0);"
 		"}";
 	 char*fs = 
-	
-		"varying vec3 f_normal;"
+		"varying vec4 f_normal;"
 		"varying vec2 f_texcoord;"
 		"uniform sampler2D tex;"
 		"uniform int numDirLights;"
 		"struct Light{"
-		"vec3 color;"
-		"vec3 direction;"
-		"float diffuseIntensity;"
+		"vec4 diffuse;"
+		"vec4 specular;"
+		"vec4 ambient;"
+		"vec4 direction;"
 		"};"
 		"uniform Light lights[10];"
-		"uniform vec3 diffuseColor;"
+		"struct Material{"
+		"vec4 diffuse;"
+		"vec4 ambient;"
+		"vec4 specular;"
+		"float shininess;"
+		"};"
+		"uniform Material material;"
+		"const vec4 globalAmbient = vec4(0.2,0.2,0.2,0.0);"
+		"uniform vec4 viewDir;"
 		"void main(){"
-		"vec4 diffuseLight = 0.0;"
+		"vec4 diffuseLight;"
+		"vec4 specularLight;"
 		"Light light;"
+		"float diffuseFactor;"
+		"float specularFactor;"
+		"vec4 ambientLight = material.ambient*globalAmbient;"
 		"for(int i = 0;i<numDirLights;i++){"
 		"	light = lights[i];"
-		"	diffuseLight += vec4(light.color.xyz,0)*clamp(dot(f_normal,-light.direction),0.0,1.0)*light.diffuseIntensity;"
+		"	ambientLight *=light.ambient;"
+		"	diffuseFactor = clamp(dot(f_normal,-light.direction),0.0,1.0);"
+		"	if(diffuseFactor > 0.0)"
+		"		diffuseLight += material.diffuse*light.diffuse*diffuseFactor;"
+		"	specularFactor = clamp(dot(reflect(-light.direction,f_normal),viewDir),0.0,1.0);"
+		"	if(specularFactor >0.0)"
+		"		specularLight += material.specular*light.specular*pow(specularFactor,material.shininess);"
 		"}"
-		"gl_FragColor = texture2D(tex,f_texcoord)*diffuseLight*0.7;"
+
+		"gl_FragColor =texture2D(tex,f_texcoord)*(diffuseLight + specularLight + ambientLight);"
 		"}";
 
 	diffuseSpecular = new Shader(vs,fs);
 	diffuseSpecular->bindUniform(ShaderUniforms::MVP,"mvp");
 	diffuseSpecular->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
 	diffuseSpecular->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
-	const char * memberNames[] = {"color","direction","diffuseIntensity"};
-	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"lights",memberNames);
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_DIFFUSE,"material.diffuse");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_AMBIENT,"material.ambient");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SPECULAR,"material.specular");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SHININESS,"material.shininess");
+	diffuseSpecular->bindUniform(ShaderUniforms::VIEW_DIRECTION,"viewDir");
+	const char * memberNames[] = {"diffuse","specular","ambient","direction",};
+	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,4,"lights",memberNames);
 	diffuseSpecular->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 	diffuseSpecular->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
 	diffuseSpecular->bindAttribute(ShaderAttributes::TEXCOORD2D,"texcoord2d");
@@ -99,23 +123,46 @@ void Game::loadShaders(Pipeline*pipeline){
 		"varying vec4 texcoord;"
 		"varying float type;"
 		"struct Light{"
-		"vec3 color;"
-		"vec3 direction;"
-		"float diffuseIntensity;"
+		"vec4 diffuse;"
+		"vec4 specular;"
+		"vec4 ambient;"
+		"vec4 direction;"
 		"};"
 		"uniform int numDirLights;"
 		"uniform Light lights[10];"
+		"struct Material{"
+		"vec4 diffuse;"
+		"vec4 ambient;"
+		"vec4 specular;"
+		"float shininess;"
+		"};"
+		"uniform Material material;"
+		"const vec4 globalAmbient = vec4(0.2,0.2,0.2,0.0);"
 		"uniform sampler2D tex;"
 		"uniform float stepSize;"
-		"const vec3 f_normal = vec3(0.0,1.0,0.0);"
+		"const vec4 f_normal = vec4(0.0,1.0,.0,0.0);"
+		"uniform vec4 viewDir;"
 		"void main(){"
 		"vec4 color = vec4(0.0,0.0,0.0,0.0);"
-		"vec4 diffuseLight = 0.0;"
+		"vec4 ambientLight = material.ambient*globalAmbient;"
+		"vec4 diffuseLight;"
+		"vec4 specularLight;"
 		"Light light;"
+		"float diffuseFactor;"
+		"float specularFactor;"
 		"for(int i = 0;i<numDirLights;i++){"
 		"	light = lights[i];"
-		"	diffuseLight += vec4(light.color.xyz,0)*clamp(dot(f_normal,-light.direction),0.0,1.0)*light.diffuseIntensity;"
+		"	ambientLight *=light.ambient;"
+		"	diffuseFactor = clamp(dot(f_normal,-light.direction),0.0,1.0);"
+		"	if(diffuseFactor > 0.0)"
+		"		diffuseLight += material.diffuse*light.diffuse*diffuseFactor;"
+		"	specularFactor = clamp(dot(reflect(-light.direction,f_normal),viewDir),0.0,1.0);"
+		"	if(specularFactor >0.0)"
+		"		specularLight += material.specular*light.specular*pow(specularFactor,material.shininess);"
 		"}"
+
+
+
 		"	if(texcoord.w >=0.0){"
 		"		color = texture2D(tex,vec2((fract(texcoord.x + texcoord.z)+ texcoord.w)*stepSize ,fract(texcoord.y)));"
 		"	}else{"
@@ -125,7 +172,7 @@ void Game::loadShaders(Pipeline*pipeline){
 		"{"
 		"	color = vec4(f_color,1.0);"
 		"}"
-		"gl_FragColor = color*diffuseLight;"
+		"gl_FragColor = color*(diffuseLight + specularLight + ambientLight);"
 		"}";
 	
 
@@ -135,8 +182,13 @@ void Game::loadShaders(Pipeline*pipeline){
 	wallShader->bindUniform(ShaderUniforms::MVP,"mvp");
 	wallShader->bindUniform(ShaderUniforms::STEP_SIZE,"stepSize");
 	wallShader->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
-	const char * memberNamesWall[] = {"color","direction","diffuseIntensity"};
-	wallShader->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"lights",memberNamesWall);
+	wallShader->bindUniform(ShaderUniforms::MATERIAL_DIFFUSE,"material.diffuse");
+	wallShader->bindUniform(ShaderUniforms::MATERIAL_AMBIENT,"material.ambient");
+	wallShader->bindUniform(ShaderUniforms::MATERIAL_SPECULAR,"material.specular");
+	wallShader->bindUniform(ShaderUniforms::MATERIAL_SHININESS,"material.shininess");
+	wallShader->bindUniform(ShaderUniforms::VIEW_DIRECTION,"viewDir");
+	const char * memberNamesWall[] = {"diffuse","specular","ambient","direction"};
+	wallShader->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,4,"lights",memberNamesWall);
 	wallShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 	wallShader->bindAttribute(ShaderAttributes::COLOR3D,"color3d");
 	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
@@ -165,7 +217,7 @@ void Game::setup(){
 	
 	//init stuff here
 	models = new std::vector<Model*>();
-	cam = new Camera(4,25,-5,2,0,0,1280,720);
+	cam = new Camera(4,20,-20,2,0,0,1280,720);
 	geomRenderer = new GeometryRenderer(cam,models);
 	
 	WallMeshGenerator generator = WallMeshGenerator();
@@ -245,7 +297,7 @@ void Game::setup(){
 	rootNode->addChild(sphereNode);
 	imp.FreeScene();
 	
-	/*
+	
 	
 	const aiScene * spiderScene= imp.ReadFile(resManager->getWorkingDirectiory()+"spider.obj",aiProcessPreset_TargetRealtime_Quality);
 
@@ -259,11 +311,13 @@ void Game::setup(){
 	rootNode->addChild(spiderNode);
 
 	imp.FreeScene();
-	*/
+	
 	 sun = new DirectionalLight();
-	sun->color = glm::vec3(1.0,1.0,1.0);
-	sun->direction = glm::normalize(glm::vec3(0.3,-1.0,0.0));
-	sun->diffuseIntensity = 3.0;
+	 sun->diffuse = glm::vec4(1.,1.0,1.0,1.0);
+	 sun->specular = glm::vec4(1.0,1.0,1.0,1.0);
+	 sun->ambient = glm::vec4(1.0,1.0,1.0,1.0);
+	sun->direction = glm::normalize(glm::vec4(1.0,0.0,0.0,.0));
+	
 	rootNode->addLight(sun);
 
 	
@@ -285,7 +339,7 @@ void Game::draw(){
 	pipeline->clear();
 	pipeline->setView(cam->getView());
 	pipeline->setProjection(cam->getProjection());
-	
+	pipeline->setViewDirection(glm::vec4(cam->getDir(),1.0));
 	rootNode->render(pipeline);
 
 	swapBuffers();
@@ -294,7 +348,7 @@ void Game::draw(){
 
 void Game::update(double dt){
 	static double x = 0;
-	static double xrot;
+	static float xrot;
 	static double dx = 0.001;
 	static bool right = true;
 	static float intensity = 0;
@@ -307,11 +361,8 @@ void Game::update(double dt){
 	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,0.001*dt,0));
 	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,0.002*dt,0));
 	xrot+= 0.01*dt;
-
-	intensity+= 0.0001*dt;
-	sun->diffuseIntensity = intensity;
-	if(intensity > 5)
-		intensity = 0;
+	
+	
 	cam->tick();
 	//world-> update(dt);
 	postRedisplay();

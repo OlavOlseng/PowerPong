@@ -20,7 +20,10 @@ glm::vec3  Model::getScale(){
 	return this->scale;
 
 }
+Material *Model::getMaterial(){
+	return &this->material;
 
+}
 
 glm::mat4 Model::getModelMatrix(){
 	glm::vec3 pos = getPosition();

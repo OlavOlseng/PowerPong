@@ -10,7 +10,7 @@
 #include <string>
 #include <memory>
 #include "../ResourceManager.h"
-
+#include "Material.h"
 class Model
 {
 public:
@@ -21,7 +21,6 @@ public:
 	virtual glm::vec3 getPosition();
 	virtual glm::vec3  getRotation();
 	virtual glm::vec3  getScale();
-
 	virtual void setPosition(glm::vec3 position);
 	virtual void setRotation(glm::vec3 rotation);
 	virtual void setScale(glm::vec3 scale);
@@ -34,13 +33,15 @@ public:
 	virtual int getShader() = 0;
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();
+	virtual Material *getMaterial();
+
 protected:
 	glm::vec4 modelMatrix;
 	glm::vec3 position;
 	glm::vec3 rotation;
 	glm::vec3 scale;
 	std::shared_ptr<ResourceManager> resourceManager;
-	
+	Material material;
 	
 };
 

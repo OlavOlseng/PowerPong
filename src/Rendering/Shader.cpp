@@ -32,6 +32,10 @@ void Shader::setUniformVec3f(unsigned int uniform,float v1,float v2,float v3){
 
 	glUniform3f(uniforms[uniform],v1,v2,v3);
 }
+void Shader::setUniformVec4f(unsigned int uniform,float v1,float v2,float v3,float v4){
+	glUniform4f(uniforms[uniform],v1,v2,v3,v4);
+
+}
 void Shader::setUniformFloat(unsigned int uniform,float value){
 	glUniform1f(uniforms[uniform],value);
 
@@ -45,6 +49,9 @@ void Shader::setUniformStructVec3f(unsigned int structArray,int index, unsigned 
 
 	glUniform3f(this->getStruct(structArray,index)[uniform],v1,v2,v3);
 
+}
+void Shader::setUniformStructVec4f(unsigned int structArray,int index, unsigned int uniform,float v1,float v2,float v3,float v4){
+	glUniform4f(this->getStruct(structArray,index)[uniform],v1,v2,v3,v4);
 }
 void Shader::setUniformStructFloat(unsigned int structArray,int index, unsigned int uniform,float value){
 

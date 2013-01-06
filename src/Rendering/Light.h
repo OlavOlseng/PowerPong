@@ -5,14 +5,17 @@
 struct Light
 {
 	Light();
-	glm::vec3 color;
-	float diffuseIntensity;
+	glm::vec4 diffuse;
+	glm::vec4 specular;
+	glm::vec4 ambient;
+	
 	
 };
 
 struct DirectionalLight:public Light
 {
-	glm::vec3  direction;
+	glm::vec4  direction;
+	glm::vec4 transformedDirection;
 
 };
 #endif

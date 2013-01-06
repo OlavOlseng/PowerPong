@@ -14,6 +14,9 @@ public:
 	void setProjection(glm::mat4  projection);
 	glm::mat4 getProjection();
 	void useShader(int id);
+	void setViewDirection(glm::vec4 direction);
+	glm::vec4 getViewDirection();
+
 	Shader*getActiveShader();
 	void addShader(Shader*shader,int id);
 	glm::mat4 getTotalRotationTranslation();
@@ -30,6 +33,7 @@ private:
 	glm::mat4 totalRotationTranslation;
 	glm::mat4 view;
 	glm::mat4 projection;
+	glm::vec4 viewDirection;
 	std::vector<Shader*> shaders;
 	DirectionalLight **directionalLights;
 	unsigned int numDirectionalLights;

@@ -39,6 +39,7 @@ private:
 	glm::vec3 localPosition;
 	glm::vec3 localRotation;
 	glm::vec3 localScale;
+	
 
 
 };

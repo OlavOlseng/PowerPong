@@ -2,6 +2,6 @@
 
 
 Light::Light(){
-	this->diffuseIntensity = 1.0;
+	
 
 }

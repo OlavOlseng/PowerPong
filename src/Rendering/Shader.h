@@ -22,7 +22,9 @@ public:
 	void setUniformFloat(unsigned int uniform,float value);
 	void setUniformVec3f(unsigned int uniform,float*value);
 	void setUniformVec3f(unsigned int uniform,float v1,float v2,float v3);
+	void setUniformVec4f(unsigned int uniform,float v1,float v2,float v3,float v4);
 	void setUniformStructVec3f(unsigned int structArray,int index, unsigned int uniform,float v1,float v2,float v3);
+	void setUniformStructVec4f(unsigned int structArray,int index, unsigned int uniform,float v1,float v2,float v3,float v4);
 	void setUniformStructFloat(unsigned int structArray,int index, unsigned int uniform,float value);
 	void setUniformInt(unsigned int uniform,int value);
 
