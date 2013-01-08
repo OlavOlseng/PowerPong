@@ -7,7 +7,7 @@ struct Light
 	Light();
 	glm::vec4 diffuse;
 	glm::vec4 specular;
-	glm::vec4 ambient;
+
 	
 	
 };

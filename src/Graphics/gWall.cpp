@@ -34,10 +34,10 @@ void gWall::init(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
 	Material*material = this->getMaterial();
-	material->ambient = glm::vec3(0.0,0.0,0.0);
+	material->ambient = glm::vec3(1.0,1.0,1.0);
 	material->diffuse = glm::vec3(1.0,1.0,1.0);
 	material->specular = glm::vec3(1.0,1.0,1.0);
-	material->shininess = 3.0;
+	material->shininess = 0.7;
 
 
 }
@@ -109,24 +109,43 @@ void gWall::render(Pipeline *pipeline){
 	shader->bind();
 	glm::vec4 viewDirection = pipeline->getViewDirection();
 	unsigned int numDirLights = pipeline->getNumDirectionalLights();
+	unsigned int numPointLights = pipeline->getNumPointLights();
+
 	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
+	shader->setUniformInt(ShaderUniforms::NUM_POINT_LIGHTS,numPointLights);
 	shader->setUniformVec4f(ShaderUniforms::VIEW_DIRECTION,viewDirection.x,viewDirection.y,viewDirection.z,0.0);
+	
 	for(int i = 0;i<numDirLights;i++){
 		DirectionalLight*light = pipeline->getDirectionalLight(i);
 		//diffuse
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
 		//specular
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
-		//ambient
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->ambient.x,light->ambient.y,light->ambient.z,light->ambient.w);
-		//direction
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,3,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
+	//direction
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
 		
 	}
 
+	for(int i = 0;i< numPointLights;i++){
+		PointLight *light = pipeline->getPointLight(i);
 
+		//diffuse
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
+		//specular
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
+		//position
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,2,light->transformedPosition.x,light->transformedPosition.y,light->transformedPosition.z,0.0);
+		//constantAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,3,light->constantAttenuation);
+		//linearAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,4,light->linearAttenutation);
+		//quadraticAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,5,light->quadraticAttenuation);
+
+
+	}
 	//set material
-	Material * material = getMaterial();
+	Material * material = this->getMaterial();
 	glm::vec3 diffuse = material->diffuse;
 	glm::vec3 ambient = material->ambient;
 	glm::vec3 specular = material->specular;

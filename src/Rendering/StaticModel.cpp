@@ -219,10 +219,8 @@ void StaticModel::render(Pipeline *pipeline){
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
 		//specular
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
-		//ambient
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->ambient.x,light->ambient.y,light->ambient.z,light->ambient.w);
 		//direction
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,3,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
 		
 	}
 	for(int i = 0;i< numPointLights;i++){
@@ -232,16 +230,14 @@ void StaticModel::render(Pipeline *pipeline){
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
 		//specular
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
-		//ambient
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,2,light->ambient.x,light->ambient.y,light->ambient.z,light->ambient.w);
-		//position
-		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,3,light->transformedPosition.x,light->transformedPosition.y,light->transformedPosition.z,0.0);
+	//position
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,2,light->transformedPosition.x,light->transformedPosition.y,light->transformedPosition.z,0.0);
 		//constantAttenuation
-		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,4,light->constantAttenuation);
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,3,light->constantAttenuation);
 		//linearAttenuation
-		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,5,light->linearAttenutation);
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,4,light->linearAttenutation);
 		//quadraticAttenuation
-		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,6,light->quadraticAttenuation);
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,5,light->quadraticAttenuation);
 
 
 	}

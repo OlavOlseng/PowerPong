@@ -29,67 +29,67 @@ void WallMeshGenerator::generateMeshFor(gWall *wall){
 			
 		normal = left;
 		//left	
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
              
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 	 
 		normal = right;
 		//right	
-		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 
-		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 	
 		normal = back;
 		//back       
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 
              
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 	
 		normal = front;
 		//front       
-		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal; 
-		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal; 
+		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 
                
               
-		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = (float)block.type;normals[jj++] = normal;
 
 		normal = down;
         //bot   
-		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal; 
+		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal; 
                       
 
-		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
 
 		normal = up;
 		//top		  
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] =-(float)block.type;normals[jj] = normal;   
-		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0);colors[j++] = block.color;type[ii++] =-(float)block.type;normals[jj++] = normal;   
+		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
                         
-		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
-		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x+1,0+1,0+1);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
+		vertices[i++] = glm::vec3(x,0+1,0);colors[j++] = block.color;type[ii++] = -(float)block.type;normals[jj++] = normal;
 	}
 	
 	
@@ -100,7 +100,7 @@ void WallMeshGenerator::generateMeshFor(gWall *wall){
 
 	wall->getColorBuffer()->setData(colors,sizeof(glm::vec3)*i);
 	wall->getTypeBuffer()->setData(type,sizeof(float)*i);
-	wall->getNormalBuffer()->setData(normals,sizeof(glm::vec3)*i);
+	wall->getNormalBuffer()->setData(normals,sizeof(glm::vec3)*jj);
 	glBindVertexArray(0);
 }
 WallMeshGenerator::~WallMeshGenerator(void)
