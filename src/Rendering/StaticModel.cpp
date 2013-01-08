@@ -203,7 +203,10 @@ void StaticModel::render(Pipeline *pipeline){
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
 	
 	unsigned int numDirLights = pipeline->getNumDirectionalLights();
+	unsigned int numPointLights = pipeline->getNumPointLights();
 	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
+	shader->setUniformInt(ShaderUniforms::NUM_POINT_LIGHTS,numPointLights);
+
 	glm::vec4 viewDirection = pipeline->getViewDirection();
 	shader->setUniformVec4f(ShaderUniforms::VIEW_DIRECTION,viewDirection.x,viewDirection.y,viewDirection.z,1.0);
 
@@ -221,6 +224,26 @@ void StaticModel::render(Pipeline *pipeline){
 		//direction
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,3,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
 		
+	}
+	for(int i = 0;i< numPointLights;i++){
+		PointLight *light = pipeline->getPointLight(i);
+
+		//diffuse
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
+		//specular
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
+		//ambient
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,2,light->ambient.x,light->ambient.y,light->ambient.z,light->ambient.w);
+		//position
+		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,3,light->transformedPosition.x,light->transformedPosition.y,light->transformedPosition.z,0.0);
+		//constantAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,4,light->constantAttenuation);
+		//linearAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,5,light->linearAttenutation);
+		//quadraticAttenuation
+		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,6,light->quadraticAttenuation);
+
+
 	}
 
 	//set Material

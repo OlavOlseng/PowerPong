@@ -34,6 +34,10 @@ void Node::addLight(DirectionalLight*light){
 	directionalLights.push_back(light);
 
 }
+void Node::addLight(PointLight*light){
+
+	this->pointLights.push_back(light);
+}
 void Node::scale(glm::vec3 amount){
 	this->localScale += amount;
 
@@ -84,10 +88,18 @@ void Node::render(Pipeline *pipeline)
 	pipeline->setTotalRotationTranslation(pipeline->getTotalRotationTranslation()*trans*rot*scale);
 	
 	glm::mat4 oldRotTrans = pipeline->getTotalRotationTranslation();
+	unsigned int numDirLights = this->directionalLights.size();
 	for(DirectionalLight*light:this->directionalLights){
 
 		light->transformedDirection = oldRotTrans*light->direction;
-		pipeline->addDirectionalLight(light);
+		pipeline->addLight(light);
+
+	}
+
+	for(PointLight*light:this->pointLights){
+
+		light->transformedPosition = oldRotTrans*light->position;
+		pipeline->addLight(light);
 
 	}
 
@@ -102,9 +114,12 @@ void Node::render(Pipeline *pipeline)
 
 		pipeline->setTotalRotationTranslation(oldRotTrans);
 	}
+	pipeline->popDirectionalLight(numDirLights);
 	
 }
 
 Node::~Node(void)
 {
+	delete leaves;
+	delete children;
 }

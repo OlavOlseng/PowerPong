@@ -16,6 +16,7 @@ public:
 	void addChild(Node *node);
 	void addChild(Model*model);
 	void addLight(DirectionalLight*light);
+	void addLight(PointLight*light);
 	void render(Pipeline *pipeline);
 
 	void setParent(Node *parent);
@@ -35,7 +36,7 @@ private:
 	Node *parent;
 	std::vector<Model*> *leaves;
 	std::vector<DirectionalLight*> directionalLights;
-
+	std::vector<PointLight*> pointLights;
 	glm::vec3 localPosition;
 	glm::vec3 localRotation;
 	glm::vec3 localScale;

@@ -17,7 +17,7 @@ public:
 	Buffer * getVertexBuffer();
 	Buffer * getColorBuffer();
 	Buffer * getTypeBuffer();
-
+	Buffer * getNormalBuffer();
 
 	void setBlock(int x,int width,glm::vec3 color);
 	void setBlock(int x,int width,gBlock::BlockType type);
@@ -37,6 +37,7 @@ private:
 	gBlock * blocks;
 	Buffer vertexBuffer;
 	Buffer colorBuffer;
+	Buffer normalBuffer;
 	Buffer typeBuffer;
 	GLuint textureHandle;
 	GLuint vao;

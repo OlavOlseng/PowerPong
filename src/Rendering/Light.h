@@ -12,6 +12,17 @@ struct Light
 	
 };
 
+struct PointLight:public Light{
+	glm::vec4 position;
+	glm::vec4 transformedPosition;
+
+	float constantAttenuation;
+	float linearAttenutation;
+	float quadraticAttenuation;
+
+
+
+};
 struct DirectionalLight:public Light
 {
 	glm::vec4  direction;

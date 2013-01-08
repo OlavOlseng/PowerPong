@@ -1,12 +1,18 @@
 #include "Pipeline.h"
 
 
-Pipeline::Pipeline(unsigned int maxDirectionalLights)
+Pipeline::Pipeline(unsigned int maxDirectionalLights,unsigned int maxPointLights)
 {
 	
+	this->maxDirectionalLights = maxDirectionalLights;
+	this->maxPointLights = maxPointLights;
 	directionalLights = new DirectionalLight*[maxDirectionalLights];
+	pointLights = new PointLight*[maxPointLights];
+	
 	numDirectionalLights = 0;
+	numPointLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
+	
 }
 
 
@@ -18,6 +24,7 @@ void Pipeline::clear(){
 	}
 
 	numDirectionalLights = 0;
+	numPointLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
 
 }
@@ -82,12 +89,10 @@ unsigned int Pipeline::getNumDirectionalLights()
 	return this->numDirectionalLights;
 
 }
-
-void Pipeline::addDirectionalLight(DirectionalLight * light){
-	directionalLights[numDirectionalLights] = light;
-	numDirectionalLights++;
-
+void Pipeline::addLight(DirectionalLight*light){
+	directionalLights[numDirectionalLights++] = light;
 }
+
 
 DirectionalLight* Pipeline::getDirectionalLight(unsigned int index){
 	return this->directionalLights[index];
@@ -96,6 +101,33 @@ DirectionalLight* Pipeline::getDirectionalLight(unsigned int index){
 void Pipeline::popDirectionalLight(unsigned int pops){
 	numDirectionalLights-=pops;
 }
+
+
+
+unsigned int Pipeline::getNumPointLights(){
+	return numPointLights;
+}
+
+void Pipeline::addLight(PointLight * light){
+
+	pointLights[numPointLights++] = light;
+}
+void Pipeline::popPointlLight(unsigned int pops){
+	numPointLights -= pops;
+
+}
+PointLight*Pipeline::getPointLight(unsigned int index){
+	return this->pointLights[index];
+}
 Pipeline::~Pipeline(void)
 {
+	for(int i = 0;i<maxDirectionalLights;i++){
+		delete directionalLights[i];
+	}
+	delete[] directionalLights;
+
+	for(int i = 0;i<maxPointLights;i++){
+		delete pointLights[i];
+	}
+	delete[] pointLights;
 }

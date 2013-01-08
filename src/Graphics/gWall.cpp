@@ -2,7 +2,8 @@
 
 
 gWall::gWall(int blockScale,int lenght,glm::vec3 pos):vertexBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT),
-	colorBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT),typeBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,1,GL_FLOAT)
+	colorBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT),typeBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,1,GL_FLOAT),
+	normalBuffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT)
 {
 
 	
@@ -33,7 +34,7 @@ void gWall::init(){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
 	Material*material = this->getMaterial();
-	material->ambient = glm::vec3(1.0,1.0,1.0);
+	material->ambient = glm::vec3(0.0,0.0,0.0);
 	material->diffuse = glm::vec3(1.0,1.0,1.0);
 	material->specular = glm::vec3(1.0,1.0,1.0);
 	material->shininess = 3.0;
@@ -66,6 +67,13 @@ Buffer *gWall::getVertexBuffer(){
 	return &this->vertexBuffer;
 	
 }
+
+
+
+Buffer * gWall::getNormalBuffer(){
+	return &this->normalBuffer;
+
+}
 Buffer*gWall::getColorBuffer(){
 
 	return &this->colorBuffer;
@@ -80,6 +88,7 @@ void gWall::setAttributes(GLint*attributes){
 	this->vertexBuffer.setVertexAttribute(attributes[ShaderAttributes::COORD3D]);
 	this->colorBuffer.setVertexAttribute(attributes[ShaderAttributes::COLOR3D]);
 	this->typeBuffer.setVertexAttribute(attributes[ShaderAttributes::BLOCK_TYPE]);
+	this->normalBuffer.setVertexAttribute(attributes[ShaderAttributes::NORMAL3D]);
 
 }
 GLuint* gWall::getVao(){
@@ -130,6 +139,7 @@ void gWall::render(Pipeline *pipeline){
 
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*getModelMatrix();
 	glm::mat4 mvp = pipeline->getProjection()*pipeline->getView()*model;
+	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 	shader->setUniformFloat(ShaderUniforms::STEP_SIZE,0.25);
 	glActiveTexture(GL_TEXTURE0);

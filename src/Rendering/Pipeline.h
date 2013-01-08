@@ -7,7 +7,7 @@
 class Pipeline
 {
 public:
-	Pipeline(unsigned int maxDirectionalLights);
+	Pipeline(unsigned int maxDirectionalLights = 10,unsigned int maxPointLights = 10);
 	~Pipeline(void);
 	void setView(glm::mat4  view);
 	glm::mat4 getView();
@@ -22,10 +22,20 @@ public:
 	glm::mat4 getTotalRotationTranslation();
 	void setTotalRotationTranslation(glm::mat4 value);
 	
+
+	void addLight(DirectionalLight*light);
+	void addLight(PointLight * light);
+
 	unsigned int getNumDirectionalLights();
-	void addDirectionalLight(DirectionalLight * light);
+	
 	void popDirectionalLight(unsigned int pops = 1);
 	DirectionalLight*getDirectionalLight(unsigned int index);
+
+	unsigned int getNumPointLights();
+
+	void popPointlLight(unsigned int pops = 1);
+	PointLight*getPointLight(unsigned int index);
+
 	void clear();
 	
 private:
@@ -36,8 +46,10 @@ private:
 	glm::vec4 viewDirection;
 	std::vector<Shader*> shaders;
 	DirectionalLight **directionalLights;
+	PointLight**pointLights;
 	unsigned int numDirectionalLights;
-	
+	unsigned int numPointLights;
+	unsigned int maxDirectionalLights,maxPointLights;
 };
 
 #endif
