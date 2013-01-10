@@ -13,6 +13,7 @@ Camera::Camera(float x,float y,float z,float lx,float ly,float lz,int width,int 
     _pos = glm::vec3(x,y,z);
     _focus = glm::vec3(lx,ly,lz);
     _view = glm::lookAt(_pos, _focus, glm::vec3(0.0, 1, 0.0));
+	
 	setProjection(width,height);
 
     _projXview = _proj*_view;
@@ -45,7 +46,6 @@ void Camera::move (float dx,float dy,float dz){
     _pos.z = _pos.z + dz;
     
     _view= glm::lookAt(_pos, _focus, glm::vec3(0,1,0));
-    
     _didMove = true;
     
     
@@ -55,6 +55,7 @@ void Camera::setProjection(float width,float height){
 
 
 	_proj = glm::perspective(50.0, 1.0*width/height, 0.1, 300.0);
+
 	setDidMove(true);
 	tick();
 

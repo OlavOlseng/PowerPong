@@ -36,6 +36,7 @@ private:
 
 	Shader*diffuseSpecular;
 	Shader*wallShader;
+	Shader*shadowShader;
 	GeometryRenderer * geomRenderer;
 	Camera*cam;
 
@@ -49,10 +50,17 @@ private:
 protected:
 	unsigned int diffuseSpecularHandle;
 	unsigned int wallShaderHandle;
+	unsigned int shadowShaderHandle;
 	void reshape(int width, int height);
 	void draw();
 	void update(double dt);
 	void setup();
+
+	std::shared_ptr<ResourceManager> resManager ;
+
+	//shadowmapTesting
+	GLuint frameBufferHandle;
+	GLuint depthTexture;
 	
 };
 

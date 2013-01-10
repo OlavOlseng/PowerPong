@@ -27,6 +27,7 @@ public:
 
 	virtual glm::mat4 getModelMatrix();
 	virtual void render(Pipeline *pipeline) = 0;
+	
 	virtual void setAttributes(GLint*attributes)=0 ;
 	virtual GLuint* getVao() = 0;
 	virtual void setShader(int id) = 0;

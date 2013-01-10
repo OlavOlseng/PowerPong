@@ -89,6 +89,7 @@ void Node::render(Pipeline *pipeline)
 	
 	glm::mat4 oldRotTrans = pipeline->getTotalRotationTranslation();
 	unsigned int numDirLights = this->directionalLights.size();
+	if(!pipeline->isShadowPass()){
 	for(DirectionalLight*light:this->directionalLights){
 
 		light->transformedDirection = oldRotTrans*light->direction;
@@ -101,6 +102,7 @@ void Node::render(Pipeline *pipeline)
 		light->transformedPosition = oldRotTrans*light->position;
 		pipeline->addLight(light);
 
+	}
 	}
 
 	for(Model* model:*this->leaves){

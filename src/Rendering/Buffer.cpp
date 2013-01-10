@@ -18,21 +18,10 @@ void Buffer::setData(GLvoid * data,int size){
 	if(_needsInit)
 		init();
 	_size = size;
-	if(vertexAttribute < 0 && _bufferType != Buffer::ELEMENT_BUFFER)
-		return;
-	if(_bufferType == Buffer::ARRAY_BUFFER){
-	
-	glBindBuffer(_bufferType,_bufferHandle);
-	glBufferData(_bufferType,_size,data,_drawMode);
-	glEnableVertexAttribArray(vertexAttribute);
-	glVertexAttribPointer(vertexAttribute, stepsize, dataType, GL_FALSE, 0, 0);
-	
-	}else{
 
 	glBindBuffer(_bufferType,_bufferHandle);
 	glBufferData(_bufferType,_size,data,_drawMode);
 
-	}
 }
 void Buffer::setVertexAttribute(GLint attrib){
 
@@ -45,6 +34,15 @@ GLint Buffer::getVertexAttribute(){
 int Buffer::getBufferSize(){
 
 	return _size;
+}
+void Buffer::bindTo(GLint vertexAttribute){
+	glBindBuffer(_bufferType,_bufferHandle);
+	glEnableVertexAttribArray(vertexAttribute);
+	glVertexAttribPointer(vertexAttribute, stepsize, dataType, GL_FALSE, 0, 0);
+}
+void Buffer::bind(){
+	glBindBuffer(_bufferType,_bufferHandle);
+
 }
 GLuint Buffer::getBufferHandle(){
 

@@ -84,6 +84,15 @@ glm::mat4 Pipeline::getTotalRotationTranslation(){
 
 	return this->totalRotationTranslation;
 }
+
+
+void Pipeline::setShadowPass(bool shadowPass){
+	this->shadowPass = shadowPass;
+}
+bool Pipeline::isShadowPass(){
+
+	return this->shadowPass;
+}
 unsigned int Pipeline::getNumDirectionalLights()
 {
 	return this->numDirectionalLights;

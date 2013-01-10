@@ -95,12 +95,19 @@ void WallMeshGenerator::generateMeshFor(gWall *wall){
 	
 
 	GLuint * vao = wall->getVao();
-	glBindVertexArray(*vao);
 	wall->getVertexBuffer()->setData(vertices,sizeof(glm::vec3)*i);
-
 	wall->getColorBuffer()->setData(colors,sizeof(glm::vec3)*i);
 	wall->getTypeBuffer()->setData(type,sizeof(float)*i);
 	wall->getNormalBuffer()->setData(normals,sizeof(glm::vec3)*jj);
+	Buffer*vertBuffer = wall->getVertexBuffer();
+	Buffer*normalBuffer = wall->getNormalBuffer();
+	Buffer*typeBuffer = wall->getTypeBuffer();
+	Buffer*colorBuffer = wall->getColorBuffer();
+	glBindVertexArray(*vao);
+	vertBuffer->bindTo(vertBuffer->getVertexAttribute());
+	normalBuffer->bindTo(normalBuffer->getVertexAttribute());
+	colorBuffer->bindTo(colorBuffer->getVertexAttribute());
+	typeBuffer->bindTo(typeBuffer->getVertexAttribute());
 	glBindVertexArray(0);
 }
 WallMeshGenerator::~WallMeshGenerator(void)

@@ -14,7 +14,7 @@ gWall::gWall(int blockScale,int lenght,glm::vec3 pos):vertexBuffer(Buffer::Buffe
 	
 	blocks = new gBlock[width];
 	glGenVertexArrays(1,&vao);
-
+	
 	setPosition(pos);
 	
 	
@@ -27,7 +27,7 @@ void gWall::init(){
 	
 
 		
-	textureHandle = ShaderUtil::loadTexture(getResourceManager()->getWorkingDirectiory() + "tileAtlas.png",0);
+	textureHandle = resourceManager->loadTexture("tileAtlas.png");
 
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 
@@ -104,6 +104,11 @@ int gWall::getShader(){
 
 
 void gWall::render(Pipeline *pipeline){
+	
+
+	if(pipeline->isShadowPass())
+		return;
+
 	pipeline->useShader(shaderName);
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
@@ -121,7 +126,7 @@ void gWall::render(Pipeline *pipeline){
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
 		//specular
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
-	//direction
+		//direction
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_DIRECTIONAL,i,2,light->transformedDirection.x,light->transformedDirection.y,light->transformedDirection.z,0.0);
 		
 	}

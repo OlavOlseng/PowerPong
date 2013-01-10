@@ -1,18 +1,33 @@
 #include "Shader.h"
 
 
+
+Shader::Shader(std::string name,unsigned int numUniforms,unsigned int numAttributes,unsigned int numUniformStructs)
+{
+	this->program = ShaderUtil::compileShaders(name);
+	this->numAttributes = numAttributes;
+	this->numUniforms = numUniforms;
+	this->numUniformStructs = numUniformStructs;
+	init();
+}
+
 Shader::Shader(std::string vs,std::string fs,unsigned int numUniforms,unsigned int numAttributes,unsigned int numUniformStructs)
 {
 	this->program = ShaderUtil::compileShaders(vs.c_str(),fs.c_str());
-		
-	uniforms = new GLint[numUniforms];
-	attributes = new GLint[numAttributes];
-	uniformStructs = new GLint**[numUniformStructs];
+	this->numAttributes = numAttributes;
+	this->numUniforms = numUniforms;
+	this->numUniformStructs = numUniformStructs;
+	init();
 
-		bound = false;
 }
 
+void Shader::init(){
+		uniforms = new GLint[numUniforms];
+		attributes = new GLint[numAttributes];
+		uniformStructs = new GLint**[numUniformStructs];
+		bound = false;
 
+}
 void Shader::bindAttribute(unsigned int attribute,std::string name){
 	attributes[attribute] = ShaderUtil::bindAttribute(program,name.c_str());
 

@@ -22,7 +22,6 @@ public:
 	glm::mat4 getTotalRotationTranslation();
 	void setTotalRotationTranslation(glm::mat4 value);
 	
-
 	void addLight(DirectionalLight*light);
 	void addLight(PointLight * light);
 
@@ -35,6 +34,9 @@ public:
 
 	void popPointlLight(unsigned int pops = 1);
 	PointLight*getPointLight(unsigned int index);
+
+	void setShadowPass(bool shadowPass);
+	bool isShadowPass();
 
 	void clear();
 	
@@ -50,6 +52,7 @@ private:
 	unsigned int numDirectionalLights;
 	unsigned int numPointLights;
 	unsigned int maxDirectionalLights,maxPointLights;
+	bool shadowPass;
 };
 
 #endif

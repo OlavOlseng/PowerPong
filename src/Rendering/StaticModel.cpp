@@ -12,6 +12,7 @@ StaticModel::StaticModel(GLint*attributes)
 	if(attributes)
 		setAttributes(attributes);
 	glGenVertexArrays(1,&vao);
+	glGenVertexArrays(1,&shadowVao);
 	
 }
 
@@ -26,10 +27,10 @@ StaticModel::~StaticModel(void)
 
 
 
-Node* StaticModel::initFromScene(const aiScene * scene){
+Node* StaticModel::initFromScene(const aiScene * scene,Node*modelRoot){
 	
 	
-		modelRoot = new Node();
+		
 			for (int i = 1;i<scene->mNumMeshes;i++){
 				StaticModel*model = new StaticModel();
 				model->setShader(shaderName);
@@ -86,7 +87,8 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
-	textureHandle= ShaderUtil::loadTexture(getResourceManager()->getWorkingDirectiory()+ std::string(path.data),0);
+	textureHandle = resourceManager->loadTexture(path.data);
+	
 	
 
 
@@ -133,14 +135,23 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-	glBindVertexArray(vao);
-	
+
 	vertexBuffer->setData(vertices,sizeof(glm::vec3)*mesh->mNumVertices);
 	texcoordBuffer->setData(texCoord,sizeof(glm::vec2)*mesh->mNumVertices);
 	normalBuffer->setData(normals,sizeof(glm::vec3)*mesh->mNumVertices);
 	elementBuffer->setData(indices,sizeof(GLushort)*mesh->mNumFaces*3);
+
+	glBindVertexArray(vao);
+	vertexBuffer->bindTo(vertexBuffer->getVertexAttribute());
+	texcoordBuffer->bindTo(texcoordBuffer->getVertexAttribute());
+	normalBuffer->bindTo(normalBuffer->getVertexAttribute());
+	elementBuffer->bind();
 	glBindVertexArray(0);
-	
+	/*
+	glBindVertexArray(shadowVao);
+	vertexBuffer->bind();
+	elementBuffer->bind();
+	glBindVertexArray(0);*/
 
 	this->numVertices = mesh->mNumVertices;
 
@@ -171,6 +182,7 @@ void StaticModel::setAttributes(GLint*attributes){
 	this->normalBuffer->setVertexAttribute(attributes[ShaderAttributes::NORMAL3D]);
 	this->texcoordBuffer->setVertexAttribute(attributes[ShaderAttributes::TEXCOORD2D]);
 	this->elementBuffer->setVertexAttribute(-1);
+
 	
 };
 void StaticModel::setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D){
@@ -193,8 +205,20 @@ void StaticModel::setVao(GLuint vao){
 	this->vao = vao;
 }
 
+void StaticModel::shadowPass(Pipeline*pipeline){
+
+	Shader*shadowShader = pipeline->getActiveShader();
+	shadowShader->bind();
+	glBindVertexArray(shadowVao);
+	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
+	shadowShader->unbind();
+
+};
 void StaticModel::render(Pipeline *pipeline){
 
+	if(pipeline->isShadowPass()){
+		shadowPass(pipeline);
+	}else{
 
 
 	pipeline->useShader(shaderName);
@@ -230,7 +254,7 @@ void StaticModel::render(Pipeline *pipeline){
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,0,light->diffuse.x,light->diffuse.y,light->diffuse.z,light->diffuse.w);
 		//specular
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,1,light->specular.x,light->specular.y,light->specular.z,light->specular.w);
-	//position
+		//position
 		shader->setUniformStructVec4f(ShaderUniforms::LIGHT_POINT,i,2,light->transformedPosition.x,light->transformedPosition.y,light->transformedPosition.z,0.0);
 		//constantAttenuation
 		shader->setUniformStructFloat(ShaderUniforms::LIGHT_POINT,i,3,light->constantAttenuation);
@@ -264,7 +288,7 @@ void StaticModel::render(Pipeline *pipeline){
 	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
 	glBindVertexArray(0);
 	shader->unbind();
-	
+	}
 };
 
 Buffer *StaticModel::getVertexBuffer(){

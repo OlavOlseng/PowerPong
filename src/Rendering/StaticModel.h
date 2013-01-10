@@ -28,12 +28,12 @@ public:
 	void setAttributes(GLint*attributes);
 	void setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D);
 	void render(Pipeline *pipeline);
-	Node* initFromScene(const aiScene * scene);
+	Node* initFromScene(const aiScene * scene,Node * modelRoot);
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveTocenter = true);
 	GLuint* getVao();
 	void setVao(GLuint vao);
 	
-
+	
 	void setShader(int id);
 	int getShader();
 private:
@@ -45,9 +45,11 @@ private:
 	Buffer * elementBuffer;
 	StaticModel*children;
 	GLuint vao;
+	GLuint shadowVao;
 	int numVertices;
 	int numIdices;
 	int shaderName;
+	void shadowPass(Pipeline*pipeline);
 	
 
 };
