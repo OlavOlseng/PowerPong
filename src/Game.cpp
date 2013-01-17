@@ -23,13 +23,13 @@ Game::Game(int argc,char * argv[]):BaseGame()
 Game::~Game(void)
 {
 }
-#include "Rendering\WallMeshGenerator.h"
+
 
 void Game::loadShaders(Pipeline*pipeline){
 	wallShaderHandle = 0;
 	diffuseSpecularHandle = 1;
 	shadowShaderHandle = 2;
-	
+	voxelShaderHandle = 3;
 	
 
 	diffuseSpecular = resManager->loadShader("diffuseSpecular");
@@ -83,16 +83,29 @@ void Game::loadShaders(Pipeline*pipeline){
 
 	shadowShader = resManager->loadShader("shadowShader");
 	shadowShader->bindUniform(ShaderUniforms::MVP,"mvp");
-	shadowShader->bindAttribute(ShaderAttributes::COLOR3D,"coord3d");
+	shadowShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 
 	pipeline->addShader(shadowShader,shadowShaderHandle);
+
+	voxelShader = resManager->loadShader("voxelShader");
+	voxelShader->bindUniform(ShaderUniforms::MVP,"mvp");
+	voxelShader->bindAttribute(ShaderAttributes::COORD4D,"coord4d");
+
+	pipeline->addShader(voxelShader,voxelShaderHandle);
 
 
 
 }
+#include "Rendering\Voxel\Volume\LargeVolume.h"
+#include "Rendering\Voxel\Volume\OctreeVolume.h"
+#include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractor.h"
+#include "Rendering\Models\VoxelRenderer.h"
 void Game::setup(){
 
 	
+	
+	
+
 	Assimp::DefaultLogger::create("",Assimp::Logger::VERBOSE);
 	resManager = std::make_shared<ResourceManager>();
 	resManager->setWorkingDirectory(binaryPath + "\Assets\\");
@@ -114,7 +127,7 @@ void Game::setup(){
 	//init stuff here
 	models = new std::vector<Model*>();
 	cam = new Camera(4,20,-20,0,0,0,1280,720);
-	geomRenderer = new GeometryRenderer(cam,models);
+	
 	
 	WallMeshGenerator generator = WallMeshGenerator();
 	Node*wallNode = new Node();
@@ -160,7 +173,7 @@ void Game::setup(){
 	model3->setResourceManager(resManager);
 
 
-	model->setAttributes(diffuseSpecular->getAttributes());
+	model->setAttributes(diffuseSpecular->getAttributes(),shadowShader->getAttributes());
 	model2->setAttributes(diffuseSpecular->getAttributes());
 	model3->setAttributes(diffuseSpecular->getAttributes());
 
@@ -211,7 +224,29 @@ void Game::setup(){
 	spiderNode->move(glm::vec3(0,5,0));
 	rootNode->addChild(spiderNode);
 
+
 	imp.FreeScene();
+
+	LargeVolume<OctreeVolume> vol(32,32,32,16,16,16);
+
+	vol.set(1,0,0,1);
+
+	BlockType t = vol.get(1,0,0);
+
+	CubeSurfaceExtractor  extractor = CubeSurfaceExtractor(&vol);
+	VolumeSurface * surface = extractor.extractSurface(1,1,1,1,1,1);
+	
+	VoxelRenderer * voxelRenderer = new VoxelRenderer(4,4,4);
+
+
+
+
+
+
+
+
+
+
 	
 	 sun = new DirectionalLight();
 	 sun->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
@@ -228,37 +263,19 @@ void Game::setup(){
 	
 
 	PointLight * pointlight = new PointLight();
-	pointlight->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
+	pointlight->diffuse = glm::vec4(1.0,0.5,0.5,1.0);
 	//pointlight->specular = glm::vec4(1.0,1.0,1.0,1.0);
 
 	pointlight->position = glm::vec4(0.0,5.0,0.0,1.0);
-	pointlight->constantAttenuation =1.0;
-	pointlight->linearAttenutation = 0.007;
-	pointlight->quadraticAttenuation = 0.0002;
+	pointlight->setRange(50.0);
 
 
-	rootNode->addLight(sun);
+	//rootNode->addLight(sun);
 	//rootNode->addLight(light2);
-//	rootNode->addLight(pointlight);
-	/*
-	glGenFramebuffers(1,&frameBufferHandle);
-	glBindFramebuffer(GL_FRAMEBUFFER,frameBufferHandle);
-
-	glGenTextures(1,&depthTexture);
-	glBindTexture(GL_TEXTURE_2D,depthTexture);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT16,1024,1024,0,GL_DEPTH_COMPONENT,GL_FLOAT,0);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-
-	glFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,depthTexture,0);
+	rootNode->addLight(pointlight);
 	
-	glDrawBuffer(GL_NONE);
-
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
-		printf("\nframebuffer ready \n");
-	cam->move(2,20,0);*/
+	
+	
 }
 void Game::reshape(int width, int height){
 	
@@ -269,20 +286,18 @@ void Game::reshape(int width, int height){
 
 }
 void Game::draw(){
+	glBindFramebuffer(GL_FRAMEBUFFER,0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
 	glEnable(GL_DEPTH_TEST);
 	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-	
+
 	pipeline->clear();
-	
 	pipeline->setShadowPass(false);
 	pipeline->setView(cam->getView());
 	pipeline->setProjection(cam->getProjection());
 	pipeline->setViewDirection(glm::vec4(cam->getDir(),1.0));
-	
-	
-	
+
 	rootNode->render(pipeline);
 
 	swapBuffers();

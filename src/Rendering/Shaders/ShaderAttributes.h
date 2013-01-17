@@ -1,0 +1,13 @@
+#ifndef SHADER_ATTRIBUTES_H
+#define SHADER_ATTRIBUTES_H
+namespace ShaderAttributes{
+
+	enum{COORD3D,COORD4D,COLOR3D,NORMAL3D,TEXCOORD2D,BLOCK_TYPE,NUM_ATTRIBUTES};
+
+}
+
+
+
+
+
+#endif

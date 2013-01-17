@@ -3,14 +3,14 @@
 
 #include "BaseGame.h"
 
-#include "Graphics\gWall.h"
+#include "Rendering\Voxel\Volume\gWall.h"
 #include "camera\camera.h";
 
-#include "Rendering\Model.h"
+#include "Rendering\Models\Model.h"
 #include "GLtools\GLTools.h"
 #include "GLtools\GLTriangleBatch.h"
-#include "Rendering\GeometryRenderer.h"
-#include "Rendering\StaticModel.h"
+
+#include "Rendering\Models\StaticModel.h"
 
 #include <assimp\scene.h>
 #include <assimp\Importer.hpp>
@@ -18,9 +18,12 @@
 #include <assimp\postprocess.h>
 #include "World\World.h"
 #include "Entities\Block.h"
-#include "Rendering\Pipeline.h"
-#include "Rendering\Node.h"
-#include "ResourceManager.h"
+#include "Rendering\SceneGraph\Pipeline.h"
+#include "Rendering\SceneGraph\Node.h"
+#include "Rendering\Models\ResourceManager.h"
+#include "Rendering\Voxel\Volume\gWall.h"
+#include "Rendering\Voxel\SurfaceExtractors\WallMeshGenerator.h"
+
 class Game: public BaseGame
 {
 public:
@@ -37,7 +40,8 @@ private:
 	Shader*diffuseSpecular;
 	Shader*wallShader;
 	Shader*shadowShader;
-	GeometryRenderer * geomRenderer;
+	Shader*voxelShader;
+
 	Camera*cam;
 
 	Pipeline *pipeline;
@@ -51,6 +55,7 @@ protected:
 	unsigned int diffuseSpecularHandle;
 	unsigned int wallShaderHandle;
 	unsigned int shadowShaderHandle;
+	unsigned int voxelShaderHandle;
 	void reshape(int width, int height);
 	void draw();
 	void update(double dt);
