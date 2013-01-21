@@ -29,50 +29,6 @@ void Game::loadShaders(Pipeline*pipeline){
 
 	
 
-	
-
-
-
-
-	
-
-
-	wallShader = resManager->loadShader("wallShader");
-
-	wallShader->bindUniform(ShaderUniforms::MVP,"mvp");
-	wallShader->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
-	wallShader->bindUniform(ShaderUniforms::STEP_SIZE,"stepSize");
-	wallShader->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
-	wallShader->bindUniform(ShaderUniforms::NUM_POINT_LIGHTS,"numPointLights");
-	wallShader->bindUniform(ShaderUniforms::MATERIAL_DIFFUSE,"material.diffuse");
-	wallShader->bindUniform(ShaderUniforms::MATERIAL_AMBIENT,"material.ambient");
-	wallShader->bindUniform(ShaderUniforms::MATERIAL_SPECULAR,"material.specular");
-	wallShader->bindUniform(ShaderUniforms::MATERIAL_SHININESS,"material.shininess");
-	wallShader->bindUniform(ShaderUniforms::VIEW_DIRECTION,"viewDir");
-	const char * memberNamesWall[] = {"diffuse","specular","direction"};
-	wallShader->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"dirLights",memberNamesWall);
-	const char * memberNamesPointWall[] = {"diffuse","specular","position","constantAttenuation","linearAttenuation","quadraticAttenuation"};
-	wallShader->bindUniformStructArray(ShaderUniforms::LIGHT_POINT,10,6,"pointLights",memberNamesPointWall);
-	wallShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
-	wallShader->bindAttribute(ShaderAttributes::COLOR3D,"color3d");
-	wallShader->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
-	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
-
-	
-
-
-
-	shadowShader = resManager->loadShader("shadowShader");
-	shadowShader->bindUniform(ShaderUniforms::MVP,"mvp");
-	shadowShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
-
-	
-
-
-
-
-
-
 
 }
 #include "Rendering\Voxel\Volume\LargeVolume.h"

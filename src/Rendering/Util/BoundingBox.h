@@ -8,7 +8,7 @@ class BoundingBox
 {
 public:
 	BoundingBox(void);
-	BoundingBox();
+	
 
 	
 	~BoundingBox(void);

@@ -26,7 +26,7 @@ public:
 	virtual void render(Pipeline *pipeline) = 0;
 	
 	virtual void setAttributes(GLint*attributes,GLint*shadowAttributes=nullptr)=0 ;
-	
+	virtual 
 	
 
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
