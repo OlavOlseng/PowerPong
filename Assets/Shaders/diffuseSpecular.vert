@@ -1,13 +1,15 @@
 #version 330
 
-attribute vec3 coord3d;
-attribute vec3 normal3d;
-attribute vec2 texcoord2d;
+in vec3 coord3d;
+in vec3 normal3d;
+in vec2 texcoord2d;
 uniform mat4 mvp;
 uniform mat4 modelMatrix;
-varying vec4 f_normal;
-varying vec2 f_texcoord;
-varying vec4 f_position;
+out vec4 f_normal;
+out vec2 f_texcoord;
+out vec4 f_position;
+
+
 void main()
 {
 	f_position = modelMatrix*vec4(coord3d,1.0);

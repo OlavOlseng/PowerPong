@@ -1,8 +1,8 @@
 #version 330
 
-varying vec4 f_normal;
-varying vec2 f_texcoord;
-varying vec4 f_position;
+in vec4 f_normal;
+in vec2 f_texcoord;
+in vec4 f_position;
 
 uniform sampler2D tex;
 uniform int numDirLights;
@@ -34,10 +34,11 @@ const vec4 globalAmbient = vec4(0.0,0.0,0.0,0.0);
 uniform vec4 cameraPosition;
 
 
+out vec4 out_color;
 
 void main(){
-vec4 diffuseLight;
-vec4 specularLight;
+vec4 diffuseLight = vec4(0.0,0.0,0.0,0.0);
+vec4 specularLight = vec4(0.0,0.0,0.0,0.0);
 vec4 direction;
 vec4 vecToLight;
 DirectionalLight dirLight;
@@ -47,8 +48,6 @@ float specularFactor;
 float attenuation = 0.0;
 float distance = 0.0;
 vec4 ambientLight = material.ambient*globalAmbient;
-
-
 vec4 viewDir = normalize(f_position - cameraPosition);
 
 for(int i = 0;i<numDirLights;i++){
@@ -76,6 +75,9 @@ for(int i = 0;i<numPointLights;i++){
 		specularLight += material.specular*pointLight.specular*pow(specularFactor,material.shininess)*attenuation;
 }
 }
-gl_FragColor =texture2D(tex,f_texcoord)*(diffuseLight+ specularLight + ambientLight);
+
+
+
+gl_FragColor =texture(tex,f_texcoord)*(diffuseLight+ specularLight + ambientLight);
 }
 

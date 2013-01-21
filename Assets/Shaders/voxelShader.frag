@@ -1,9 +1,9 @@
 #version 330
 
-varying vec4 f_texcoord;
-varying float f_normalIndex;
-varying vec4 f_position;
-varying vec4 f_normal;
+in vec4 f_texcoord;
+in float f_normalIndex;
+in vec4 f_position;
+in vec4 f_normal;
 uniform sampler2D tileAtlas;
 uniform float stepSize;
 
@@ -45,8 +45,8 @@ uniform vec4 cameraPos;
 void main()
 {
 	
-	vec4 diffuseLight;
-	vec4 specularLight;
+	vec4 diffuseLight = vec4(0.0,0.0,0.0,0.0);
+	vec4 specularLight = vec4(0.0,0.0,0.0,0.0);
 	
 	float diffuseFactor;
 	float specularFactor;
@@ -94,9 +94,9 @@ void main()
 
 	vec4 color;
 	if(f_normalIndex < 3.5){
-		color = texture2D(tileAtlas,vec2((fract(f_texcoord.x + f_texcoord.z)+ f_texcoord.w)*stepSize ,fract(f_texcoord.y)));
+		color = texture(tileAtlas,vec2((fract(f_texcoord.x + f_texcoord.z)+ f_texcoord.w)*stepSize ,fract(f_texcoord.y)));
 	}else{
-		color = texture2D(tileAtlas,vec2((fract(f_texcoord.x) + f_texcoord.w)*stepSize ,fract(f_texcoord.z)));
+		color = texture(tileAtlas,vec2((fract(f_texcoord.x) + f_texcoord.w)*stepSize ,fract(f_texcoord.z)));
 	}	
 	gl_FragColor = color*(diffuseLight + specularLight + ambientLight);
 }

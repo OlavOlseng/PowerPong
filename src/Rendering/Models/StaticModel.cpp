@@ -317,6 +317,7 @@ void StaticModel::render(Pipeline *pipeline){
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
+	
 	glBindVertexArray(0);
 
 	shader->unbind();
