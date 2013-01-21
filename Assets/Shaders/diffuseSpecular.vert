@@ -1,3 +1,5 @@
+#version 330
+
 attribute vec3 coord3d;
 attribute vec3 normal3d;
 attribute vec2 texcoord2d;

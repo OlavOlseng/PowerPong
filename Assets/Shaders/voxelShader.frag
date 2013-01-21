@@ -1,4 +1,4 @@
-
+#version 330
 
 varying vec4 f_texcoord;
 varying float f_normalIndex;

@@ -1,3 +1,5 @@
+#version 330
+
 varying vec4 f_normal;
 varying vec2 f_texcoord;
 varying vec4 f_position;
