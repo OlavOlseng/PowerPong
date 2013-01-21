@@ -12,6 +12,7 @@
 #include "ResourceManager.h"
 #include "Material.h"
 #include "../SceneGraph/Node.h"
+#include "../Util/BoundingBox.h"
 class Model:public Node
 {
 public:
@@ -21,13 +22,12 @@ public:
 
 
 
-
+	
 	virtual glm::mat4 getModelMatrix();
 	virtual void render(Pipeline *pipeline) = 0;
 	
 	virtual void setAttributes(GLint*attributes,GLint*shadowAttributes=nullptr)=0 ;
-	virtual 
-	
+	virtual BoundingBox *getBoundingBox();
 
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();
@@ -35,7 +35,7 @@ public:
 
 protected:
 	glm::vec4 modelMatrix;
-
+	BoundingBox boundingBox;
 	std::shared_ptr<ResourceManager> resourceManager;
 	Material material;
 	

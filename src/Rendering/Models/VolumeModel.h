@@ -5,7 +5,7 @@
 class VolumeModel:public Model
 {
 public:
-	VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ);
+	VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ,unsigned int surfaceWidth,unsigned int surfaceHeight,unsigned int surfaceDepth);
 	~VolumeModel(void);
 
 	void render(Pipeline *pipeline);
@@ -22,9 +22,8 @@ private:
 	
 	GLuint * surfaceVaos;
 	VolumeSurface ** surfaces;
-	unsigned int numSurfacesX;
-	unsigned int numSurfacesY;
-	unsigned int numSurfacesZ;
+	unsigned int numSurfacesX,numSurfacesY,numSurfacesZ;
+	unsigned int surfaceWidth,surfaceHeight,surfaceDepth;
 	unsigned int numSurfaces;
 	Shader * voxelShader;
 	GLuint textureHandle;

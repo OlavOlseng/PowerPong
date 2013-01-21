@@ -1,7 +1,7 @@
 #include "VolumeModel.h"
 
 
-VolumeModel::VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ)
+VolumeModel::VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ,unsigned int surfaceWidth,unsigned int surfaceHeight,unsigned int surfaceDepth)
 {
 
 	unsigned int size = numSurfacesX*numSurfacesY*numSurfacesZ;
@@ -9,6 +9,12 @@ VolumeModel::VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,uns
 	this->numSurfacesX = numSurfacesX;
 	this->numSurfacesY = numSurfacesY;
 	this->numSurfacesZ = numSurfacesZ;
+
+	this->surfaceWidth = surfaceWidth;
+	this->surfaceHeight = surfaceHeight;
+	this->surfaceDepth = surfaceDepth;
+
+	
 
 	for(int i = 0;i<size;i++){
 		surfaces[i] = nullptr;
@@ -59,6 +65,8 @@ void VolumeModel::init(){
 	material->diffuse = glm::vec3(1.0,1.0,1.0);
 	material->shininess = 1.0;
 
+	getBoundingBox()->setBounds(0,numSurfacesX*surfaceWidth,0,0,0,numSurfacesZ*surfaceDepth);
+
 }
 inline unsigned int VolumeModel::getIndex(unsigned int x,unsigned int y,unsigned int z){
 
@@ -101,10 +109,9 @@ void VolumeModel::render(Pipeline *pipeline){
 
 	Shader*shader = voxelShader;
 	shader->bind();
-	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
-	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
 
-	VolumeSurface * surface = surfaces[0];
+
+	
 	shader->setUniformFloat(ShaderUniforms::STEP_SIZE,0.25);
 
 
@@ -163,19 +170,35 @@ void VolumeModel::render(Pipeline *pipeline){
 	shader->setUniformVec4f(ShaderUniforms::MATERIAL_SPECULAR,specular.x,specular.y,specular.z,1.0);
 	shader->setUniformFloat(ShaderUniforms::MATERIAL_SHININESS,shininess);
 
+	glm::mat4 model;
+	glm::mat4 mvp ;
 
-	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
-	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
+	VolumeSurface * surface;
+	for (unsigned int z = 0; z< this->numSurfacesZ; z++) {
+		
+		for(unsigned int y= 0; y < this->numSurfacesY;y++){
 
-	
-	glBindVertexArray(surfaceVaos[0]);
+			for(unsigned int x = 0; x < this->numSurfacesX;x++){
+				surface = surfaces[getIndex(x,y,z)];
+				if(surface){
 
-	glDrawArrays(GL_TRIANGLES,0,surface->getVertexBuffer()->getBufferSize());
+					model = pipeline->getTotalRotationTranslation()*this->getModelMatrix()*glm::translate(glm::mat4(1.0),glm::vec3(x*surfaceWidth,y*surfaceHeight,z*surfaceDepth));
+					mvp = pipeline->getProjection()*pipeline->getView()*model;
+					shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
+					shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
 
-	glBindVertexArray(0);
+					glBindVertexArray(surfaceVaos[getIndex(x,y,z)]);
 
+					glDrawArrays(GL_TRIANGLES,0,surface->getVertexBuffer()->getBufferSize());
+
+					glBindVertexArray(0);
+				}
+
+			}
+		}
+	}
 	shader->unbind();
 }
 

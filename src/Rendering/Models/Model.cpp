@@ -9,13 +9,17 @@ Model::Model()
 }
 
 
-Material *Model::getMaterial(){
+Material * Model::getMaterial(){
 	return &this->material;
 
 }
 
+BoundingBox *Model::getBoundingBox(){
+
+	return &this->boundingBox;
+}
 glm::mat4 Model::getModelMatrix(){
-	glm::vec3 pos = getPosition();
+	glm::vec3 pos = getPosition() - this->getBoundingBox()->getCenter();
 	glm::vec3 rotation = getRotation();
 	//scale-rotate-translate
 	

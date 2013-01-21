@@ -8,7 +8,8 @@ typedef GLbyte Normal;
 class VolumeSurface
 {
 public:
-	VolumeSurface(unsigned int width,unsigned int height,unsigned int depth,unsigned int x, unsigned int y, unsigned int z);
+	VolumeSurface(unsigned int width,unsigned int height,unsigned int depth,unsigned int x, unsigned int y,unsigned int z);
+
 	~VolumeSurface(void);
 
 	byte4 * getVertices();
@@ -41,6 +42,7 @@ private:
 	bool m_hasNormals;
 
 	const unsigned int width,height,depth;
+	
 	const unsigned int x,y,z;
 
 	Buffer * vertexBuffer;

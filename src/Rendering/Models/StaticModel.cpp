@@ -136,11 +136,12 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	mat->shininess = shininess;
 
 
-	if(moveTocenter){
+	
 		//Need to find the center of the model
 		//and then adjust the vertices
 	
 		//Can find the center by finding the average of min/max
+	if(moveTocenter){
 		glm::vec3 min(vertices[0]),max(vertices[0]);
 		for(int i = 0;i<mesh->mNumVertices;i++){
 			glm::vec3 &vertex = vertices[i];
@@ -152,12 +153,11 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 			if(vertex.y > max.y) max.y = vertex.y;
 			if(vertex.z > max.z) max.z = vertex.z;
 		}
-		glm::vec3 avg = (min + max);
-		avg /=2;
-		for(int i = 0;i<mesh->mNumVertices;i++){
-			vertices[i] -= avg;
-		}
+
+		this->getBoundingBox()->setBounds(min.x,max.x,min.y,max.y,min.z,max.z);
+	
 	}
+
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 

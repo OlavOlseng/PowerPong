@@ -63,6 +63,8 @@ void Game::setup(){
 	//init stuff here
 	cam = new Camera(4,40,-40,0,0,0,1280,720);
 	
+
+
 	model = new StaticModel();
 	model->setScale(glm::vec3(0.01,0.01,0.01));
 	StaticModel*model2 = new StaticModel();
@@ -93,9 +95,11 @@ void Game::setup(){
 	rootNode->addChild(model3Node);	
 	imp.FreeScene();
 	
-
+	//ThomasFechten.csm
 	const aiScene * sphereScene = imp.ReadFile(resManager->getWorkingDirectiory()+"\\Models\\sphere.irr",aiProcessPreset_TargetRealtime_Quality);
 	
+
+
 	
 	StaticModel*sphereModel = new StaticModel();
 	sphereModel->setResourceManager(resManager);
@@ -105,8 +109,8 @@ void Game::setup(){
 	sphereNode->move(glm::vec3(0,-20,20));
 	rootNode->addChild(sphereNode);
 	imp.FreeScene();
-	
-	
+
+
 	
 	const aiScene * spiderScene= imp.ReadFile(resManager->getWorkingDirectiory()+"\\Models\\spider.obj",aiProcessPreset_TargetRealtime_Quality);
 
@@ -126,25 +130,37 @@ void Game::setup(){
 
 	for(int x = 0;x<16;x++){
 		for(int z = 0;z< 16;z++){
-
-			vol.set(x,0,z,2);
+			for(int y = 0;y<3;y++){
+				vol.set(x,y,z,2);
+			}
+			
 		}
 
 	}
 	
 
 	CubeSurfaceExtractorWithByteNormals  *extractor = new CubeSurfaceExtractorWithByteNormals(&vol);
-	VolumeSurface * surface = extractor->extractSurface(0,0,0,16,2,16);
-	
-	VolumeModel * volumeModel = new VolumeModel(4,4,4);
-
+	VolumeSurface * surface = extractor->extractSurface(0,0,0,16,3,16);
+	VolumeModel * volumeModel = new VolumeModel(4,4,4,16,16,16);
 	volumeModel->setResourceManager(resManager);
 	volumeModel->init();
 	volumeModel->setSurface(0,0,0,surface);
-	volumeModel->setSurface(1,0,0,surface);
+	volumeModel->setSurface(3,0,0,surface);
+	volumeModel->setSurface(0,0,3,surface);
+	volumeModel->setSurface(3,0,3,surface);
 	volumeModel->setPosition(glm::vec3(0,0,0));
-	
 	rootNode->addChild(volumeModel);
+
+	VolumeModel * smallVolumeModel = new VolumeModel(1,1,1,16,16,16);
+	smallVolumeModel->setResourceManager(resManager);
+	smallVolumeModel->init();
+	VolumeSurface * anotherSurface = extractor->extractSurface(0,0,0,16,1,16);
+	smallVolumeModel->setSurface(0,0,0,surface);
+
+	Node * testNode = new Node();
+	testNode->setScale(glm::vec3(2.0,1.0,2.0));
+	testNode->addChild(smallVolumeModel);
+	rootNode->addChild(testNode);
 
 	 sun = new DirectionalLight();
 	 sun->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
@@ -211,6 +227,7 @@ void Game::update(double dt){
 	rootNode->getChildren()->at(2)->rotate(glm::vec3(0,0.001*dt,0));
 	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,0.001*dt,0));
 	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,0.002*dt,0));
+	rootNode->getChildren()->at(6)->rotate(glm::vec3(0.01*dt,0.002*dt,0));
 	xrot+= 0.01*dt;
 	
 	
