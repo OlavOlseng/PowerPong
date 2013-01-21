@@ -12,6 +12,6 @@ void main()
 	f_normal = normalize(modelMatrix*vec4(normal3d.xyz,0.0));
 	f_texcoord = texcoord2d;
 	gl_Position = mvp*vec4(coord3d.xyz,1.0);
-};
+}
 
 

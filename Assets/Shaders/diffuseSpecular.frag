@@ -75,5 +75,5 @@ for(int i = 0;i<numPointLights;i++){
 }
 }
 gl_FragColor =texture2D(tex,f_texcoord)*(diffuseLight+ specularLight + ambientLight);
-};
+}
 

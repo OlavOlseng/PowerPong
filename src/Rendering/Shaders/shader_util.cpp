@@ -24,7 +24,7 @@ std::string ShaderUtil::readShaderFile(std::string fName){
     if(file.good() && file.is_open()){
 		while(!file.eof()){
 			std::getline(file,input);
-			shaderFile << input;
+			shaderFile << input + "\n";
 		}
 		
     }else{
@@ -56,6 +56,8 @@ GLuint ShaderUtil::loadTexture(std::string fName){
 }
 
 GLuint ShaderUtil::compileShaders(std::string vs,std::string fs){
+
+
 	std::string vsSource = readShaderFile(vs);
 	std::string fsSource = readShaderFile(fs);
 	return compileShaders(vsSource.c_str(),fsSource.c_str());
@@ -121,14 +123,14 @@ void ShaderUtil::bufferStaticArray(GLenum target,GLvoid*data,size_t size){
 GLint ShaderUtil::bindAttribute(GLuint program,const char* attr){
     GLint attribute = glGetAttribLocation(program, attr);
     if(attribute == -1){
-        printf( "Could not bind attribute %s\n", attr);
+       // printf( "Could not bind attribute %s\n", attr);
         }
     return attribute;
 }
 GLint ShaderUtil::bindUniform(GLuint program,const char *uni){
     GLint uniform = glGetUniformLocation(program, uni);
     if(uniform == -1){
-        printf( "Could not bind uniform %s\n", uni);
+       // printf( "Could not bind uniform %s\n", uni);
     }
     return  uniform;
 }
