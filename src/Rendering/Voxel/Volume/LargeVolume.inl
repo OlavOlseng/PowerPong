@@ -39,7 +39,7 @@ void LargeVolume<T>::set(int x,int y,int z,BlockType type){
 template<typename T>
 inline unsigned int LargeVolume<T>::getIndex(int x,int y,int z){
 
-	return x + y*numY + z*numZ*numZ;
+	return x + y*numY*numY + z*numZ;
 
 }
 
@@ -56,6 +56,20 @@ BlockType LargeVolume<T>::get(int x,int y,int z){
 	return this->getSubVolume(x,y,z)->get(x % subWidth,y % subHeight, z % subDepth);
 
 }
+
+template<typename T>
+unsigned int LargeVolume<T>::getWidth(){
+	return this->width;
+}
+template<typename T>
+unsigned int LargeVolume<T>::getHeight(){
+	return this->height;
+}
+template<typename T>
+unsigned int LargeVolume<T>::getDepth(){
+	return this->depth;
+}
+
 
 template<typename T>
 bool LargeVolume<T>::isInvisible(){

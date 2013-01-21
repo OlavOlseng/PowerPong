@@ -17,7 +17,7 @@
 class StaticModel:public Model
 {
 public:
-	StaticModel(GLint*attributes = nullptr,GLint *shadowAttributes = nullptr);
+	StaticModel();
 	~StaticModel(void);
 	Buffer *getVertexBuffer();
 	Buffer*getNormalBuffer();
@@ -26,15 +26,16 @@ public:
 	void setAttributes(GLint*attributes,GLint*shadowAttributes=nullptr);
 	void setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D);
 	void render(Pipeline *pipeline);
+	void initShaders();
 	Node* initFromScene(const aiScene * scene,Node * modelRoot);
 	void initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveTocenter = true);
 	GLuint* getVao();
 	void setVao(GLuint vao);
 	
 	
-	void setShader(int id);
-	int getShader();
+
 private:
+	Shader * diffuseSpecular;
 	Node*modelRoot;
 	GLuint textureHandle;
 	Buffer *vertexBuffer;

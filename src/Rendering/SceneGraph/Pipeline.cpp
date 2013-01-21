@@ -74,6 +74,12 @@ glm::mat4 Pipeline::getProjection(){
 	return this->projection;
 
 }
+void Pipeline::setCameraPosition(glm::vec4 position){
+	this->cameraPosition = position;
+}
+glm::vec4 Pipeline::getCameraPosition(){
+	return this->cameraPosition;
+}
 
 
 void Pipeline::setTotalRotationTranslation(glm::mat4 value){

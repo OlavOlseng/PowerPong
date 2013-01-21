@@ -22,10 +22,15 @@ public:
 	 bool isEmpty();
 	 void setInvisible(bool invisible);
 
+	unsigned int getWidth();
+	unsigned int getHeight();
+	unsigned int getDepth();
+
 private:
 	bool invisible;
 	unsigned int numBlocks;
 	 Octree<BlockType> *blocks;
+	 unsigned int size;
 };
 
 #endif

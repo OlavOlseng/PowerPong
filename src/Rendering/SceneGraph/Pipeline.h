@@ -16,6 +16,8 @@ public:
 	void useShader(int id);
 	void setViewDirection(glm::vec4 direction);
 	glm::vec4 getViewDirection();
+	void setCameraPosition(glm::vec4 position);
+	glm::vec4 getCameraPosition();
 
 	Shader*getActiveShader();
 	void addShader(Shader*shader,int id);
@@ -46,6 +48,7 @@ private:
 	glm::mat4 view;
 	glm::mat4 projection;
 	glm::vec4 viewDirection;
+	glm::vec4 cameraPosition;
 	std::vector<Shader*> shaders;
 	DirectionalLight **directionalLights;
 	PointLight**pointLights;

@@ -21,8 +21,7 @@
 #include "Rendering\SceneGraph\Pipeline.h"
 #include "Rendering\SceneGraph\Node.h"
 #include "Rendering\Models\ResourceManager.h"
-#include "Rendering\Voxel\Volume\gWall.h"
-#include "Rendering\Voxel\SurfaceExtractors\WallMeshGenerator.h"
+
 
 class Game: public BaseGame
 {

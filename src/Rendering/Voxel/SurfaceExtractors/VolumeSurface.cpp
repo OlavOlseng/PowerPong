@@ -7,7 +7,7 @@ VolumeSurface::VolumeSurface(unsigned int width,unsigned int height,unsigned int
 	m_hasVertices = false;
 	m_hasNormals = false;
 	vertexBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_BYTE);
-	normalBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_BYTE);
+	normalBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,1,GL_BYTE);
 
 }
 
@@ -16,7 +16,7 @@ byte4 * VolumeSurface::getVertices(){
 	
 	return this->vertices;
 }
-byte4 * VolumeSurface::getNormals(){
+Normal * VolumeSurface::getNormals(){
 
 	return this->normals;
 }
@@ -27,7 +27,7 @@ void VolumeSurface::setVertices(byte4 * vertices,unsigned int numVertices){
 	this->m_hasVertices = true;
 	this->numVertices = numVertices;
 }
-void VolumeSurface::setNormals(byte4 * normals,unsigned int numNormals){
+void VolumeSurface::setNormals(Normal * normals,unsigned int numNormals){
 
 	this->normals = normals;
 	this->m_hasNormals = true;
@@ -35,12 +35,31 @@ void VolumeSurface::setNormals(byte4 * normals,unsigned int numNormals){
 
 }
 
+Buffer * VolumeSurface::getVertexBuffer(){
+
+	return this->vertexBuffer;
+}
+Buffer * VolumeSurface::getNormalBuffer(){
+
+	return this->normalBuffer;
+
+}
+
 void VolumeSurface::bufferData(){
 
-	if(m_hasVertices)
-		vertexBuffer->setData(vertices,sizeof(byte4)*numVertices);
-	if(m_hasNormals)
-		normalBuffer->setData(normals,sizeof(byte4)*numNormals);
+	if(m_hasVertices){
+		vertexBuffer->setData(this->vertices,sizeof(byte4)*numVertices);
+		delete[] vertices;
+		m_hasVertices = false;
+		this->numVertices = 0;
+	}
+
+	if(m_hasNormals){
+		normalBuffer->setData(this->normals,sizeof(Normal)*numNormals);
+		delete[] normals;
+		m_hasNormals = false;
+		this->numNormals = 0;;
+	}
 
 }
 
@@ -67,4 +86,6 @@ bool VolumeSurface::hasNormals(){
 
 VolumeSurface::~VolumeSurface(void)
 {
+	delete vertexBuffer;
+	delete normalBuffer;
 }

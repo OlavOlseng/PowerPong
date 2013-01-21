@@ -1,9 +1,9 @@
 #ifndef CUBE_SURFACE_EXTRACTOR_H
 #define CUBE_SURFACE_EXTRACTOR_H
 
-#include "../Volume/Volume.h"
-#include "VolumeSurface.h"
-class CubeSurfaceExtractor
+
+#include "SurfaceExtractor.h"
+class CubeSurfaceExtractor:public SurfaceExtractor
 {
 public:
 	CubeSurfaceExtractor(Volume * volume);

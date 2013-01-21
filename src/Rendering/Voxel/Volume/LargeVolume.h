@@ -17,6 +17,11 @@ public:
 	 bool isEmpty();
 	 void setInvisible(bool invisible);
 
+	unsigned int getWidth();
+	unsigned int getHeight();
+	unsigned int getDepth();
+
+
 	~LargeVolume(void);
 private:
 	Volume **subVolumes;

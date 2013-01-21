@@ -3,8 +3,12 @@
 
 
 #include <glm\glm.hpp>
+#include <GL\glew.h>
+#include <GL\freeglut.h>;
+#include <GL\GL.h>
+#include <GL\GLU.h>
 
-typedef glm::detail::tvec4<int> byte4;
+typedef glm::detail::tvec4<GLbyte> byte4;
 typedef glm::detail::tvec4<float> float4;
 typedef int BlockType;
 
@@ -17,7 +21,9 @@ public:
 	virtual bool isInvisible() = 0;
 	virtual bool isEmpty() = 0;
 	virtual void setInvisible(bool invisible) = 0;
-
+	virtual unsigned int getWidth() = 0;
+	virtual unsigned int getHeight() = 0;
+	virtual unsigned int getDepth() = 0;
 };
 
 

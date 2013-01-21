@@ -26,31 +26,12 @@ Game::~Game(void)
 
 
 void Game::loadShaders(Pipeline*pipeline){
-	wallShaderHandle = 0;
-	diffuseSpecularHandle = 1;
-	shadowShaderHandle = 2;
-	voxelShaderHandle = 3;
+
 	
 
-	diffuseSpecular = resManager->loadShader("diffuseSpecular");
-	diffuseSpecular->bindUniform(ShaderUniforms::MVP,"mvp");
-	diffuseSpecular->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
-	diffuseSpecular->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
-	diffuseSpecular->bindUniform(ShaderUniforms::NUM_POINT_LIGHTS,"numPointLights");
-	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_DIFFUSE,"material.diffuse");
-	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_AMBIENT,"material.ambient");
-	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SPECULAR,"material.specular");
-	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SHININESS,"material.shininess");
-	diffuseSpecular->bindUniform(ShaderUniforms::VIEW_DIRECTION,"viewDir");
-	const char * memberNames[] = {"diffuse","specular","direction",};
-	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"dirLights",memberNames);
-	const char * memberNamesPoint[] = {"diffuse","specular","position","constantAttenuation","linearAttenuation","quadraticAttenuation"};
-	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_POINT,10,6,"pointLights",memberNamesPoint);
-	diffuseSpecular->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
-	diffuseSpecular->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
-	diffuseSpecular->bindAttribute(ShaderAttributes::TEXCOORD2D,"texcoord2d");
+	
 
-	pipeline->addShader(diffuseSpecular,diffuseSpecularHandle);
+
 
 
 	
@@ -77,7 +58,7 @@ void Game::loadShaders(Pipeline*pipeline){
 	wallShader->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
 	wallShader->bindAttribute(ShaderAttributes::BLOCK_TYPE,"blockType");
 
-	pipeline->addShader(wallShader,wallShaderHandle);
+	
 
 
 
@@ -85,13 +66,11 @@ void Game::loadShaders(Pipeline*pipeline){
 	shadowShader->bindUniform(ShaderUniforms::MVP,"mvp");
 	shadowShader->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
 
-	pipeline->addShader(shadowShader,shadowShaderHandle);
+	
 
-	voxelShader = resManager->loadShader("voxelShader");
-	voxelShader->bindUniform(ShaderUniforms::MVP,"mvp");
-	voxelShader->bindAttribute(ShaderAttributes::COORD4D,"coord4d");
 
-	pipeline->addShader(voxelShader,voxelShaderHandle);
+
+
 
 
 
@@ -99,7 +78,8 @@ void Game::loadShaders(Pipeline*pipeline){
 #include "Rendering\Voxel\Volume\LargeVolume.h"
 #include "Rendering\Voxel\Volume\OctreeVolume.h"
 #include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractor.h"
-#include "Rendering\Models\VoxelRenderer.h"
+#include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractorWithByteNormals.h"
+#include "Rendering\Models\VolumeModel.h"
 void Game::setup(){
 
 	
@@ -125,33 +105,7 @@ void Game::setup(){
 	this-> world = new World();
 	
 	//init stuff here
-	models = new std::vector<Model*>();
-	cam = new Camera(4,20,-20,0,0,0,1280,720);
-	
-	
-	WallMeshGenerator generator = WallMeshGenerator();
-	Node*wallNode = new Node();
-	
-	for(int i = 0;i<5;i++){
-
-	gWall *wall = new gWall(1,5,glm::vec3(0,0,0));
-	wall->setBlock(0,5,gBlock::BlockType::PLANK);
-	wall->setShader(wallShaderHandle);
-	wall->setResourceManager(resManager);
-	wall->init();
-	
-	wall->setAttributes(wallShader->getAttributes());
-	wall->setPosition(glm::vec3(-2.5,0,-2.5+i));
-	wallNode->addChild(wall);
-	generator.generateMeshFor(wall);
-	
-	}
-	
-	rootNode->addChild(wallNode);
-	wallNode->scale(glm::vec3(1.0,0,2.0));
-	
-
-
+	cam = new Camera(4,40,-40,0,0,0,1280,720);
 	
 	model = new StaticModel();
 	model->setScale(glm::vec3(0.01,0.01,0.01));
@@ -164,21 +118,9 @@ void Game::setup(){
 	model2->setPosition(glm::vec3(0,2,4));
 	model3->setPosition(glm::vec3(0,2,2));
 
-	model->setShader(diffuseSpecularHandle);
-	model2->setShader(diffuseSpecularHandle);
-	model3->setShader(diffuseSpecularHandle);
-
 	model->setResourceManager(resManager);
 	model2->setResourceManager(resManager);
 	model3->setResourceManager(resManager);
-
-
-	model->setAttributes(diffuseSpecular->getAttributes(),shadowShader->getAttributes());
-	model2->setAttributes(diffuseSpecular->getAttributes());
-	model3->setAttributes(diffuseSpecular->getAttributes());
-
-	//geomRenderer->registerModel(model2);
-
 
 	Assimp::Importer imp = Assimp::Importer();
 	
@@ -199,10 +141,8 @@ void Game::setup(){
 	const aiScene * sphereScene = imp.ReadFile(resManager->getWorkingDirectiory()+"\\Models\\sphere.irr",aiProcessPreset_TargetRealtime_Quality);
 	
 	
-	StaticModel*sphereModel = new StaticModel(diffuseSpecular->getAttributes());
+	StaticModel*sphereModel = new StaticModel();
 	sphereModel->setResourceManager(resManager);
-	sphereModel->setShader(diffuseSpecularHandle);
-	
 	Node*sphereNode =  new Node();
 	sphereModel->initFromScene(sphereScene,sphereNode);
 	sphereNode->setScale(glm::vec3(20,20,20));
@@ -214,9 +154,8 @@ void Game::setup(){
 	
 	const aiScene * spiderScene= imp.ReadFile(resManager->getWorkingDirectiory()+"\\Models\\spider.obj",aiProcessPreset_TargetRealtime_Quality);
 
-	StaticModel*spiderModel= new StaticModel(diffuseSpecular->getAttributes());
+	StaticModel*spiderModel= new StaticModel();
 	spiderModel->setResourceManager(resManager);
-	spiderModel->setShader(diffuseSpecularHandle);
 	
 	Node*spiderNode = new Node();
 	spiderModel->initFromScene(spiderScene,spiderNode);
@@ -229,45 +168,40 @@ void Game::setup(){
 
 	LargeVolume<OctreeVolume> vol(32,32,32,16,16,16);
 
-	vol.set(1,0,0,1);
+	for(int x = 0;x<16;x++){
+		for(int z = 0;z< 16;z++){
 
-	BlockType t = vol.get(1,0,0);
+			vol.set(x,0,z,2);
+		}
 
-	CubeSurfaceExtractor  extractor = CubeSurfaceExtractor(&vol);
-	VolumeSurface * surface = extractor.extractSurface(1,1,1,1,1,1);
+	}
 	
-	VoxelRenderer * voxelRenderer = new VoxelRenderer(4,4,4);
 
-
-
-
-
-
-
-
-
-
+	CubeSurfaceExtractorWithByteNormals  *extractor = new CubeSurfaceExtractorWithByteNormals(&vol);
+	VolumeSurface * surface = extractor->extractSurface(0,0,0,16,2,16);
 	
+	VolumeModel * volumeModel = new VolumeModel(4,4,4);
+
+	volumeModel->setResourceManager(resManager);
+	volumeModel->init();
+	volumeModel->setSurface(0,0,0,surface);
+	volumeModel->setSurface(1,0,0,surface);
+	volumeModel->setPosition(glm::vec3(0,0,0));
+	
+	rootNode->addChild(volumeModel);
+
 	 sun = new DirectionalLight();
 	 sun->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
 	// sun->specular = glm::vec4(1.0,1.0,1.0,1.0);
 
 	sun->direction = glm::normalize(glm::vec4(0.0,-1.0,0.0,.0));
 	
-
-	DirectionalLight* light2 = new DirectionalLight();
-	light2 ->diffuse = glm::vec4(0.0,0.0,0.0,0.0);
-	 light2 ->specular = glm::vec4(1.0,1.0,1.0,1.0);
-	
-	light2 ->direction = glm::normalize(glm::vec4(0.0,-1.0,0.0,.0));
-	
-
 	PointLight * pointlight = new PointLight();
-	pointlight->diffuse = glm::vec4(1.0,0.5,0.5,1.0);
-	//pointlight->specular = glm::vec4(1.0,1.0,1.0,1.0);
+	pointlight->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
+	pointlight->specular = glm::vec4(1.0,1.0,1.0,1.0);
 
-	pointlight->position = glm::vec4(0.0,5.0,0.0,1.0);
-	pointlight->setRange(50.0);
+	pointlight->position = glm::vec4(0.0,10.0,0.0,1.0);
+	pointlight->setRange(5000.0);
 
 
 	//rootNode->addLight(sun);
@@ -290,11 +224,14 @@ void Game::draw(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	//glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 
 	pipeline->clear();
 	pipeline->setShadowPass(false);
 	pipeline->setView(cam->getView());
+	pipeline->setCameraPosition(glm::vec4(cam->getPos(),1.0));
 	pipeline->setProjection(cam->getProjection());
 	pipeline->setViewDirection(glm::vec4(cam->getDir(),1.0));
 

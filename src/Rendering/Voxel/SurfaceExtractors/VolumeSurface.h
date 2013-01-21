@@ -3,6 +3,8 @@
 
 #include "../Volume/Volume.h"
 #include "../../Shaders/Buffer.h"
+typedef GLbyte Normal;
+
 class VolumeSurface
 {
 public:
@@ -10,10 +12,10 @@ public:
 	~VolumeSurface(void);
 
 	byte4 * getVertices();
-	 byte4 * getNormals();
+	Normal * getNormals();
 
 	void setVertices(byte4 * vertices,unsigned int numVertices);
-	void setNormals(byte4 * normals,unsigned int numNormals);
+	void setNormals(Normal * normals,unsigned int numNormals);
 
 	unsigned int getNumNormals();
 	unsigned int getNumVertices();
@@ -22,13 +24,15 @@ public:
 	bool hasNormals();
 
 	void bufferData();
+	Buffer * getVertexBuffer();
+	Buffer * getNormalBuffer();
 
 private:
 	// *vertices and *normals are very temporary
 	// they are only valid when hasVertices and hasNormals are true
 	//They may not be altered or deletet by the class
 	byte4 * vertices;
-	byte4 * normals;
+	Normal * normals;
 
 	unsigned int numVertices;
 	unsigned int numNormals;

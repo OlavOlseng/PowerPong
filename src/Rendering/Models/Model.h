@@ -24,10 +24,10 @@ public:
 
 	virtual glm::mat4 getModelMatrix();
 	virtual void render(Pipeline *pipeline) = 0;
-	virtual void setShader(int id) = 0;
+	
 	virtual void setAttributes(GLint*attributes,GLint*shadowAttributes=nullptr)=0 ;
 	
-	virtual int getShader() = 0;
+	
 
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();

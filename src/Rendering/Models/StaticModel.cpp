@@ -1,7 +1,7 @@
 #include "StaticModel.h"
 
 
-StaticModel::StaticModel(GLint*attributes,GLint *shadowAttributes)
+StaticModel::StaticModel()
 {
 
 	this->vertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
@@ -11,18 +11,7 @@ StaticModel::StaticModel(GLint*attributes,GLint *shadowAttributes)
 
 	this->shadowVertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
 
-	if(attributes){
-		if(shadowAttributes){
-			setAttributes(attributes,shadowAttributes);
-		}
-		else
-		{
-			setAttributes(attributes);
-		}
-
-	}
-	glGenVertexArrays(1,&vao);
-	glGenVertexArrays(1,&shadowVao);
+	
 	
 }
 
@@ -37,16 +26,42 @@ StaticModel::~StaticModel(void)
 }
 
 
+void StaticModel::initShaders(){
 
-Node* StaticModel::initFromScene(const aiScene * scene,Node*modelRoot){
+	glGenVertexArrays(1,&vao);
+	glGenVertexArrays(1,&shadowVao);
+
+
+	diffuseSpecular = getResourceManager()->loadShader("diffuseSpecular");
+	diffuseSpecular->bindUniform(ShaderUniforms::MVP,"mvp");
+	diffuseSpecular->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
+	diffuseSpecular->bindUniform(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,"numDirLights");
+	diffuseSpecular->bindUniform(ShaderUniforms::NUM_POINT_LIGHTS,"numPointLights");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_DIFFUSE,"material.diffuse");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_AMBIENT,"material.ambient");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SPECULAR,"material.specular");
+	diffuseSpecular->bindUniform(ShaderUniforms::MATERIAL_SHININESS,"material.shininess");
+	diffuseSpecular->bindUniform(ShaderUniforms::CAMERA_POSITION,"cameraPosition");
+	const char * memberNames[] = {"diffuse","specular","direction",};
+	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_DIRECTIONAL,10,3,"dirLights",memberNames);
+	const char * memberNamesPoint[] = {"diffuse","specular","position","constantAttenuation","linearAttenuation","quadraticAttenuation"};
+	diffuseSpecular->bindUniformStructArray(ShaderUniforms::LIGHT_POINT,10,6,"pointLights",memberNamesPoint);
+	diffuseSpecular->bindAttribute(ShaderAttributes::COORD3D,"coord3d");
+	diffuseSpecular->bindAttribute(ShaderAttributes::NORMAL3D,"normal3d");
+	diffuseSpecular->bindAttribute(ShaderAttributes::TEXCOORD2D,"texcoord2d");
+
+	setAttributes(diffuseSpecular->getAttributes());
+
+}
+
+Node* StaticModel::initFromScene(const aiScene * scene,Node * modelRoot){
 	
 	
 		
 			for (int i = 1;i<scene->mNumMeshes;i++){
 				StaticModel*model = new StaticModel();
-				model->setShader(shaderName);
+				
 				model->setResourceManager(getResourceManager());
-				model->setAttributes(vertexBuffer->getVertexAttribute(),normalBuffer->getVertexAttribute(),texcoordBuffer->getVertexAttribute());
 				model->initFromMesh(scene->mMeshes[i],scene->mMaterials,false);
 				modelRoot->addChild(model);
 			}
@@ -61,7 +76,7 @@ Node* StaticModel::initFromScene(const aiScene * scene,Node*modelRoot){
 }
 
 void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveTocenter){
-		
+	initShaders();
 
 	glm::vec3* vertices = new glm::vec3[mesh->mNumVertices];
 	GLushort * indices = new GLushort[mesh->mNumFaces*3];
@@ -209,20 +224,14 @@ void StaticModel::setAttributes(GLint coord3D,GLint normal3D,GLint texcoord2D){
 
 }
 
-void StaticModel::setShader(int id){
-	this->shaderName = id;
 
-}
-int StaticModel::getShader(){
-	return this->shaderName;
-
-}
 void StaticModel::setVao(GLuint vao){
 	this->vao = vao;
 }
 
 void StaticModel::shadowPass(Pipeline*pipeline){
 
+	throw "not implemented error" ;
 	Shader*shader = pipeline->getActiveShader();
 	shader->bind();
 
@@ -242,8 +251,9 @@ void StaticModel::render(Pipeline *pipeline){
 	}else{
 
 
-	pipeline->useShader(shaderName);
-	Shader*shader = pipeline->getActiveShader();
+	
+	Shader*shader = diffuseSpecular;
+
 	shader->bind();
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
 	
@@ -252,8 +262,8 @@ void StaticModel::render(Pipeline *pipeline){
 	shader->setUniformInt(ShaderUniforms::NUM_DIRECTIONAL_LIGHTS,numDirLights);
 	shader->setUniformInt(ShaderUniforms::NUM_POINT_LIGHTS,numPointLights);
 
-	glm::vec4 viewDirection = pipeline->getViewDirection();
-	shader->setUniformVec4f(ShaderUniforms::VIEW_DIRECTION,viewDirection.x,viewDirection.y,viewDirection.z,1.0);
+	glm::vec4 cameraPosition = pipeline->getCameraPosition();
+	shader->setUniformVec4f(ShaderUniforms::CAMERA_POSITION,cameraPosition.x,cameraPosition.y,cameraPosition.z,1.0);
 
 
 
@@ -308,7 +318,9 @@ void StaticModel::render(Pipeline *pipeline){
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
 	glBindVertexArray(0);
+
 	shader->unbind();
+
 	}
 };
 
