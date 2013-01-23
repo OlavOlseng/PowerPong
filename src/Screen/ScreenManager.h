@@ -15,13 +15,14 @@ public:
 	~ScreenManager(void);
 	void pushScreen(Screen* scrn);
 	void popScreen();
-	std::list<Screen*> getToRender();
-	std::list<Screen*> getToUpdate();
-	
+	void setToRender();
+	void setToUpdate();	
+	void render();
 
 private:
 	std::deque<Screen*> scrnStack;
-
+	std::list<Screen*> toUpdate;
+	std::list<Screen*> toRender;
 };
 
 

@@ -12,18 +12,12 @@ public:
 
 	btScalar mass;
 	btVector3 inertia;
-	btTransform trans;
-	btScalar modelMatrix;
+	float* modelMatrix;
 	
 	float* getModelMatrix();
 	btCollisionShape* colShape;
 	btMotionState* motionState;
 	btRigidBody* body;
-	
-	//TODO
-	void setPosition();
-	void setOrientation();
-
 
 };
 
