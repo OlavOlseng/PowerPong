@@ -21,17 +21,21 @@
 #include "Rendering\SceneGraph\Pipeline.h"
 #include "Rendering\SceneGraph\Node.h"
 #include "Rendering\Models\ResourceManager.h"
-
+#include "Screen\ScreenManager.h"
+#include "Screen\GameScreen.h"
 
 class Game: public BaseGame
 {
 public:
 	Game();
+	
 	Game(int argc,char * argv[]);
 	~Game(void);
 	World* world;
 	std::string binaryPath;
 private:
+	ScreenManager screenManager;
+	GameScreen  gameScreen;
 	int width,height;
 	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
@@ -40,7 +44,7 @@ private:
 	Shader*wallShader;
 	Shader*shadowShader;
 	Shader*voxelShader;
-	void testScene();
+	
 	Camera*cam;
 
 	Pipeline *pipeline;

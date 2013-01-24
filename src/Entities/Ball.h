@@ -1,5 +1,5 @@
 #pragma once
-#include "c:\users\olav\documents\visual studio 2012\projects\powerpong\src\entities\entity.h"
+#include "entity.h"
 class Ball :
 	public Entity
 {

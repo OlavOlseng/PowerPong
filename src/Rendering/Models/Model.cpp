@@ -24,18 +24,7 @@ glm::vec3 Model::getPosition(){
 	return Node::getPosition() - this->getBoundingBox()->getCenter();
 
 }
-glm::mat4 Model::getModelMatrix(){
-	
-	if(isChanged()){
-		setChanged(false);
-		glm::vec3 pos = getPosition();
-		glm::vec3 rotation = getRotation();
-		//scale-rotate-translate
-		setCachedModelMatrix(glm::translate(glm::scale(glm::mat4(1.0),getScale())*glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z),pos));
-	}
 
-	return getCachedModelMatrix();
-}
 
 
 void Model::setResourceManager(std::shared_ptr<ResourceManager> resourceManager){
