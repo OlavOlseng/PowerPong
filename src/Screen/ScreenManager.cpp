@@ -13,27 +13,48 @@ ScreenManager::~ScreenManager(void)
 void ScreenManager::pushScreen(Screen* scrn)
 {
 	scrnStack.push_back(scrn);	
+	setToRender();
+	setToUpdate();
 }
 
 void ScreenManager::popScreen()
 {
 	scrnStack.pop_back();
+	setToRender();
+	setToUpdate();
 }
 
-std::list<Screen*> ScreenManager::getToRender()
+void ScreenManager::setToRender()
 //iterates over screen stack and returns screens to be rendered
 {
+	toRender.clear();
+	std::deque<Screen*>::reverse_iterator it;
 
-	std::list<Screen*> list;
-	Screen* scrn;
-
-	for (unsigned int i = this -> scrnStack.size(); i >= this -> scrnStack.size(); i--)
+	for (it = this -> scrnStack.rbegin(); it != this -> scrnStack.rend(); it++)
 	{
-		scrn = this -> scrnStack[i];
-		list.push_back(scrn);
-		if (scrn -> isRenderBlock()) { break; }
+		toRender.push_back(*it);
+		if ((*it)->isRenderBlock()) { break; }
 	};
-	return list;
 }
 
-//std::list<Screen*> ScreenManager::getToUpdate()
+void ScreenManager::setToUpdate()
+//iterates over screen stack and returns screens to be updated
+{
+	toUpdate.clear();
+	std::deque<Screen*>::reverse_iterator it;
+
+	for (it = this -> scrnStack.rbegin(); it != this -> scrnStack.rend(); it++)
+	{
+		toUpdate.push_back(*it);
+		if ((*it)->isUpdateBlock()) { break; }
+	};
+}
+
+void ScreenManager::render()
+{
+	std::list<Screen*>::reverse_iterator it;
+	for (it = toRender.rbegin(); it != toRender.rend(); it++)
+	{
+		(*it) -> render();
+	}
+}
