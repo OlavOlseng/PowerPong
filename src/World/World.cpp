@@ -67,7 +67,9 @@ void World::removeEntity(Entity* ent)
 void World::update(double dt)
 {
 	this -> simWorld -> stepSimulation(dt);
+	/*
 	for(std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++){
 	
 	}
+	*/
 }

@@ -18,6 +18,7 @@ public:
 	void setToRender();
 	void setToUpdate();	
 	void render();
+	void update(double dt);
 
 private:
 	std::deque<Screen*> scrnStack;

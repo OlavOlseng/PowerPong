@@ -58,3 +58,12 @@ void ScreenManager::render()
 		(*it) -> render();
 	}
 }
+
+void ScreenManager::update(double dt)
+{
+	std::list<Screen*>::reverse_iterator it;
+	for (it = toUpdate.rbegin(); it != toUpdate.rend(); it++)
+	{
+		(*it) -> update(dt);
+	}
+}
