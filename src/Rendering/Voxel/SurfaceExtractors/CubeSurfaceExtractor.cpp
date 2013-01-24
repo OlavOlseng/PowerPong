@@ -42,6 +42,7 @@ VolumeSurface * CubeSurfaceExtractor::extractSurface(unsigned int xStart,unsigne
 
 				//left face
 				if(globalX == 0 || !volume->get(globalX-1,globalY,globalZ)){
+
 					vertices[i++] = byte4(x,y,z,block);
 					vertices[i++] = byte4(x,y,z+1,block);
 					vertices[i++] = byte4(x,y+1,z+1,block);

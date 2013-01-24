@@ -255,7 +255,7 @@ void StaticModel::render(Pipeline *pipeline){
 	Shader*shader = diffuseSpecular;
 
 	shader->bind();
-	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
+	
 	
 	unsigned int numDirLights = pipeline->getNumDirectionalLights();
 	unsigned int numPointLights = pipeline->getNumPointLights();
@@ -309,7 +309,8 @@ void StaticModel::render(Pipeline *pipeline){
 	shader->setUniformVec4f(ShaderUniforms::MATERIAL_SPECULAR,specular.x,specular.y,specular.z,1.0);
 	shader->setUniformFloat(ShaderUniforms::MATERIAL_SHININESS,shininess);
 	//set mvp and modelMatrix
-	glm::mat4 mvp  = pipeline->getProjection()*pipeline->getView()*model;
+	glm::mat4 model = pipeline->getTotalRotationTranslation()*this->getModelMatrix();
+	glm::mat4 mvp  = pipeline->getViewProjectionMatrix()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
 	glActiveTexture(GL_TEXTURE0);

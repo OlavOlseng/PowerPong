@@ -41,12 +41,17 @@ public:
 	bool isShadowPass();
 
 	void clear();
+
+	bool getChildrenNeedsUpdate();
+	void setChildrenNeedsUpdate(bool value);
+	glm::mat4 getViewProjectionMatrix();
 	
 private:
 	Shader*activeShader;
 	glm::mat4 totalRotationTranslation;
 	glm::mat4 view;
 	glm::mat4 projection;
+	glm::mat4 viewProjectionMatrix;
 	glm::vec4 viewDirection;
 	glm::vec4 cameraPosition;
 	std::vector<Shader*> shaders;
@@ -56,6 +61,8 @@ private:
 	unsigned int numPointLights;
 	unsigned int maxDirectionalLights,maxPointLights;
 	bool shadowPass;
+	bool childrenNeedUpdate;
+
 };
 
 #endif

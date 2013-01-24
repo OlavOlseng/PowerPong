@@ -137,6 +137,7 @@ VolumeSurface * CubeSurfaceExtractorWithByteNormals::extractSurface(unsigned int
 				//topFace
 				if(globalY == volume->getHeight() -1 || !volume->get(globalX,globalY+1,globalZ)){
 
+					
 					normals[i] = top;
 					vertices[i++] = byte4(x+1,y+1,z+1,block);
 					normals[i] = top;
@@ -151,6 +152,7 @@ VolumeSurface * CubeSurfaceExtractorWithByteNormals::extractSurface(unsigned int
 					normals[i] = top;
 					vertices[i++] = byte4(x,y+1,z,block);
 
+					
 				}
 
 

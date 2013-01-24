@@ -26,6 +26,9 @@ void Pipeline::clear(){
 	numDirectionalLights = 0;
 	numPointLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
+	this->view = glm::mat4(1.0);
+	this->projection = glm::mat4(1.0);
+	childrenNeedUpdate = false;
 
 }
 
@@ -59,7 +62,7 @@ void Pipeline::useShader(int id){
 void Pipeline::setView(glm::mat4 view){
 
 	this->view = view;
-
+	viewProjectionMatrix = projection*view;
 }
 glm::mat4 Pipeline::getView(){
 	return this->view;
@@ -68,6 +71,7 @@ glm::mat4 Pipeline::getView(){
 void Pipeline::setProjection(glm::mat4  projection){
 
 	this->projection = projection;
+	viewProjectionMatrix = projection*view;
 
 }
 glm::mat4 Pipeline::getProjection(){
@@ -92,6 +96,16 @@ glm::mat4 Pipeline::getTotalRotationTranslation(){
 }
 
 
+bool Pipeline::getChildrenNeedsUpdate(){
+
+	return this->childrenNeedUpdate;
+}
+void Pipeline::setChildrenNeedsUpdate(bool value){
+
+	this->childrenNeedUpdate = value;
+}
+
+
 void Pipeline::setShadowPass(bool shadowPass){
 	this->shadowPass = shadowPass;
 }
@@ -104,6 +118,7 @@ unsigned int Pipeline::getNumDirectionalLights()
 	return this->numDirectionalLights;
 
 }
+
 void Pipeline::addLight(DirectionalLight*light){
 	directionalLights[numDirectionalLights++] = light;
 }
@@ -130,6 +145,11 @@ void Pipeline::addLight(PointLight * light){
 void Pipeline::popPointlLight(unsigned int pops){
 	numPointLights -= pops;
 
+}
+
+glm::mat4 Pipeline::getViewProjectionMatrix(){
+
+	return viewProjectionMatrix;
 }
 PointLight*Pipeline::getPointLight(unsigned int index){
 	return this->pointLights[index];

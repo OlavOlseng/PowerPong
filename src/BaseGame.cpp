@@ -11,59 +11,81 @@ BaseGame::BaseGame()
 }
 
 void BaseGame::init(std::string windowTitle,int width,int height){
+	
+
+	glfwInit();
+	
+	glfwOpenWindow(width,height,8,8,8,8,16,0,GLFW_WINDOW);
+	glfwSetWindowTitle(windowTitle.c_str());
+	
+	glfwSwapInterval(0);
+	
+	GLenum err = glewInit();
+	if(err !=GLEW_OK){
+		printf("Glew init failed: %s \n",glewGetErrorString(err));
+		std::system("PAUSE");
+		return;
+	}
+
+
 	this->width = width;
 	this->height = height;
-	char *argv [1];
-	int argc=1;
-	argv [0]=	"fake";
-	glutInit( &argc, argv);
-	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_ALPHA);
-	glutInitWindowSize(width,height);
-	glutCreateWindow(windowTitle.c_str());
-	glutDisplayFunc(BaseGame::display);
-	glutIdleFunc(BaseGame::idle);
-	glutReshapeFunc(BaseGame::onReshape);
-	BaseGame::instance->lastTime = glutGet(GLUT_ELAPSED_TIME);
-	BaseGame::instance->setupDone = false;
-	glewInit();
-	if(!GLEW_VERSION_3_0)
+	
+
+
+
+	if(!GLEW_VERSION_3_0){
 		printf("Error opengl 3.0 not supported");
-	GLuint vao[4];
-	glGenBuffers(4,vao);
+		std::system("PAUSE");
+		glfwTerminate();
+		return;
+	}
 	
-	BaseGame::instance->setup();
-	glutMainLoop();
+	glfwSetTime(0);
 
-
-}
-
-//glut static callback
-void BaseGame::display(){
-
+	lastTime = glfwGetTime();
 	
 	
-	BaseGame::instance->draw();
-}
-//glut static callback
-void BaseGame::idle(){
+	setup();
 	
-	int time = glutGet(GLUT_ELAPSED_TIME);
+	enterMainLoop();
 
-	BaseGame::instance->update((double)(glutGet(GLUT_ELAPSED_TIME) - BaseGame::instance->lastTime));
-	BaseGame::instance->lastTime = time;
-}
-void BaseGame::onReshape(int width,int height){
-	BaseGame::instance->reshape(width,height);
+	
 }
 
 
-void BaseGame::postRedisplay(){
 
-	glutPostRedisplay();
+void BaseGame::enterMainLoop(){
+
+	double time;
+	
+	int glfw_width,glfw_height;
+	while(glfwGetWindowParam(GLFW_OPENED)){
+		
+		glfwGetWindowSize(&glfw_width,&glfw_height);
+		if(this->width != glfw_width || this->height != glfw_height){
+			this->width = glfw_width;
+			this->height = glfw_height;
+			this->reshape(this->width,this->height);
+		}
+
+
+		
+
+		time = glfwGetTime()-lastTime;
+		
+		update(time);
+		lastTime = glfwGetTime();
+		draw();
+		
+
+	}
+
+
 }
 
 void BaseGame::swapBuffers(){
-	glutSwapBuffers();
+	glfwSwapBuffers();
 }
 BaseGame::~BaseGame(void)
 {

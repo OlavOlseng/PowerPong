@@ -29,11 +29,18 @@ public:
 	void setRotation(glm::vec3 rotation);
 	void setScale(glm::vec3 scale);
 
-	glm::vec3 getPosition();
-	glm::vec3 getScale();
-	glm::vec3 getRotation();
+	void setCachedModelMatrix(glm::mat4 model);
+	glm::mat4 getCachedModelMatrix();
+
+	virtual glm::vec3 getPosition();
+	virtual glm::vec3 getScale();
+	virtual glm::vec3 getRotation();
+	
 
 	std::vector<Node*> *getChildren();
+	bool isChanged();
+	void setChanged(bool value);
+
 
 private:
 	std::vector<Node*> *children;
@@ -44,6 +51,9 @@ private:
 	glm::vec3 localPosition;
 	glm::vec3 localRotation;
 	glm::vec3 localScale;
+	glm::mat4 cachedModelMatrix;
+
+	bool changed;
 	
 
 

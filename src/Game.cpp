@@ -1,6 +1,6 @@
 #include "Game.h"
 //we need to get hacky since glut is a c api
-BaseGame * BaseGame::instance = new Game();
+
 
 Game::Game(){
 
@@ -10,11 +10,11 @@ Game::Game(int argc,char * argv[]):BaseGame()
 	//will not return
 
 	//temp: need a system for filepaths
-	Game* g = (Game*)instance;
 	
-	g->binaryPath = argv[0];
-	int last = g->binaryPath.find_last_of("\\");
-	g->binaryPath.erase(last+1,20);
+	
+	binaryPath = argv[0];
+	int last = binaryPath.find_last_of("\\");
+	binaryPath.erase(last+1,20);
 	
 
 	init("Game",1280,720);
@@ -36,32 +36,9 @@ void Game::loadShaders(Pipeline*pipeline){
 #include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractor.h"
 #include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractorWithByteNormals.h"
 #include "Rendering\Models\VolumeModel.h"
-void Game::setup(){
-
-	
-	
-	
-
-	Assimp::DefaultLogger::create("",Assimp::Logger::VERBOSE);
-	resManager = std::make_shared<ResourceManager>();
-	resManager->setWorkingDirectory(binaryPath + "\Assets\\");
-	resManager->setShaderDirectory(binaryPath + "\Assets\\Shaders\\");
-	resManager->setModelDirectory(binaryPath + "\Assets\\Models\\");
-	
-
-	
-	rootNode = new Node();
-	
-	pipeline = new Pipeline();
-
-	loadShaders(pipeline);
 
 
-	//setting up physics
-	this-> world = new World();
-	
-	//init stuff here
-	cam = new Camera(4,40,-40,0,0,0,1280,720);
+void Game::testScene(){
 	
 
 
@@ -85,7 +62,7 @@ void Game::setup(){
 	const std::string path = std::string(resManager->getModelDirectory()+"duck.dae");
 	const aiScene *scene = imp.ReadFile(path.c_str(),aiProcessPreset_TargetRealtime_Quality);
 	Node* modelNode = new Node();
-	model->initFromScene(scene,modelNode);
+	model->initFromScene(scene,model);
 	Node*model2Node = new Node();
 	model2->initFromScene(scene,model2Node);
 	Node*model3Node = new Node();
@@ -173,12 +150,68 @@ void Game::setup(){
 	pointlight->specular = glm::vec4(1.0,1.0,1.0,1.0);
 
 	pointlight->position = glm::vec4(0.0,10.0,0.0,1.0);
-	pointlight->setRange(5000.0);
+	pointlight->setRange(0.01);
 
 
 	//rootNode->addLight(sun);
 	//rootNode->addLight(light2);
-	rootNode->addLight(pointlight);
+	//rootNode->addLight(pointlight);
+
+
+}
+void Game::setup(){
+
+	
+	
+	
+
+	Assimp::DefaultLogger::create("",Assimp::Logger::VERBOSE);
+	resManager = std::make_shared<ResourceManager>();
+	resManager->setWorkingDirectory(binaryPath + "\Assets\\");
+	resManager->setShaderDirectory(binaryPath + "\Assets\\Shaders\\");
+	resManager->setModelDirectory(binaryPath + "\Assets\\Models\\");
+	
+
+	
+	rootNode = new Node();
+	
+	pipeline = new Pipeline();
+
+	loadShaders(pipeline);
+
+
+	//setting up physics
+	this-> world = new World();
+	//init stuff here
+	cam = new Camera(0,30,-40,0,0,0,1280,720);
+	Assimp::Importer imp = Assimp::Importer();
+	const aiScene * sphereScene = imp.ReadFile(resManager->getWorkingDirectiory()+"\\Models\\sphere.irr",aiProcessPreset_TargetRealtime_Quality);
+	StaticModel*sphereModel = new StaticModel();
+	sphereModel->setResourceManager(resManager);
+	Node*sphereNode =  new Node();
+	sphereModel->initFromScene(sphereScene,sphereNode);
+	sphereNode->setScale(glm::vec3(10,10,10));
+	//rootNode->addChild(sphereNode);
+
+	imp.FreeScene();
+
+
+
+
+
+	
+
+	PointLight * light = new PointLight();
+	light->position = glm::vec4(0.0,20.0,0.0,1.0);
+	light->diffuse = glm::vec4(1.0,1.0,1.0,1.0);
+	light->specular = glm::vec4(1.0,1.0,1.0,1.0);
+	light->setRange(500.0);
+	rootNode->addLight(light);
+
+	testScene();
+
+
+
 	
 	
 	
@@ -191,8 +224,8 @@ void Game::reshape(int width, int height){
 	this->height = height;
 
 }
-void Game::draw(){
-	glBindFramebuffer(GL_FRAMEBUFFER,0);
+void Game::draw(){ 
+	
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.4,0.4,0.4,1.0);
 	glEnable(GL_DEPTH_TEST);
@@ -219,20 +252,21 @@ void Game::update(double dt){
 	static double dx = 0.001;
 	static bool right = true;
 	static float intensity = 0;
+	printf("Time per frame %f: \n",dt*1000);
 	//model->setRotation(glm::vec3(0.0,rot,0.0));
 	
 	
-	rootNode->rotate(glm::vec3(0,0.0001*dt,0));
+	rootNode->rotate(glm::vec3(0,1.0*dt,0));
 	rootNode->getChildren()->at(1)->setRotation(glm::vec3(0,-xrot,0));
-	rootNode->getChildren()->at(2)->rotate(glm::vec3(0,0.001*dt,0));
-	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,0.001*dt,0));
-	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,0.002*dt,0));
-	rootNode->getChildren()->at(6)->rotate(glm::vec3(0.01*dt,0.002*dt,0));
-	xrot+= 0.01*dt;
+	rootNode->getChildren()->at(2)->rotate(glm::vec3(0,1.0*dt,0));
+	rootNode->getChildren()->at(3)->rotate(glm::vec3(0,1.0*dt,0));
+	rootNode->getChildren()->at(4)->rotate(glm::vec3(0,1.0*dt,0));
+	rootNode->getChildren()->at(6)->rotate(glm::vec3(1.0*dt,0.2*dt,0));
+	xrot+= 0.1*dt;
 	
 	
 	cam->tick();
 	//world-> update(dt);
-	postRedisplay();
+	
 	
 }

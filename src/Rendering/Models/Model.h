@@ -32,6 +32,7 @@ public:
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();
 	virtual Material *getMaterial();
+	virtual glm::vec3 getPosition();
 
 protected:
 	glm::vec4 modelMatrix;

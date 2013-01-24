@@ -19,7 +19,7 @@
       <PdhCountersEnabled>false</PdhCountersEnabled>
       <PdhCountersRate>500</PdhCountersRate>
       <PdhCounters>
-        <PdhCounter>\Fysisk disk(_Total)\Gj.snittlig lengde p&amp;amp;amp;#229; diskk&amp;amp;amp;#248;</PdhCounter>
+        <PdhCounter>\Fysisk disk(_Total)\Gj.snittlig lengde p&amp;amp;amp;amp;amp;#229; diskk&amp;amp;amp;amp;amp;#248;</PdhCounter>
         <PdhCounter>\Minne\Sider/sek</PdhCounter>
         <PdhCounter>\Prosessor(_Total)\% Prosessortid</PdhCounter>
       </PdhCounters>
@@ -73,6 +73,42 @@
     </Report>
     <Report>
       <Path>PowerPong130101(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130121.vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130121(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123.vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(2).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(3).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(4).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(5).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130123(6).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130124.vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130124(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>PowerPong130124(2).vsp</Path>
     </Report>
   </Reports>
   <Launches>

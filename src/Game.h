@@ -40,7 +40,7 @@ private:
 	Shader*wallShader;
 	Shader*shadowShader;
 	Shader*voxelShader;
-
+	void testScene();
 	Camera*cam;
 
 	Pipeline *pipeline;
