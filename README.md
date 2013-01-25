@@ -10,10 +10,11 @@ Programmed by Eirik Jacobsen and Olav Olseng
 ==============================================
 	
 	Unsupplied libs and includes:
-		1. 	OpenGL & glew 
+		1. 	GLFW & glew 
 		2.	freeglut
 		3.	glm
 		4.	assimp
+		
 
 	Supplied libs and includes:
 		Bullet physics
