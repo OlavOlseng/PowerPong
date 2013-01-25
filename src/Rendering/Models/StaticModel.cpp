@@ -67,7 +67,7 @@ Node* StaticModel::initFromScene(const aiScene * scene,Node * modelRoot){
 			}
 
 		
-			initFromMesh(scene->mMeshes[0],scene->mMaterials,scene->mNumMeshes == 0);
+			initFromMesh(scene->mMeshes[0],scene->mMaterials,scene->mNumMeshes == 1);
 		
 		modelRoot->addChild(this);
 	
@@ -195,9 +195,12 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	delete[] vertices;
 	delete[] texCoord;
 	delete[] normals;
-	delete indices;
+	delete[] indices;
 
 }
+
+
+
 
 GLuint* StaticModel::getVao(){
 		return &vao;

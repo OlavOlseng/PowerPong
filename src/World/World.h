@@ -7,6 +7,7 @@
 #include "..\Entities\Entity.h"
 #include <iostream>
 #include <list>
+#include "BulletDebugDraw.h"
 
 //Will later be refactored to an abstract base class, for now it 
 //is equivalent of the 2-player map.
@@ -32,7 +33,8 @@ public:
 	void removeEntity(Entity*);
 
 	std::list<Entity*> entities;
-	
+	void setDebugDraw(BulletDebugDraw* debugDraw);
+	void debugDrawWorld();
 	//Simulation wold params
 	btBroadphaseInterface* broadphase;
 	btDefaultCollisionConfiguration* collisionConfiguration;
@@ -44,7 +46,8 @@ public:
 	btCollisionShape* groundShape;
 	btDefaultMotionState* groundMotionState;
 	btRigidBody* groundBody;
-
+private:
+	BulletDebugDraw* debugDraw;
 };
 
 #endif

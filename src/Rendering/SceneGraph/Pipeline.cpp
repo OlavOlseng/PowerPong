@@ -155,14 +155,17 @@ PointLight*Pipeline::getPointLight(unsigned int index){
 	return this->pointLights[index];
 }
 Pipeline::~Pipeline(void)
-{
+{/*
 	for(int i = 0;i<maxDirectionalLights;i++){
-		delete directionalLights[i];
+		if(directionalLights[i])
+			delete directionalLights[i];
 	}
 	delete[] directionalLights;
 
 	for(int i = 0;i<maxPointLights;i++){
+		if(pointLights[i])
 		delete pointLights[i];
 	}
 	delete[] pointLights;
+	*/
 }

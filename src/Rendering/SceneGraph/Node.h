@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
 #include "Pipeline.h"
 #include <vector>
 #include <glm\glm.hpp>
@@ -29,8 +30,9 @@ public:
 	void setRotation(glm::vec3 rotation);
 	void setScale(glm::vec3 scale);
 
-
-	void setCachedModelMatrix(glm::mat4 model);
+	
+	
+	
 	glm::mat4 getCachedModelMatrix();
 
 	virtual glm::vec3 getPosition();
@@ -44,6 +46,7 @@ public:
 
 
 private:
+	
 	std::vector<Node*> *children;
 	Node *parent;
 	
@@ -55,6 +58,9 @@ private:
 	glm::mat4 cachedModelMatrix;
 
 	bool changed;
+
+protected:
+	void setCachedModelMatrix(glm::mat4 model);
 	
 
 

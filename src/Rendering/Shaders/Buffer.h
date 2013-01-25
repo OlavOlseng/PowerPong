@@ -9,7 +9,7 @@ class Buffer
 {
 public:
 	enum BufferType{ARRAY_BUFFER=GL_ARRAY_BUFFER, ELEMENT_BUFFER = GL_ELEMENT_ARRAY_BUFFER};
-	enum BufferDrawMode{STATIC=GL_STATIC_DRAW};
+	enum BufferDrawMode{STATIC=GL_STATIC_DRAW, DYNAMIC = GL_DYNAMIC_DRAW};
 
 	Buffer(BufferType bufferType,BufferDrawMode drawingMode,unsigned int stepsize,int dataType);
 	~Buffer();
@@ -20,6 +20,7 @@ public:
 	GLint getVertexAttribute();
 	void bindTo(GLint vertexAttribute);
 	void bind();
+	void init();
 	void setBufferHandle(GLuint handle);
 private:
 	GLuint  _bufferHandle;
@@ -30,7 +31,7 @@ private:
 	unsigned int stepsize;
 	int _size;
 	bool _needsInit;
-	void init();
+	
 	
 };
 

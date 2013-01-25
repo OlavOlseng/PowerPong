@@ -33,6 +33,7 @@ public:
 	void setVao(GLuint vao);
 	
 	
+	
 
 private:
 	Shader * diffuseSpecular;

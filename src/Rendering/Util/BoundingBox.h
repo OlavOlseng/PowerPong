@@ -11,10 +11,15 @@ public:
 	BoundingBox(void);
 	void setBounds(double xMin,double xMax,double yMin,double yMax,double zMin,double zMax);
 
+	float getWidth();
+	float getHeight();
+	float getDepth();
+	glm::vec3 getSize();
 	glm::vec3 getCenter();
 	~BoundingBox(void);
 private:
 	glm::vec3 center;
+	float width,height,depth;
 	
 };
 

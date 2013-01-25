@@ -65,7 +65,7 @@ void VolumeModel::init(){
 	material->diffuse = glm::vec3(1.0,1.0,1.0);
 	material->shininess = 1.0;
 
-	getBoundingBox()->setBounds(0,numSurfacesX*surfaceWidth,0,0,0,numSurfacesZ*surfaceDepth);
+	getBoundingBox()->setBounds(0,numSurfacesX*surfaceWidth,0,numSurfacesY*surfaceHeight,0,numSurfacesZ*surfaceDepth);
 
 }
 inline unsigned int VolumeModel::getIndex(unsigned int x,unsigned int y,unsigned int z){
@@ -184,7 +184,7 @@ void VolumeModel::render(Pipeline *pipeline){
 				surface = surfaces[getIndex(x,y,z)];
 				if(surface){
 
-					model = pipeline->getTotalRotationTranslation()*this->getModelMatrix()*glm::translate(glm::mat4(1.0),glm::vec3(x*surfaceWidth,y*surfaceHeight,z*surfaceDepth));
+					model = pipeline->getTotalRotationTranslation()*getModelMatrix()*glm::translate(glm::mat4(1.0),glm::vec3(x*surfaceWidth,y*surfaceHeight,z*surfaceDepth));
 					mvp = pipeline->getProjection()*pipeline->getView()*model;
 					shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 					shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));

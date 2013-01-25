@@ -25,7 +25,6 @@ World::~World(void)
     delete broadphase;
 }
 
-
 void World::init()
 {
 	
@@ -53,6 +52,18 @@ void World::init()
 
 }
 
+void World::setDebugDraw(BulletDebugDraw* debugDraw){
+	this -> debugDraw = debugDraw;
+	this -> simWorld->setDebugDrawer(debugDraw);
+
+}
+
+void World::debugDrawWorld(){
+
+	this -> simWorld->debugDrawWorld();
+	this->debugDraw->render();
+
+}
 void World::addEntity(Entity* ent)
 {
 	this-> entities.push_back(ent);
@@ -66,7 +77,8 @@ void World::removeEntity(Entity* ent)
 
 void World::update(double dt)
 {
-	this -> simWorld -> stepSimulation(dt);
+	this -> simWorld -> stepSimulation(0.016666666);
+
 	/*
 	for(std::list<Entity*>::iterator it = entities.begin(); it != entities.end(); it++){
 	

@@ -32,3 +32,8 @@ void Entity::setPosition(btVector3 origin)
 	body->getWorldTransform().setOrigin(origin);
 }
 */
+float * Entity::getPosition()
+{
+	
+	return this -> body -> getWorldTransform().getOrigin();
+}

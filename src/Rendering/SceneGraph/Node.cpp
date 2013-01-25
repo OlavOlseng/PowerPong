@@ -1,6 +1,9 @@
 #include "Node.h"
 
 
+
+
+
 Node::Node(void)
 {
 	localScale = glm::vec3(1,1,1);
@@ -118,6 +121,9 @@ void Node::setChanged(bool value){
 }
 
 
+
+
+
 glm::mat4 Node::getModelMatrix(){
 	
 	if(isChanged()){
@@ -125,7 +131,11 @@ glm::mat4 Node::getModelMatrix(){
 		glm::vec3 pos = getPosition();
 		glm::vec3 rotation = getRotation();
 		//scale-rotate-translate
-		setCachedModelMatrix(glm::translate(glm::scale(glm::mat4(1.0),getScale())*glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z),pos));
+		glm::mat4 rot = glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z);
+		glm::mat4 trans = glm::translate(glm::mat4(1.0),pos);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0),this->getScale());
+
+		setCachedModelMatrix(trans*rot*scale);
 	}
 
 	return getCachedModelMatrix();
@@ -135,15 +145,9 @@ void Node::render(Pipeline *pipeline)
 {
 	
 	if(changed || pipeline->getChildrenNeedsUpdate()){
-		if(isChanged()){
-			setChanged(false);
-			glm::mat4 rot = glm::eulerAngleYXZ(localRotation.y,localRotation.x,localRotation.z);
-			glm::mat4 trans = glm::translate(glm::mat4(1.0),localPosition);
-			glm::mat4 scale = glm::scale(glm::mat4(1.0),this->localScale);
-			this->setCachedModelMatrix(trans*rot*scale);
-			pipeline->setChildrenNeedsUpdate(true);
-		}
-		setCachedModelMatrix(pipeline->getTotalRotationTranslation()*getCachedModelMatrix());
+		
+		
+		setCachedModelMatrix(pipeline->getTotalRotationTranslation()*getModelMatrix());
 
 	}
 

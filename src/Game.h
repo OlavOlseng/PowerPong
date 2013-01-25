@@ -4,7 +4,7 @@
 #include "BaseGame.h"
 
 #include "Rendering\Voxel\Volume\gWall.h"
-#include "camera\camera.h";
+#include "Rendering\camera\camera.h";
 
 #include "Rendering\Models\Model.h"
 #include "GLtools\GLTools.h"
@@ -33,9 +33,10 @@ public:
 	~Game(void);
 	World* world;
 	std::string binaryPath;
+
 private:
-	ScreenManager screenManager;
-	GameScreen  gameScreen;
+	ScreenManager * screenManager;
+	GameScreen * gameScreen;
 	int width,height;
 	std::vector<gWall*> *walls;
 	std::vector<Model*>*models;
@@ -45,7 +46,7 @@ private:
 	Shader*shadowShader;
 	Shader*voxelShader;
 	
-	Camera*cam;
+	
 
 	Pipeline *pipeline;
 	void loadShaders(Pipeline*pipeline);

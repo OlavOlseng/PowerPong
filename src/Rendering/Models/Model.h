@@ -32,8 +32,12 @@ public:
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();
 	virtual Material *getMaterial();
-	virtual glm::vec3 getPosition();
+	
 
+
+	void setSize(float width,float height,float depth);
+	void setSize(glm::vec3 size);
+	glm::mat4 getModelMatrix();
 protected:
 	glm::vec4 modelMatrix;
 	BoundingBox boundingBox;

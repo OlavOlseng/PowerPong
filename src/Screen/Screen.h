@@ -25,6 +25,8 @@ public:
 	bool isUpdateBlock();
 	bool isRenderBlock();
 
+	virtual void reshape(int width, int height) = 0;
+
 protected:
 	bool renderBlock;
 	bool updateBlock;

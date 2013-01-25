@@ -1,6 +1,8 @@
 // PowerPong.cpp : Defines the entry point for the console application.
 //
 
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
@@ -12,10 +14,11 @@
 
 
 
+
 int main(int argc, char* argv[])
 {
 
-	
+
 	Game game(argc,argv);
 	
 	return 0;

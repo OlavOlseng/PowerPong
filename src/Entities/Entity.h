@@ -3,6 +3,7 @@
 #define ENTITY_H
 
 #include "..\bullet\btBulletDynamicsCommon.h"
+#include <glm\glm.hpp>
 
 class Entity
 {
@@ -18,6 +19,9 @@ public:
 	btCollisionShape* colShape;
 	btMotionState* motionState;
 	btRigidBody* body;
+
+	float * getPosition();
+	
 
 };
 

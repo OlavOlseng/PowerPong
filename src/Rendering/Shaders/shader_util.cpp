@@ -123,14 +123,14 @@ void ShaderUtil::bufferStaticArray(GLenum target,GLvoid*data,size_t size){
 GLint ShaderUtil::bindAttribute(GLuint program,const char* attr){
     GLint attribute = glGetAttribLocation(program, attr);
     if(attribute == -1){
-       // printf( "Could not bind attribute %s\n", attr);
+		printf( "Could not bind attribute %s\n", attr);
         }
     return attribute;
 }
 GLint ShaderUtil::bindUniform(GLuint program,const char *uni){
     GLint uniform = glGetUniformLocation(program, uni);
     if(uniform == -1){
-       // printf( "Could not bind uniform %s\n", uni);
+		printf( "Could not bind uniform %s\n", uni);
     }
     return  uniform;
 }
