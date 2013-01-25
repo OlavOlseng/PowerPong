@@ -70,9 +70,9 @@ void BaseGame::enterMainLoop(){
 		}
 
 		time = glfwGetTime()-lastTime;
-		
-		update(time);
 		lastTime = glfwGetTime();
+		update(time);
+		
 		draw();
 		
 
