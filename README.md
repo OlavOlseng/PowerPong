@@ -10,7 +10,7 @@ Programmed by Eirik Jacobsen and Olav Olseng
 ==============================================
 	
 	Unsupplied libs and includes:
-		1. 	GLFW & glew 
+		1. 	GLFW & glew & OpenGL
 		2.	freeglut
 		3.	glm
 		4.	assimp
