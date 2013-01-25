@@ -18,7 +18,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 	glfwOpenWindow(width,height,8,8,8,8,16,0,GLFW_WINDOW);
 	glfwSetWindowTitle(windowTitle.c_str());
 	
-	glfwSwapInterval(0);
+	//glfwSwapInterval(0);
 	
 	GLenum err = glewInit();
 	if(err !=GLEW_OK){

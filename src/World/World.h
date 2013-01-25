@@ -5,6 +5,7 @@
 
 #include "..\bullet\btBulletDynamicsCommon.h"
 #include "..\Entities\Entity.h"
+#include "..\Entities\Plane.h"
 #include <iostream>
 #include <list>
 #include "BulletDebugDraw.h"
@@ -41,13 +42,11 @@ public:
 	btCollisionDispatcher* dispatcher;
 	btSequentialImpulseConstraintSolver* solver;
 	btDiscreteDynamicsWorld* simWorld;
-	
-	//Ground plane shape variables
-	btCollisionShape* groundShape;
-	btDefaultMotionState* groundMotionState;
-	btRigidBody* groundBody;
+
 private:
 	BulletDebugDraw* debugDraw;
+
+
 };
 
 #endif

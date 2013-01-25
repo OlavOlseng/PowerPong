@@ -12,11 +12,6 @@ World::World(void)
 
 World::~World(void)
 {
-    simWorld->removeRigidBody(groundBody);
-    delete groundBody->getMotionState();
-    delete groundBody;
- 
-    delete groundShape;
  
     delete simWorld;
     delete solver;
@@ -43,13 +38,7 @@ void World::init()
 	simWorld->setGravity(btVector3(0,-10,0));
 
 	// Build the static ground and add it to the simulation
-	this -> groundShape = new btStaticPlaneShape(btVector3(0,1,0),0);
-	this -> groundMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1),btVector3(0,0,0)));
-	
-	btRigidBody::btRigidBodyConstructionInfo groundRigidBodyCI(0,groundMotionState,groundShape,btVector3(0,0,0));
-    this -> groundBody = new btRigidBody(groundRigidBodyCI);
-	this -> simWorld->addRigidBody(groundBody);
-
+	this -> addEntity(new Plane(new btVector3(0,1,0),new btVector3(0,0,0)));
 }
 
 void World::setDebugDraw(BulletDebugDraw* debugDraw){
