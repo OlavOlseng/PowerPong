@@ -21,6 +21,9 @@ public:
 	btRigidBody* body;
 
 	float * getPosition();
+
+	void setUserPointer(void * ptr);
+	void *  getUserPointer();
 	
 
 };

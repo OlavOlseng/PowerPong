@@ -1,16 +1,15 @@
 #version 330
 
-
-attribute vec4 coord4d;
-attribute float normal;
+in vec4 coord4d;
+in float normal;
 uniform mat4 mvp;
 uniform mat4 modelMatrix;
 
 
-varying vec4 f_texcoord;
-varying float f_normalIndex;
-varying vec4 f_normal;
-varying vec4 f_position;
+out vec4 f_texcoord;
+out float f_normalIndex;
+out vec4 f_normal;
+out vec4 f_position;
 vec4 normals[6] = vec4[](
 	vec4(-1.0,0.0,0.0,0.0),
 	vec4(1.0,0.0,0.0,0.0),

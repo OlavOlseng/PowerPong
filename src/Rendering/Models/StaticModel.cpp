@@ -3,14 +3,14 @@
 
 StaticModel::StaticModel()
 {
-
+	
 	this->vertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
 	this->normalBuffer= new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
 	this->texcoordBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,2,GL_FLOAT);
-	this->elementBuffer= new Buffer(Buffer::ELEMENT_BUFFER,Buffer::STATIC,0,0);
-
+	this->elementBuffer= new Buffer(Buffer::ELEMENT_BUFFER,Buffer::STATIC,0,GL_UNSIGNED_SHORT);
 	this->shadowVertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
-
+	
+	
 	
 	
 }
@@ -29,7 +29,9 @@ StaticModel::~StaticModel(void)
 void StaticModel::initShaders(){
 
 	glGenVertexArrays(1,&vao);
+	
 	glGenVertexArrays(1,&shadowVao);
+	
 
 
 	diffuseSpecular = getResourceManager()->loadShader("diffuseSpecular");
@@ -77,12 +79,14 @@ Node* StaticModel::initFromScene(const aiScene * scene,Node * modelRoot){
 
 void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveTocenter){
 	initShaders();
-
+	
+	this->numVertices = mesh->mNumVertices;
+	this->numIdices = mesh->mNumFaces*3;
 	glm::vec3* vertices = new glm::vec3[mesh->mNumVertices];
 	GLushort * indices = new GLushort[mesh->mNumFaces*3];
 	glm::vec2 *texCoord = new glm::vec2[mesh->mNumVertices];
 	glm::vec3 * normals = new glm::vec3[mesh->mNumVertices];
-
+	
 	for(int i = 0;i<mesh->mNumVertices;i++){
 	
 			aiVector3D p1 = mesh->mVertices[i];
@@ -94,11 +98,12 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	}
 
 	
-
+	
 	int j = 0;
 
 	for(int i =0;	i<mesh->mNumFaces;i++){
 			aiFace face = mesh->mFaces[i];
+			
 			
 			
 			indices[j++] = (face.mIndices[0]);
@@ -107,13 +112,11 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 			
 	}
 	
-
+	
 
 	aiMaterial* material = materials[mesh->mMaterialIndex];
 
-	aiString path;
-	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
-	textureHandle = resourceManager->loadTexture(path.data);
+	
 	
 	
 
@@ -135,7 +138,7 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 		shininess = 1000.0;
 	mat->shininess = shininess;
 
-
+	
 	
 		//Need to find the center of the model
 		//and then adjust the vertices
@@ -155,19 +158,24 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 		}
 
 		this->getBoundingBox()->setBounds(min.x,max.x,min.y,max.y,min.z,max.z);
-	
 	}
+	
+	aiString path;
+	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
+	textureHandle = resourceManager->loadTexture(path.data);
 
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	
 
+	elementBuffer->setData(indices,sizeof(GLushort)*mesh->mNumFaces*3);
 	vertexBuffer->setData(vertices,sizeof(glm::vec3)*mesh->mNumVertices);
 	texcoordBuffer->setData(texCoord,sizeof(glm::vec2)*mesh->mNumVertices);
 	normalBuffer->setData(normals,sizeof(glm::vec3)*mesh->mNumVertices);
-	elementBuffer->setData(indices,sizeof(GLushort)*mesh->mNumFaces*3);
+	
 
-	shadowVertexBuffer->setData(vertices,sizeof(glm::vec3)*mesh->mNumVertices);
+
 
 	glBindVertexArray(vao);
 	vertexBuffer->bindTo(vertexBuffer->getVertexAttribute());
@@ -177,25 +185,16 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	glBindVertexArray(0);
 	
 	
-	glBindVertexArray(shadowVao);
-	shadowVertexBuffer->bindTo(shadowVertexBuffer->getVertexAttribute());
-	elementBuffer->bind();
-	glBindVertexArray(0);
+	
 
-	this->numVertices = mesh->mNumVertices;
-
-	this->numIdices = mesh->mNumFaces*3;
-
-
-	if(mesh->HasPositions()){
-
-
-	}
-
+	
+	
 	delete[] vertices;
 	delete[] texCoord;
 	delete[] normals;
 	delete[] indices;
+
+	
 
 }
 
@@ -320,7 +319,7 @@ void StaticModel::render(Pipeline *pipeline){
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 
 	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES,elementBuffer->getBufferSize()/sizeof(GLushort),GL_UNSIGNED_SHORT,0);
+		glDrawElements(GL_TRIANGLES,this->numIdices,GL_UNSIGNED_SHORT,0);
 	
 	glBindVertexArray(0);
 

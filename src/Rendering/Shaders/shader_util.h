@@ -7,7 +7,6 @@
 #include <fstream>
 #include <iostream>
 #include <GL\glew.h>
-#include <GL\freeglut.h>
 #include <sstream>
 #include <SOIL.h>
 

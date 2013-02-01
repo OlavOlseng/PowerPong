@@ -14,6 +14,7 @@ void OctreeVolume::set(int x,int y,int z,BlockType type){
 		numBlocks++;
 	blocks->set(x,y,z,type);
 
+
 }
 BlockType OctreeVolume::get(int x,int y,int z){
 	return blocks->at(x,y,z);

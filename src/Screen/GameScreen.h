@@ -14,7 +14,7 @@
 #include <assimp\DefaultLogger.hpp>
 #include <assimp\postprocess.h>
 #include "../Rendering/Models/ResourceManager.h"
-#include "../Rendering/camera/camera.h"
+#include "../Rendering/camera/FreeMovementCamera.h"
 #include "../Entities/Block.h"
 #include "../Rendering/Voxel/Volume/OctreeVolume.h"
 #include "../Rendering/Models/VolumeModel.h"
@@ -36,12 +36,12 @@ public:
 
 private:
 	StaticModel * ballModel;
-	VolumeModel * blockModel;
+	
 	Ball * ballEntity;
 	Block * blockEntity;
 	Node * rootNode;
 
-	Camera*cam;
+	FreeMovementCamera * cam;
 	//temp
 	std::shared_ptr<ResourceManager> resourceManager;
 	void test();

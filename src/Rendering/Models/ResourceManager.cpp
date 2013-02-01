@@ -13,6 +13,7 @@ ResourceManager::ResourceManager(void)
 Shader* ResourceManager::loadShader(std::string name){
 	Shader * shader;
 	
+	
 	if(shaders.find(name) ==shaders.end()){
 		shader = new Shader(shaderDirectory+ name);
 		shaders[name] = shader;

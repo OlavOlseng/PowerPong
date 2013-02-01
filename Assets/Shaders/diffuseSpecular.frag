@@ -30,7 +30,7 @@ float shininess;
 };
 
 uniform Material material;
-const vec4 globalAmbient = vec4(0.0,0.0,0.0,0.0);
+const vec4 globalAmbient = vec4(0.1,0.1,0.1,0.0);
 uniform vec4 cameraPosition;
 
 

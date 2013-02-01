@@ -36,7 +36,7 @@ glm::vec3 Camera::getPos(){
 glm::vec3 Camera::getDir(){
     return _dir;
 }
-glm::mat4 Camera::getView(){
+glm::mat4 Camera::getViewMatrix(){
     return _view;
 }
 
@@ -60,7 +60,7 @@ void Camera::setProjection(float width,float height){
 	tick();
 
 }
-glm::mat4 Camera::getProjection(){
+glm::mat4 Camera::getProjectionMatrix(){
 
     return _proj;
 }

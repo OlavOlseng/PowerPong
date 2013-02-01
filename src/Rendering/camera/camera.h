@@ -31,9 +31,9 @@ public:
     
     glm::vec3 getPos();
     glm::vec3 getDir();
-    glm::mat4 getProjection();
+    virtual glm::mat4 getProjectionMatrix();
 	void setProjection(float width,float height);
-    glm::mat4 getView();
+    virtual glm::mat4 getViewMatrix();
     glm::mat4 getProjXview();
     
   virtual void setDir(glm::vec3 dir);

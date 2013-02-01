@@ -45,7 +45,7 @@ GLuint ShaderUtil::loadTexture(std::string fName){
 	
 
 	GLuint tex=  SOIL_load_OGL_texture(fName.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_POWER_OF_TWO|SOIL_FLAG_COMPRESS_TO_DXT|SOIL_FLAG_INVERT_Y|SOIL_FLAG_MIPMAPS);
-
+	
        if(tex == 0){
 		   std::cout<< "Error on loading texture: "<<fName.c_str() <<std::endl;
 		}

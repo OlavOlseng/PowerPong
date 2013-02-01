@@ -27,7 +27,7 @@ VolumeModel::VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,uns
 void VolumeModel::init(){
 	surfaceVaos = new GLuint[numSurfaces];
 	glGenVertexArrays(numSurfaces,surfaceVaos);
-
+	
 	voxelShader = this->getResourceManager()->loadShader("voxelShader");
 	voxelShader->bindUniform(ShaderUniforms::MVP,"mvp");
 	voxelShader->bindUniform(ShaderUniforms::MODEL,"modelMatrix");
@@ -124,7 +124,7 @@ void VolumeModel::render(Pipeline *pipeline){
 	glm::vec4 cameraPosition = pipeline->getCameraPosition();
 	shader->setUniformVec4f(ShaderUniforms::CAMERA_POSITION,cameraPosition.x,cameraPosition.y,cameraPosition.z,1.0);
 
-
+	
 	//set lights
 	for(int i = 0;i<numDirLights;i++){
 		DirectionalLight*light = pipeline->getDirectionalLight(i);
@@ -137,6 +137,7 @@ void VolumeModel::render(Pipeline *pipeline){
 		
 	}
 
+	
 
 	for(int i = 0;i< numPointLights;i++){
 		PointLight *light = pipeline->getPointLight(i);
@@ -157,14 +158,14 @@ void VolumeModel::render(Pipeline *pipeline){
 
 	}
 
-
+	
 	//set Material
 	Material * material = getMaterial();
 	glm::vec3 diffuse = material->diffuse;
 	glm::vec3 ambient = material->ambient;
 	glm::vec3 specular = material->specular;
 	float shininess = material->shininess;
-
+	
 	shader->setUniformVec4f(ShaderUniforms::MATERIAL_DIFFUSE,diffuse.x,diffuse.y,diffuse.z,1.0);
 	shader->setUniformVec4f(ShaderUniforms::MATERIAL_AMBIENT,ambient.x,ambient.y,ambient.z,1.0);
 	shader->setUniformVec4f(ShaderUniforms::MATERIAL_SPECULAR,specular.x,specular.y,specular.z,1.0);
@@ -172,7 +173,7 @@ void VolumeModel::render(Pipeline *pipeline){
 
 	glm::mat4 model;
 	glm::mat4 mvp ;
-
+	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,textureHandle);
 	VolumeSurface * surface;
@@ -199,6 +200,7 @@ void VolumeModel::render(Pipeline *pipeline){
 			}
 		}
 	}
+	
 	shader->unbind();
 }
 

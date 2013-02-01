@@ -39,6 +39,9 @@ void World::init()
 
 	// Build the static ground and add it to the simulation
 	this -> addEntity(new Plane(new btVector3(0,1,0),new btVector3(0,0,0)));
+
+	
+	
 }
 
 void World::setDebugDraw(BulletDebugDraw* debugDraw){
@@ -49,7 +52,7 @@ void World::setDebugDraw(BulletDebugDraw* debugDraw){
 
 void World::debugDrawWorld(){
 
-	this -> simWorld->debugDrawWorld();
+	 this -> simWorld->debugDrawWorld();
 	this->debugDraw->render();
 
 }
@@ -57,6 +60,11 @@ void World::addEntity(Entity* ent)
 {
 	this-> entities.push_back(ent);
 	this -> simWorld -> addRigidBody(ent->body);
+}
+
+std::list<Entity*>  World::getEntities(){
+	return this->entities;
+
 }
 
 void World::removeEntity(Entity* ent)

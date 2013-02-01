@@ -15,6 +15,17 @@ Entity::~Entity(void)
 	delete modelMatrix;
 }
 
+
+void Entity::setUserPointer(void * ptr){
+	this ->body->setUserPointer(ptr);
+
+}
+void *  Entity::getUserPointer(){
+	
+	return this->body->getUserPointer();
+
+}
+
 float* Entity::getModelMatrix()
 {
 	

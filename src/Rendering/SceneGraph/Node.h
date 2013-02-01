@@ -2,6 +2,7 @@
 #define NODE_H
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
+#include <glm\gtc\quaternion.hpp>
 #include "Pipeline.h"
 #include <vector>
 #include <glm\glm.hpp>
@@ -22,13 +23,13 @@ public:
 
 	void setParent(Node *parent);
 
-	void move(glm::vec3 amount);
-	void rotate(glm::vec3 amount);
-	void scale(glm::vec3 amount);
+	virtual void move(glm::vec3 &amount);
+	virtual void rotate(glm::vec3 &amount);
+	virtual void scale(glm::vec3 &amount);
 
-	void setPosition(glm::vec3 position);
-	void setRotation(glm::vec3 rotation);
-	void setScale(glm::vec3 scale);
+	virtual void setPosition(glm::vec3 &position);
+	virtual void setOrientation(glm::vec3 &orientation);
+	virtual void setScale(glm::vec3 &scale);
 
 	
 	
@@ -37,7 +38,7 @@ public:
 
 	virtual glm::vec3 getPosition();
 	virtual glm::vec3 getScale();
-	virtual glm::vec3 getRotation();
+	virtual glm::vec3 getOrientation();
 	
 	virtual glm::mat4 getModelMatrix();
 	std::vector<Node*> *getChildren();
@@ -53,7 +54,7 @@ private:
 	std::vector<DirectionalLight*> directionalLights;
 	std::vector<PointLight*> pointLights;
 	glm::vec3 localPosition;
-	glm::vec3 localRotation;
+	glm::vec3 localOrientation;
 	glm::vec3 localScale;
 	glm::mat4 cachedModelMatrix;
 
