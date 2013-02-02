@@ -133,4 +133,7 @@ void Shader::unbind(){
 Shader::~Shader(void)
 {
 	delete[] uniforms;
+	delete[] attributes;
+
+	
 }

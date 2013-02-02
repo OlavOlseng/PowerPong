@@ -70,6 +70,7 @@ void BaseGame::enterMainLoop(){
 			this->height = glfw_height;
 			this->reshape(this->width,this->height);
 		}
+		glfwPollEvents();
 
 		time = glfwGetTime()-lastTime;
 		lastTime = glfwGetTime();

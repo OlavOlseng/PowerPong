@@ -12,12 +12,11 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 	this->resourceManager = resourceManager;
 	rootNode = new Node();
 	this -> world = new World();
-	cam = new FreeMovementCamera(0.0,10.0,30,1280,720);
-	//cam->roate(0.0,3.14,0);
-	//cam->roate(0.0,3.14,0);
-	//cam->roate(0.0,3.14,0);
+	cam = new FreeMovementCamera(0,5.0,20.0,1280,720);
+	cam->rotateRight(6.28);
+	cam->setPosition(40,40,40);
 	
-	//cam->lookAt(0,1,1);
+	
 
 	if (enableTest)
 	{
@@ -32,11 +31,7 @@ void GameScreen::test()
 	
 	Assimp::Importer imp = Assimp::Importer();
 	const aiScene * sphereScene = imp.ReadFile(resourceManager->getWorkingDirectiory() +"\\Models\\sphere.irr",aiProcessPreset_TargetRealtime_Quality);
-	//StaticModel*sphereModel = new StaticModel();
-	//sphereModel->setResourceManager(resourceManager);
-	//sphereModel->initFromScene(sphereScene,sphereModel);
-	//rootNode->addChild(sphereModel);
-	
+
 	
 	
 	PointLight * light = new PointLight();
@@ -89,8 +84,8 @@ void GameScreen::test()
 
 	
 	
-	for(int x = 0;x<30;x++)
-		for(int y = 0;y<30;y++){
+	for(int x = 0;x<100;x++)
+		for(int y = 0;y<100;y++){
 
 			
 			StaticModel*sphere = new StaticModel();
@@ -142,14 +137,37 @@ void GameScreen::render()
 	
 
 }
-
+#include <GL\glfw.h>
 void GameScreen::update(double dt)
 {
 	
 
-	cam->move(0,0,1*dt);
+	
+	
+	
+
+	if(glfwGetKey('A') == GLFW_PRESS)
+		cam->rotateLeft(1.0*dt);
+	if(glfwGetKey('D') == GLFW_PRESS)
+		cam->rotateRight(1.0*dt);
 
 	
+	
+
+
+
+	if(glfwGetKey('W') == GLFW_PRESS)
+		cam->rotateUp(1.0*dt);
+	if(glfwGetKey('S') == GLFW_PRESS)
+		cam->rotateDown(1.0*dt);
+
+	if(glfwGetKey('G') == GLFW_PRESS)
+		cam->rotate(1.0*dt,0.0,0.0);
+	if(glfwGetKey('H') == GLFW_PRESS)
+		cam->rotate(0.0,0.0,1.0*dt);
+
+
+
 	this -> world -> update(dt);
 
 	for(Entity * entity: world->getEntities()){

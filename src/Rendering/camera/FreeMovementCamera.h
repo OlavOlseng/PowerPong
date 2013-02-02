@@ -19,9 +19,19 @@ public:
 	void setProjection(int width,int height);
 	glm::vec3 getViewDirection();
 	glm::vec3 getPosition();
-	void roate(double x,double y,double z);
+	void rotate(double x,double y,double z);
 	void move(double x,double y,double z);
 	void lookAt(double x,double y,double z);
+	void rotateUp(double amount);
+	void rotateDown(double amount);
+	void rotateLeft(double amount);
+	void rotateRight(double amount);
+
+	void rotateAroundAxis(double amount , double x,double y,double z);
+
+	void setPosition(double x,double y,double z);
+	
+
 private:
 	glm::quat orientation;
 	glm::vec3 unitVector;
