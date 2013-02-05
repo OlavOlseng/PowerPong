@@ -6,8 +6,8 @@ VolumeSurface::VolumeSurface(unsigned int width,unsigned int height,unsigned int
 {
 	m_hasVertices = false;
 	m_hasNormals = false;
-	vertexBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_BYTE);
-	normalBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,1,GL_BYTE);
+	vertexBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,4,GL_UNSIGNED_BYTE);
+	normalBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,1,GL_UNSIGNED_BYTE);
 
 }
 

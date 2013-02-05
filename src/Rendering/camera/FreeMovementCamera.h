@@ -5,6 +5,18 @@
 #include <glm\gtx\quaternion.hpp>
 
 
+
+namespace Direction{
+	const glm::vec3 Forward = glm::vec3(0.0,0.0,-1.0);
+	const glm::vec3 Backwards = glm::vec3(0.0,0.0,1.0);
+	const glm::vec3 Up = glm::vec3(0.0,1.0,0.0);
+	const glm::vec3 Down = glm::vec3(0.0,-1.0,0.0);
+	const glm::vec3 Left = glm::vec3(-1.0,0.0,0.0);
+	const glm::vec3 Right = glm::vec3(1.0,0.0,0.0);
+
+
+}
+
 class FreeMovementCamera
 {
 public:
@@ -30,9 +42,10 @@ public:
 	void rotateAroundAxis(double amount , double x,double y,double z);
 
 	void setPosition(double x,double y,double z);
-	
+	void move(glm::vec3 direction);
 
 private:
+	
 	glm::quat orientation;
 	glm::vec3 unitVector;
 	glm::vec3 position;

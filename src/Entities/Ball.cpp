@@ -11,7 +11,8 @@ Ball::Ball(float radius, float x, float y, float z)
 	this -> colShape -> calculateLocalInertia(mass, inertia);
 	btRigidBody::btRigidBodyConstructionInfo bodyCI(mass,motionState,colShape,inertia);
 	this -> body = new btRigidBody(bodyCI);
-	this ->body->setRestitution(1.0);
+	this ->body->setRestitution(0.0);
+	this->body->setFriction(1.0);
 }
 
 

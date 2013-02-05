@@ -23,7 +23,12 @@ glm::mat4 FreeMovementCamera::getViewMatrix(){
 	return rot*trans;
 
 }
+void FreeMovementCamera::move(glm::vec3 direction)
+{
+	glm::vec3 transFormedDir =  orientation * direction;
+	this->position += transFormedDir;
 
+}
 
 void FreeMovementCamera::move(double x,double y,double z){
 	this->position = this->position + glm::vec3(x,y,z);
@@ -80,10 +85,10 @@ void FreeMovementCamera::rotateAroundAxis(double amount , double x,double y,doub
 
 	double degrees = glm::degrees(amount);
 	glm::quat rotation = glm::angleAxis((float)degrees,glm::normalize(glm::vec3(x,y,z)));
-		std::cout << "unitVector: " <<"x:" << unitVector.x << "y:" << unitVector.y << "z:" << unitVector.z << std::endl;
+		/*std::cout << "unitVector: " <<"x:" << unitVector.x << "y:" << unitVector.y << "z:" << unitVector.z << std::endl;
 		std::cout << "axis : " << ":x" << x << "y:" << y << "z:" << z << std::endl;
 		std::cout << "dot : " << glm::dot(unitVector,glm::normalize(glm::vec3(x,y,z))) << std::endl;
-		std::cout << "length :" << glm::length(unitVector) << std::endl;
+		std::cout << "length :" << glm::length(unitVector) << std::endl;*/
 		
 	orientation = glm::normalize(rotation * orientation );
 	unitVector = glm::normalize(rotation * unitVector);

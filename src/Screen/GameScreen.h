@@ -22,6 +22,9 @@
 #include "../Rendering/Voxel/SurfaceExtractors/VolumeSurface.h"
 #include "../Rendering/Models/LineModel.h"
 #include <memory>
+#include "../Input/InputHandler.h"
+#include "../Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
+#include "../Entities/VolumeEntity.h"
 
 class GameScreen: public Screen
 {
@@ -36,7 +39,7 @@ public:
 
 private:
 	StaticModel * ballModel;
-	
+	InputHandler inputHandler;
 	Ball * ballEntity;
 	Block * blockEntity;
 	Node * rootNode;
@@ -45,7 +48,7 @@ private:
 	//temp
 	std::shared_ptr<ResourceManager> resourceManager;
 	void test();
-
+	LineModel * crossHair;
 	Pipeline * pipeline;
 
 };

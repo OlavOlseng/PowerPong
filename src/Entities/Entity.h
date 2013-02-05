@@ -23,7 +23,7 @@ public:
 	btRigidBody* body;
 
 	float * getPosition();
-
+	btQuaternion  getOrientation();
 	void setUserPointer(void * ptr);
 	void *  getUserPointer();
 	

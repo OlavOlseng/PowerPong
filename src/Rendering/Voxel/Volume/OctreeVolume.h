@@ -29,8 +29,8 @@ public:
 private:
 	bool invisible;
 	unsigned int numBlocks;
-	 Octree<BlockType> *blocks;
-	 unsigned int size;
+	Octree<BlockType> * blocks;
+	unsigned int size;
 };
 
 #endif

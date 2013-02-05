@@ -31,9 +31,9 @@ glm::mat4 Model::getModelMatrix(){
 	if(isChanged()){
 		setChanged(false);
 		glm::vec3 pos = getPosition();
-		glm::vec3 orientation = getOrientation();
+		glm::quat orientation = getOrientation();
 		//scale-rotate-translate
-		glm::mat4 rot = glm::eulerAngleYXZ(orientation.y,orientation.x,orientation.z);
+		glm::mat4 rot = glm::mat4_cast(orientation);
 		glm::mat4 trans = glm::translate(glm::mat4(1.0),pos);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0),this->getScale());
 

@@ -48,3 +48,9 @@ float * Entity::getPosition()
 	
 	return this -> body -> getWorldTransform().getOrigin();
 }
+
+btQuaternion  Entity::getOrientation(){
+
+	return this->body->getOrientation().normalized();
+
+}

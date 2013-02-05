@@ -15,7 +15,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 
 	glfwInit();
 	
-	glfwOpenWindow(width,height,8,8,8,8,16,0,GLFW_WINDOW);
+	glfwOpenWindow(width,height,8,8,8,8,32,0,GLFW_WINDOW);
 	glfwSetWindowTitle(windowTitle.c_str());
 	
 	
@@ -40,6 +40,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 		glfwTerminate();
 		return;
 	}
+	
 	
 	glfwSetTime(0);
 
@@ -70,7 +71,7 @@ void BaseGame::enterMainLoop(){
 			this->height = glfw_height;
 			this->reshape(this->width,this->height);
 		}
-		glfwPollEvents();
+		
 
 		time = glfwGetTime()-lastTime;
 		lastTime = glfwGetTime();

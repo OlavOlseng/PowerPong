@@ -6,6 +6,7 @@ Buffer::Buffer(BufferType bufferType,BufferDrawMode  drawingMode,unsigned int st
 	_drawMode = drawingMode;
 	_needsInit = true;
 	_bufferHandle = 0;
+	_size = 0;
 	this->stepsize = stepsize;
 	this->dataType = dataType;
 }

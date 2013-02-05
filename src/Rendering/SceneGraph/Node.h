@@ -24,11 +24,11 @@ public:
 	void setParent(Node *parent);
 
 	virtual void move(glm::vec3 &amount);
-	virtual void rotate(glm::vec3 &amount);
+	virtual void rotate(glm::quat &amount);
 	virtual void scale(glm::vec3 &amount);
 
 	virtual void setPosition(glm::vec3 &position);
-	virtual void setOrientation(glm::vec3 &orientation);
+	virtual void setOrientation(glm::quat &orientation);
 	virtual void setScale(glm::vec3 &scale);
 
 	
@@ -38,7 +38,7 @@ public:
 
 	virtual glm::vec3 getPosition();
 	virtual glm::vec3 getScale();
-	virtual glm::vec3 getOrientation();
+	virtual glm::quat getOrientation();
 	
 	virtual glm::mat4 getModelMatrix();
 	std::vector<Node*> *getChildren();
@@ -54,7 +54,7 @@ private:
 	std::vector<DirectionalLight*> directionalLights;
 	std::vector<PointLight*> pointLights;
 	glm::vec3 localPosition;
-	glm::vec3 localOrientation;
+	glm::quat localOrientation;
 	glm::vec3 localScale;
 	glm::mat4 cachedModelMatrix;
 

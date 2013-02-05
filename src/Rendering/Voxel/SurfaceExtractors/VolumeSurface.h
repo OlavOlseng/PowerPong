@@ -3,7 +3,7 @@
 
 #include "../Volume/Volume.h"
 #include "../../Shaders/Buffer.h"
-typedef GLbyte Normal;
+typedef uint8_t Normal;
 
 class VolumeSurface
 {

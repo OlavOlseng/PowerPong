@@ -45,6 +45,7 @@ VolumeSurface * CubeSurfaceExtractorWithByteNormals::extractSurface(unsigned int
 				globalZ = zStart + z;
 
 				//left face
+				
 				if(globalX == 0 || !volume->get(globalX-1,globalY,globalZ)){
 					normals[i] = left;
 					vertices[i++] = byte4(x,y,z,block);
