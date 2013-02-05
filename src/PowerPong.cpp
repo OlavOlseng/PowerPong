@@ -7,9 +7,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <GL\glew.h>
-#include <GL\freeglut.h>
 #include <glm\glm.hpp>
-#include "eirik.h"
 #include "Game.h"
 
 
@@ -19,7 +17,7 @@ int main(int argc, char* argv[])
 {
 
 
-	Game game(argc,argv);
+	Game * game = new Game(argc,argv);
 	
 	return 0;
 }

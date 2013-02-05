@@ -12,6 +12,8 @@ typedef int EntityID;
 
 static int uID = 0;
 
+
+
 class Entity
 {
 	
@@ -22,6 +24,7 @@ public:
 	static const int BLOCK_ID = 4;
 	static const int STATIC_WALL_ID = 8;
 	static const int PLANE_ID = 16;
+	static const int VOLUME_ID = 256;
 
 	float* modelMatrix;
 	
@@ -31,11 +34,13 @@ public:
 	EntityID getEntityID();
 	ClassID getClassID();
 	float* getPosition();
-	float* getRotation();
 	float* getModelMatrix();
 	btRigidBody* getBody();
 	void setCollisionHandler(CollisionHandler* h);
 	CollisionHandler* getCollisionHandler();
+	btQuaternion  getOrientation();
+	void setUserPointer(void * ptr);
+	void *  getUserPointer();
 
 protected:
 	ClassID cID;
@@ -49,6 +54,8 @@ protected:
 
 private:
 	CollisionHandler* colHand;
+	
+	
 
 };
 

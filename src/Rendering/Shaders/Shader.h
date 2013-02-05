@@ -15,8 +15,8 @@
 class Shader
 {
 public:
-	Shader(std::string name,unsigned int numUniforms = ShaderUniforms::NUM_UNIFORMS,unsigned int numAttributes = ShaderAttributes::NUM_ATTRIBUTES,unsigned int numUniformStructs = ShaderAttributes::NUM_ATTRIBUTES);
-	Shader(std::string vs,std::string fs,unsigned int numUniforms = ShaderUniforms::NUM_UNIFORMS,unsigned int numAttributes = ShaderAttributes::NUM_ATTRIBUTES,unsigned int numUniformStructs = ShaderAttributes::NUM_ATTRIBUTES);
+	Shader(std::string name,unsigned int numUniforms = ShaderUniforms::NUM_UNIFORMS,unsigned int numAttributes = ShaderAttributes::NUM_ATTRIBUTES,unsigned int numUniformStructs = ShaderUniforms::NUM_UNIFORMS);
+	Shader(std::string vs,std::string fs,unsigned int numUniforms = ShaderUniforms::NUM_UNIFORMS,unsigned int numAttributes = ShaderAttributes::NUM_ATTRIBUTES,unsigned int numUniformStructs = ShaderUniforms::NUM_UNIFORMS);
 	~Shader(void);
 	
 	void setUniformMat4f(unsigned int uniform,float*value);

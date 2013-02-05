@@ -12,6 +12,7 @@ Pipeline::Pipeline(unsigned int maxDirectionalLights,unsigned int maxPointLights
 	numDirectionalLights = 0;
 	numPointLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
+	setShadowPass(false);
 	
 }
 
@@ -130,6 +131,8 @@ DirectionalLight* Pipeline::getDirectionalLight(unsigned int index){
 }
 void Pipeline::popDirectionalLight(unsigned int pops){
 	numDirectionalLights-=pops;
+	if(numDirectionalLights < 0)
+		numDirectionalLights = 0;
 }
 
 
@@ -144,6 +147,9 @@ void Pipeline::addLight(PointLight * light){
 }
 void Pipeline::popPointlLight(unsigned int pops){
 	numPointLights -= pops;
+
+	if(numPointLights < 0)
+		numPointLights  = 0;
 
 }
 

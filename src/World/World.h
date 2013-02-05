@@ -36,6 +36,7 @@ public:
 
 	//Adding stuff to the world
 	void addEntity(Entity*);
+	std::list<Entity*>  getEntities();
 	void removeEntity(Entity*);
 
 	std::list<Entity*> entities;

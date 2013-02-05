@@ -43,7 +43,6 @@ void World::init()
 	gContactProcessedCallback = cProcCB;
 
 	//test();
-
 }
 
 void World::setDebugDraw(BulletDebugDraw* debugDraw){
@@ -54,7 +53,7 @@ void World::setDebugDraw(BulletDebugDraw* debugDraw){
 
 void World::debugDrawWorld(){
 
-	this -> simWorld->debugDrawWorld();
+	 this -> simWorld->debugDrawWorld();
 	this->debugDraw->render();
 
 }
@@ -63,6 +62,11 @@ void World::addEntity(Entity* ent)
 	this-> entities.push_back(ent);
 	this -> simWorld -> addRigidBody(ent->getBody());
 	ent->setCollisionHandler(this->colHand);
+}
+
+std::list<Entity*>  World::getEntities(){
+	return this->entities;
+
 }
 
 void World::removeEntity(Entity* ent)

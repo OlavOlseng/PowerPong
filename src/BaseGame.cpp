@@ -15,10 +15,10 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 
 	glfwInit();
 	
-	glfwOpenWindow(width,height,8,8,8,8,16,0,GLFW_WINDOW);
+	glfwOpenWindow(width,height,8,8,8,8,32,0,GLFW_WINDOW);
 	glfwSetWindowTitle(windowTitle.c_str());
 	
-	//glfwSwapInterval(0);
+	
 	
 	GLenum err = glewInit();
 	if(err !=GLEW_OK){
@@ -41,6 +41,7 @@ void BaseGame::init(std::string windowTitle,int width,int height){
 		return;
 	}
 	
+	
 	glfwSetTime(0);
 
 	lastTime = glfwGetTime();
@@ -60,6 +61,8 @@ void BaseGame::enterMainLoop(){
 	double time;
 	
 	int glfw_width,glfw_height;
+
+
 	while(glfwGetWindowParam(GLFW_OPENED)){
 		
 		glfwGetWindowSize(&glfw_width,&glfw_height);
@@ -68,6 +71,7 @@ void BaseGame::enterMainLoop(){
 			this->height = glfw_height;
 			this->reshape(this->width,this->height);
 		}
+		
 
 		time = glfwGetTime()-lastTime;
 		lastTime = glfwGetTime();

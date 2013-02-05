@@ -14,7 +14,7 @@
 #include <assimp\DefaultLogger.hpp>
 #include <assimp\postprocess.h>
 #include "../Rendering/Models/ResourceManager.h"
-#include "../Rendering/camera/camera.h"
+#include "../Rendering/camera/FreeMovementCamera.h"
 #include "../Entities/Block.h"
 #include "../Rendering/Voxel/Volume/OctreeVolume.h"
 #include "../Rendering/Models/VolumeModel.h"
@@ -22,6 +22,9 @@
 #include "../Rendering/Voxel/SurfaceExtractors/VolumeSurface.h"
 #include "../Rendering/Models/LineModel.h"
 #include <memory>
+#include "../Input/InputHandler.h"
+#include "../Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
+#include "../Entities/VolumeEntity.h"
 
 class GameScreen: public Screen
 {
@@ -36,16 +39,16 @@ public:
 
 private:
 	StaticModel * ballModel;
-	VolumeModel * blockModel;
+	InputHandler inputHandler;
 	Ball * ballEntity;
 	Block * blockEntity;
 	Node * rootNode;
 
-	Camera*cam;
+	FreeMovementCamera * cam;
 	//temp
 	std::shared_ptr<ResourceManager> resourceManager;
 	void test();
-
+	LineModel * crossHair;
 	Pipeline * pipeline;
 
 };

@@ -7,8 +7,6 @@
 #include "Rendering\camera\camera.h";
 
 #include "Rendering\Models\Model.h"
-#include "GLtools\GLTools.h"
-#include "GLtools\GLTriangleBatch.h"
 
 #include "Rendering\Models\StaticModel.h"
 
@@ -38,28 +36,16 @@ private:
 	ScreenManager * screenManager;
 	GameScreen * gameScreen;
 	int width,height;
-	std::vector<gWall*> *walls;
-	std::vector<Model*>*models;
 
-	Shader*diffuseSpecular;
-	Shader*wallShader;
-	Shader*shadowShader;
-	Shader*voxelShader;
+
 	
 	
 
 	Pipeline *pipeline;
-	void loadShaders(Pipeline*pipeline);
+	
 
-	Node*rootNode;
-	StaticModel*model;
-	DirectionalLight * sun;
 
 protected:
-	unsigned int diffuseSpecularHandle;
-	unsigned int wallShaderHandle;
-	unsigned int shadowShaderHandle;
-	unsigned int voxelShaderHandle;
 	void reshape(int width, int height);
 	void draw();
 	void update(double dt);
@@ -67,10 +53,8 @@ protected:
 
 	std::shared_ptr<ResourceManager> resManager ;
 
-	//shadowmapTesting
-	GLuint frameBufferHandle;
-	GLuint depthTexture;
-	
+
+
 };
 
 #endif

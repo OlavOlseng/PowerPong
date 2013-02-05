@@ -9,10 +9,15 @@ LineModel::LineModel(void)
 	lines->resize(1000);
 	colors->resize(1000);
 	numVertices = 0;
+	lineWidth = 1.0;
 
 
 }
+void LineModel::setLineWidth(float width)
+{
+	this->lineWidth = width;
 
+}
 void LineModel::init(){
 	glGenVertexArrays(1,&vao);
 	lineBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT);
@@ -31,7 +36,7 @@ void LineModel::init(){
 	lineBuffer->bindTo(lineBuffer->getVertexAttribute());
 	colorBuffer->bindTo(colorBuffer->getVertexAttribute());
 	glBindVertexArray(0);
-
+	
 
 }
 
@@ -68,17 +73,19 @@ void LineModel::bufferLines(){
 }
 void LineModel::render(Pipeline *pipeline){
 	
+		
 	shader->bind();
 
 	glm::mat4 model = pipeline->getTotalRotationTranslation()*getModelMatrix();
 	glm::mat4 mvp = pipeline->getViewProjectionMatrix()*model;
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
-
+	glLineWidth(lineWidth);
 	glBindVertexArray(vao);
 	glDrawArrays(GL_LINES,0,lineBuffer->getBufferSize());
 	glBindVertexArray(0);
 
 	shader->unbind();
+	
 
 }
 void LineModel::setAttributes(GLint*attributes,GLint*shadowAttributes){

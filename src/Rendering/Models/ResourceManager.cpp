@@ -13,6 +13,7 @@ ResourceManager::ResourceManager(void)
 Shader* ResourceManager::loadShader(std::string name){
 	Shader * shader;
 	
+	
 	if(shaders.find(name) ==shaders.end()){
 		shader = new Shader(shaderDirectory+ name);
 		shaders[name] = shader;
@@ -34,6 +35,19 @@ GLuint ResourceManager::loadTexture(std::string name){
 		texture = textures[name];
 	}
 	return texture;
+
+}
+
+const aiScene * ResourceManager::loadModel(std::string name,int postProcess){
+	const aiScene * scene;
+	Assimp::Importer * imp = new Assimp::Importer();
+	if(models.find(name) == models.end()){
+		scene = imp->ReadFile(modelDirectory + name,postProcess);
+		models[name]= std::make_pair(imp,scene);
+	}else{
+		scene = models[name].second;
+	}
+	return scene;
 
 }
 void ResourceManager::setWorkingDirectory(std::string dir){

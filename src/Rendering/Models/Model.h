@@ -32,7 +32,7 @@ public:
 	virtual void setResourceManager(std::shared_ptr<ResourceManager> resourceManager);
 	virtual std::shared_ptr<ResourceManager> getResourceManager();
 	virtual Material *getMaterial();
-	
+
 
 
 	void setSize(float width,float height,float depth);

@@ -5,7 +5,7 @@
 
 #include "../../Util/octree/octree.h"
 #include "Volume.h"
-
+#include <iostream>
 
 class OctreeVolume:public Volume
 {
@@ -29,8 +29,8 @@ public:
 private:
 	bool invisible;
 	unsigned int numBlocks;
-	 Octree<BlockType> *blocks;
-	 unsigned int size;
+	Octree<BlockType> * blocks;
+	unsigned int size;
 };
 
 #endif

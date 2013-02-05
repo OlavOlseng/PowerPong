@@ -19,6 +19,17 @@ Entity::~Entity(void)
 	delete modelMatrix;
 }
 
+
+void Entity::setUserPointer(void * ptr){
+	this ->body->setUserPointer(ptr);
+
+}
+void *  Entity::getUserPointer(){
+	
+	return this->body->getUserPointer();
+
+}
+
 float* Entity::getModelMatrix()
 {
 		
@@ -39,11 +50,6 @@ void Entity::setPosition(btVector3 origin)
 float* Entity::getPosition()
 {
 	return this -> body -> getWorldTransform().getOrigin();
-}
-
-float* Entity::getRotation()
-{
-	return this->body->getWorldTransform().getRotation();
 }
 
 btRigidBody* Entity::getBody()
@@ -72,3 +78,7 @@ CollisionHandler* Entity::getCollisionHandler()
 }
 
 
+btQuaternion  Entity::getOrientation()
+{
+	return this->body->getOrientation().normalized();
+}

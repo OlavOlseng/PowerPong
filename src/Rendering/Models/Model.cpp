@@ -5,7 +5,10 @@ Model::Model()
 {
 
 	setScale(glm::vec3(1.0,1.0,1.0));
-
+	this->material.ambient = glm::vec3(0.0,0.0,0.0);
+	this->material.diffuse = glm::vec3(0.0,0.0,0.0);
+	this->material.specular = glm::vec3(0.0,0.0,0.0);
+	this->material.shininess = 1.0;
 }
 
 
@@ -22,14 +25,15 @@ BoundingBox * Model::getBoundingBox(){
 }
 
 
+
 glm::mat4 Model::getModelMatrix(){
 	
 	if(isChanged()){
 		setChanged(false);
 		glm::vec3 pos = getPosition();
-		glm::vec3 rotation = getRotation();
+		glm::quat orientation = getOrientation();
 		//scale-rotate-translate
-		glm::mat4 rot = glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z);
+		glm::mat4 rot = glm::mat4_cast(orientation);
 		glm::mat4 trans = glm::translate(glm::mat4(1.0),pos);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0),this->getScale());
 

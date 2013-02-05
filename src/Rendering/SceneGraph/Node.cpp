@@ -11,18 +11,20 @@ Node::Node(void)
 	children = new std::vector<Node*>();
 	parent = nullptr;
 	changed = true;
+	this->cachedModelMatrix = glm::mat4(1.0);
 }
 
 
 
 void Node::addChild(Node *node)
 {
+	
 	children->push_back(node);
 	node->setParent(this);
 
 }
 
-void Node::move(glm::vec3 amount)
+void Node::move(glm::vec3 &amount)
 {
 	
 	this->localPosition += amount;
@@ -41,31 +43,31 @@ void Node::addLight(PointLight*light){
 	this->pointLights.push_back(light);
 	
 }
-void Node::scale(glm::vec3 amount){
-	this->localScale += amount;
+void Node::scale(glm::vec3 &amount){
+	setScale(this->localScale + amount);
 	setChanged(true);
 
 }
 
-void Node::setPosition(glm::vec3 position){
+void Node::setPosition(glm::vec3 &position){
 	this->localPosition = position;
 	setChanged(true);
 
 }
-void Node::setRotation(glm::vec3 rotation){
-	this->localRotation = rotation;
+void Node::setOrientation(glm::quat &orientation){
+	this->localOrientation = orientation;
 	setChanged(true);
 
 }
-void Node::setScale(glm::vec3 scale){
+void Node::setScale(glm::vec3 &scale){
 
 	this->localScale = scale;
 	setChanged(true);
 }
 
-void Node::rotate(glm::vec3 amount)
+void Node::rotate(glm::quat &amount)
 {
-	this->localRotation += amount;
+	this->localOrientation  = amount * localOrientation;
 	setChanged(true);
 
 }
@@ -80,8 +82,8 @@ glm::vec3 Node::getPosition(){
 	return this->localPosition;
 }
 
-glm::vec3  Node::getRotation(){
-	return this->localRotation;
+glm::quat  Node::getOrientation(){
+	return this->localOrientation;
 
 }
 glm::vec3  Node::getScale(){
@@ -129,9 +131,9 @@ glm::mat4 Node::getModelMatrix(){
 	if(isChanged()){
 		setChanged(false);
 		glm::vec3 pos = getPosition();
-		glm::vec3 rotation = getRotation();
+		glm::quat orientation = getOrientation();
 		//scale-rotate-translate
-		glm::mat4 rot = glm::eulerAngleYXZ(rotation.y,rotation.x,rotation.z);
+		glm::mat4 rot = glm::mat4_cast(orientation);
 		glm::mat4 trans = glm::translate(glm::mat4(1.0),pos);
 		glm::mat4 scale = glm::scale(glm::mat4(1.0),this->getScale());
 
@@ -158,6 +160,7 @@ void Node::render(Pipeline *pipeline)
 	unsigned int numDirLights = this->directionalLights.size();
 	unsigned int numPointLights = this->pointLights.size();
 	if(!pipeline->isShadowPass()){
+
 	for(DirectionalLight*light:this->directionalLights){
 
 		light->transformedDirection = modelMatrix*light->direction;

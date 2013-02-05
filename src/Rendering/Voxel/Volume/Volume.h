@@ -7,8 +7,8 @@
 #include <GL\freeglut.h>;
 #include <GL\GL.h>
 #include <GL\GLU.h>
-
-typedef glm::detail::tvec4<GLbyte> byte4;
+#include <cstdint>
+typedef glm::detail::tvec4<uint8_t> byte4;
 typedef glm::detail::tvec4<float> float4;
 typedef int BlockType;
 
@@ -24,7 +24,10 @@ public:
 	virtual unsigned int getWidth() = 0;
 	virtual unsigned int getHeight() = 0;
 	virtual unsigned int getDepth() = 0;
+
+	
 };
+
 
 
 #endif
