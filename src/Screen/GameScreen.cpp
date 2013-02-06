@@ -49,11 +49,12 @@ void GameScreen::test()
 	pipeline = new Pipeline(10,10);
 
 	
-	crossHair = new LineModel();
+	/*crossHair = new LineModel();
+	crossHair->setResourceManager(resourceManager);
 	crossHair->addLine(glm::vec3(-20,0,0),glm::vec3(20,0,0),glm::vec3(0,0,0));
 	crossHair->addLine(glm::vec3(0,20,0),glm::vec3(0,20,0),glm::vec3(0,0,0));
 	crossHair->bufferLines();
-	crossHair->clearLines();
+	crossHair->clearLines();*/
 
 
 
