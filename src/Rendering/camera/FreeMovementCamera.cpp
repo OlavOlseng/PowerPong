@@ -2,10 +2,11 @@
 
 
 
-FreeMovementCamera::FreeMovementCamera(float x,float y,float z,int width,int height,glm::quat orientation)
+FreeMovementCamera::FreeMovementCamera(float x,float y,float z,int width,int height,glm::quat orientation,float zNear,float zFar)
 {
-	this->unitVector = glm::vec3(0.0,0.0,-1.0);
-	
+	this->unitVector = orientation*glm::vec3(0.0,0.0,-1.0);
+	this->zNear = zNear;
+	this->zFar = zFar;
 	
 	this->orientation = orientation;
 	this->position = glm::vec3(x,y,z);
@@ -107,7 +108,7 @@ glm::mat4 FreeMovementCamera::getProjectionMatrix(){
 
 }
 void FreeMovementCamera::setProjection(int width,int height){
-	projectionMatrix = glm::perspective(50.0,1.0*width/height,0.1,300.0);
+	projectionMatrix = glm::perspective(50.0f,1.0f*width/height,zNear,zFar);
 
 
 }

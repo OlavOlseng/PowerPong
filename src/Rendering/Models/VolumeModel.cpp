@@ -24,7 +24,10 @@ VolumeModel::VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,uns
 
 }
 
-void VolumeModel::init(){
+void VolumeModel::init(TileAtlas * tileAtlas){
+
+	this->tileAtlas = tileAtlas;
+	this->texture = tileAtlas->getTexture();
 	surfaceVaos = new GLuint[numSurfaces];
 	glGenVertexArrays(numSurfaces,surfaceVaos);
 	
@@ -53,14 +56,12 @@ void VolumeModel::init(){
 
 	this->setAttributes(voxelShader->getAttributes());
 
-	textureHandle = resourceManager->loadTexture("tileAtlas.png");
-	glBindTexture(GL_TEXTURE_2D,textureHandle);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+	
+
 
 
 	Material * material = getMaterial();
-	material->ambient =  glm::vec3(0.0,0.0,0.0);
+	material->ambient =  glm::vec3(0.2,0.2,0.2);
 	material->specular = glm::vec3(0.2,0.2,0.2);
 	material->diffuse = glm::vec3(1.0,1.0,1.0);
 	material->shininess = 1.0;
@@ -112,7 +113,7 @@ void VolumeModel::render(Pipeline *pipeline){
 
 
 	
-	shader->setUniformFloat(ShaderUniforms::STEP_SIZE,0.25);
+	shader->setUniformFloat(ShaderUniforms::STEP_SIZE,tileAtlas->getStepSizeX());
 
 
 	unsigned int numDirLights = pipeline->getNumDirectionalLights();
@@ -175,7 +176,7 @@ void VolumeModel::render(Pipeline *pipeline){
 	glm::mat4 mvp ;
 	
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D,textureHandle);
+	glBindTexture(GL_TEXTURE_2D,texture->getTextureHandle());
 	VolumeSurface * surface;
 	for (unsigned int z = 0; z< this->numSurfacesZ; z++) {
 		

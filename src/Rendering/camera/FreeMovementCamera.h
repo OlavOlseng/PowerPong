@@ -23,11 +23,12 @@ public:
 	
 	
 	//orientation as Quaternion
-	FreeMovementCamera(float x,float y,float z,int width,int height,glm::quat orientation = glm::quat());
+	FreeMovementCamera(float x,float y,float z,int width,int height,glm::quat orientation = glm::quat(),float zNear = 0.1,float zFar = 300);
 	~FreeMovementCamera(void);
 
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
+	
 	void setProjection(int width,int height);
 	glm::vec3 getViewDirection();
 	glm::vec3 getPosition();
@@ -51,6 +52,7 @@ private:
 	glm::vec3 position;
 	glm::mat4 viewMatrix;
 	glm::mat4 projectionMatrix;
+	float zNear,zFar;
 };
 
 #endif

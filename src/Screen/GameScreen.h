@@ -25,7 +25,8 @@
 #include "../Input/InputHandler.h"
 #include "../Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
 #include "../Entities/VolumeEntity.h"
-
+#include "../Rendering/Util/FrameBuffer.h"
+#include "../Rendering/Models/TexturedQuad.h"
 class GameScreen: public Screen
 {
 public:
@@ -50,6 +51,16 @@ private:
 	void test();
 	LineModel * crossHair;
 	Pipeline * pipeline;
+	Node * floorNode;
+
+	TexturedQuad * texturedQuad;
+
+	TexturedQuad * translatedQuad;
+
+	FrameBuffer * frameBuffer;
+	
+
+
 
 };
 

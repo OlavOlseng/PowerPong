@@ -2,6 +2,7 @@
 #define VOXEL_RENDERER_H
 #include "Model.h"
 #include "../Voxel/SurfaceExtractors/VolumeSurface.h"
+#include "../Util/TileAtlas.h"
 class VolumeModel:public Model
 {
 public:
@@ -16,7 +17,7 @@ public:
 	void setSurface(unsigned int x, unsigned int y, unsigned int z,VolumeSurface * surface);
 	void updateSurface(unsigned int x,unsigned int y, unsigned int z);
 
-	void init();
+	void init(TileAtlas * tileAtlas);
 private:
 	inline unsigned int getIndex(unsigned int x,unsigned int y,unsigned int z);
 	
@@ -26,7 +27,8 @@ private:
 	unsigned int surfaceWidth,surfaceHeight,surfaceDepth;
 	unsigned int numSurfaces;
 	Shader * voxelShader;
-	GLuint textureHandle;
+	Texture * texture;
+	TileAtlas * tileAtlas;
 	GLint vertexAttrib,normalAttrib;
 };
 

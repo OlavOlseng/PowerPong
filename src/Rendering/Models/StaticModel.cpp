@@ -23,6 +23,7 @@ StaticModel::~StaticModel(void)
 	delete texcoordBuffer;
 	delete elementBuffer;
 	delete shadowVertexBuffer;
+
 }
 
 
@@ -162,11 +163,11 @@ void StaticModel::initFromMesh(aiMesh * mesh,aiMaterial** materials,bool moveToc
 	
 	aiString path;
 	material->GetTexture(aiTextureType_DIFFUSE,0,&path);
-	textureHandle = resourceManager->loadTexture(path.data);
+	texture= resourceManager->loadTexture(path.data);
 
-	glBindTexture(GL_TEXTURE_2D,textureHandle);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	texture->bind();
+	texture->setMagFilter(Texture::Filter::LINEAR);
+	texture->setMinFilter(Texture::Filter::LINEAR);
 	
 
 	elementBuffer->setData(indices,sizeof(GLushort)*mesh->mNumFaces*3);
@@ -316,10 +317,10 @@ void StaticModel::render(Pipeline *pipeline){
 	shader->setUniformMat4f(ShaderUniforms::MVP,glm::value_ptr(mvp));
 	shader->setUniformMat4f(ShaderUniforms::MODEL,glm::value_ptr(model));
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D,textureHandle);
+	texture->bind();
 
 	glBindVertexArray(vao);
-		glDrawElements(GL_TRIANGLES,this->numIdices,GL_UNSIGNED_SHORT,0);
+	glDrawElements(GL_TRIANGLES,this->numIdices,GL_UNSIGNED_SHORT,0);
 	
 	glBindVertexArray(0);
 

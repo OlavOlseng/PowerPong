@@ -3,7 +3,7 @@
 
 #include "BaseGame.h"
 
-#include "Rendering\Voxel\Volume\gWall.h"
+
 #include "Rendering\camera\camera.h";
 
 #include "Rendering\Models\Model.h"

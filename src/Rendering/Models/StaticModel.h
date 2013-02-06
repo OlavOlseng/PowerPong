@@ -38,7 +38,7 @@ public:
 private:
 	Shader * diffuseSpecular;
 	Node*modelRoot;
-	GLuint textureHandle;
+	Texture * texture;
 	Buffer *vertexBuffer;
 	Buffer*normalBuffer;
 	Buffer * texcoordBuffer;
