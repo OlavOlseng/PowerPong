@@ -10,6 +10,7 @@ public:
 	Block(float x, float y, float z);
 	Block(float width, float height, float depth, float x, float y, float z);
 	~Block(void);
+
 };
 
 

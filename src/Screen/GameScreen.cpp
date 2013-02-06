@@ -46,6 +46,17 @@ void GameScreen::test()
 	light->setRange(5000);
 	light->position = glm::vec4(50.0,50.0,50,1.0);
 	rootNode->addLight(light);
+	pipeline = new Pipeline(10,10);
+
+	
+	crossHair = new LineModel();
+	crossHair->addLine(glm::vec3(-20,0,0),glm::vec3(20,0,0),glm::vec3(0,0,0));
+	crossHair->addLine(glm::vec3(0,20,0),glm::vec3(0,20,0),glm::vec3(0,0,0));
+	crossHair->bufferLines();
+	crossHair->clearLines();
+
+
+
 
 
 	

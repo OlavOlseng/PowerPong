@@ -2,6 +2,7 @@
 
 
 VolumeEntity::VolumeEntity(double x,double y,double z)
+	:Entity(Entity::VOLUME_ID)
 {
 	this->position = btVector3(x,y,z);
 }
