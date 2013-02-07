@@ -4,7 +4,7 @@
 #include "BaseGame.h"
 
 
-#include "Rendering\camera\camera.h";
+
 
 #include "Rendering\Models\Model.h"
 

@@ -16,7 +16,27 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 	cam->rotateRight(6.28);
 	//cam->setPosition(100,40,00);
 	
+
 	
+	
+	KeyMap<KeyMovementBehaviour::Key,Direction> map ;
+	map.setKey('A',KeyMovementBehaviour::Key::LEFT,Direction(-1,0.0,0.0));
+	map.setKey('D',KeyMovementBehaviour::Key::RIGHT,Direction(1,0.0,0.0));
+	map.setKey('W',KeyMovementBehaviour::Key::FORWARD,Direction(0.0,0.0,-1.0));
+	map.setKey('S',KeyMovementBehaviour::Key::BACKWARDS,Direction(0.0,0.0,1.0));
+	map.setKey('Q',KeyMovementBehaviour::Key::UP,Direction(0.0,1.0,0.0));
+	map.setKey('E',KeyMovementBehaviour::Key::DOWN,Direction(0.0,-1.0,0.0));
+	
+	KeyMovementBehaviour * behaviour = new KeyMovementBehaviour(map);
+	behaviour->setSpeed(20);
+
+	MouseFPSBehaviour * mouseB= new MouseFPSBehaviour(true);
+	mouseB->setSpeed(1.0,1.0);
+	mouseB->setInverted(false);
+	cameraController = new UnconstrainedCameraController(cam);
+
+	cameraController->addBehaviour(behaviour);
+	cameraController->addBehaviour(mouseB);
 
 	if (enableTest)
 	{
@@ -32,10 +52,12 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 #include "../Rendering/Voxel/SurfaceExtractors/ChunkExtractor.h"
 #include <string>
 #include "../Rendering/Util/FrameBuffer.h"
+
 void GameScreen::test()
 {
 	
-	
+
+
 	
 	const aiScene * sphereScene = resourceManager->loadModel("sphere.irr");
 
@@ -98,6 +120,7 @@ void GameScreen::test()
 	VolumeModel * model = new VolumeModel(1,1,1,32,1,32);
 	model->setResourceManager(resourceManager);
 	model->init(atlas);
+	model->move(glm::vec3(20,0.0,0.0));
 	
 	ChunkExtractor extractor = ChunkExtractor(&CubeSurfaceExtractorWithByteNormals(volume),32,32,32);
 	model->setSurface(0,0,0,extractor.extractSurface(0,0,0));
@@ -157,7 +180,7 @@ void GameScreen::render()
 	pipeline->setShadowPass(false);
 	pipeline->setView(cam->getViewMatrix());
 	pipeline->setCameraPosition(glm::vec4(cam->getPosition(),1.0));
-	pipeline->setProjection(cam->getProjectionMatrix());
+	pipeline->setProjection(cam->getPerspectiveProjection());
 	pipeline->setViewDirection(glm::vec4(cam->getViewDirection(),1.0));
 	
 
@@ -170,19 +193,20 @@ void GameScreen::render()
 	pipeline->setShadowPass(false);
 	pipeline->setView(cam->getViewMatrix());
 	pipeline->setCameraPosition(glm::vec4(cam->getPosition(),1.0));
-	pipeline->setProjection(cam->getProjectionMatrix());
+	pipeline->setProjection(cam->getPerspectiveProjection());
 	pipeline->setViewDirection(glm::vec4(cam->getViewDirection(),1.0));
 	rootNode->render(pipeline);
 	translatedQuad->render(pipeline);
 
-	pipeline->clear();
-	pipeline->setProjection(glm::ortho(0.0f,1280.0f,0.0f,728.0f));
-	pipeline->setView(glm::mat4(1.0));
 	glDisable(GL_DEPTH_TEST);
+	pipeline->clear();
+	pipeline->setProjection(glm::ortho(0.0f,(float)cam->getWidth(),0.0f,(float)cam->getHeight()));
+	pipeline->setView(glm::mat4(1.0));
+	
 	//crossHair->render(pipeline);
 	texturedQuad->render(pipeline);
 	
-	glEnable(GL_DEPTH_TEST);
+	
 
 	
 	
@@ -198,24 +222,13 @@ void GameScreen::update(double dt)
 
 	
 	//rootNode->rotate(glm::quat(glm::vec3(0,1*dt,0)));
-	inputHandler.update();
+	//rootNode->getChildren()->at(0)->rotate(glm::quat(glm::vec3(0.0,1*dt,0.0)));
+	
 	//floorNode->rotate(glm::quat(glm::vec3(0,1.0*dt,0)));
 
-	if(inputHandler.keyPressed('A'))
-		cam->move(Direction::Left*(float)dt*20.0f);
-	if(inputHandler.keyPressed('S'))
-		cam->move(Direction::Backwards*(float)dt*20.0f);
-	if(inputHandler.keyPressed('D'))
-		cam->move(Direction::Right*(float)dt*20.0f);
-	if(inputHandler.keyPressed('W'))
-		cam->move(Direction::Forward*(float)dt*20.0f);
-	if(inputHandler.keyPressed('Q'))
-		cam->move(Direction::Up*(float)dt*20.0f);
-	if(inputHandler.keyPressed('E'))
-		cam->move(Direction::Down*(float)dt*20.0f);
+	cameraController->update(dt);
 
-	cam->rotateRight(inputHandler.getMouseChangeX()/1000.0);
-	cam->rotateDown(inputHandler.getMouseChangeY()/1000.0);
+
 
 
 	

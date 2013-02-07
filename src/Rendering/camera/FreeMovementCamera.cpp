@@ -57,7 +57,7 @@ void FreeMovementCamera::rotate(double x,double y,double z){
 	unitVector = glm::normalize(unitVector * rotation);
 
 }
-#include <iostream>
+
 void FreeMovementCamera::rotateUp(double amount){
 	
 	rotateAroundAxis(-amount,unitVector.z,0,-unitVector.x);
@@ -102,16 +102,34 @@ void FreeMovementCamera::rotateAroundAxis(double amount , double x,double y,doub
 
 
 
-glm::mat4 FreeMovementCamera::getProjectionMatrix(){
+glm::mat4 FreeMovementCamera::getPerspectiveProjection(){
 
-	return projectionMatrix;
+	return perspectiveProjectionMatrix;
+
+}
+glm::mat4 FreeMovementCamera::getOrthogonalProjection(){
+
+	return orthogonalProjectionMatrix;
 
 }
 void FreeMovementCamera::setProjection(int width,int height){
-	projectionMatrix = glm::perspective(50.0f,1.0f*width/height,zNear,zFar);
+	perspectiveProjectionMatrix = glm::perspective(50.0f,1.0f*width/height,zNear,zFar);
+	orthogonalProjectionMatrix = glm::ortho(0.0f,(float)width,0.0f,(float)height,zNear,zFar);
 
-
+	this->width = width;
+	this->height = height;
 }
+
+int FreeMovementCamera::getHeight(){
+	
+	return height;
+}
+
+int FreeMovementCamera::getWidth(){
+
+	return width;
+}
+
 glm::vec3 FreeMovementCamera::getViewDirection(){
 
 	return unitVector;

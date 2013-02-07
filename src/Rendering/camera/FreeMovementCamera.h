@@ -1,21 +1,13 @@
 #ifndef FREE_MOVEMENT_CAMERA_H
 #define FREE_MOVEMENT_CAMERA_H
-#include "camera.h"
+
 
 #include <glm\gtx\quaternion.hpp>
 
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 
 
-namespace Direction{
-	const glm::vec3 Forward = glm::vec3(0.0,0.0,-1.0);
-	const glm::vec3 Backwards = glm::vec3(0.0,0.0,1.0);
-	const glm::vec3 Up = glm::vec3(0.0,1.0,0.0);
-	const glm::vec3 Down = glm::vec3(0.0,-1.0,0.0);
-	const glm::vec3 Left = glm::vec3(-1.0,0.0,0.0);
-	const glm::vec3 Right = glm::vec3(1.0,0.0,0.0);
-
-
-}
 
 class FreeMovementCamera
 {
@@ -27,7 +19,8 @@ public:
 	~FreeMovementCamera(void);
 
 	glm::mat4 getViewMatrix();
-	glm::mat4 getProjectionMatrix();
+	glm::mat4 getPerspectiveProjection();
+	glm::mat4 getOrthogonalProjection();
 	
 	void setProjection(int width,int height);
 	glm::vec3 getViewDirection();
@@ -45,14 +38,19 @@ public:
 	void setPosition(double x,double y,double z);
 	void move(glm::vec3 direction);
 
+	int getWidth();
+	int getHeight();
+
 private:
 	
 	glm::quat orientation;
 	glm::vec3 unitVector;
 	glm::vec3 position;
 	glm::mat4 viewMatrix;
-	glm::mat4 projectionMatrix;
+	glm::mat4 perspectiveProjectionMatrix;
+	glm::mat4 orthogonalProjectionMatrix;
 	float zNear,zFar;
+	int width,height;
 };
 
 #endif

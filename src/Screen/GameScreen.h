@@ -27,6 +27,10 @@
 #include "../Entities/VolumeEntity.h"
 #include "../Rendering/Util/FrameBuffer.h"
 #include "../Rendering/Models/TexturedQuad.h"
+#include "../Rendering/camera/Controller/UnconstrainedCameraController.h"
+#include "../Input/KeyMap.h"
+#include "../Rendering/camera/Controller/Behavior/KeyMovementBehaviour.h"
+#include "../Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h"
 class GameScreen: public Screen
 {
 public:
@@ -53,6 +57,7 @@ private:
 	Pipeline * pipeline;
 	Node * floorNode;
 
+	UnconstrainedCameraController * cameraController;
 	TexturedQuad * texturedQuad;
 
 	TexturedQuad * translatedQuad;

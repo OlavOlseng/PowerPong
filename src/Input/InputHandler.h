@@ -1,5 +1,5 @@
-#ifndef INPUT_HANDELR
-#define INPUT_HANDLER
+#ifndef INPUT_INPUT_HANDELR_H
+#define INPUT_INPUT_HANDLER_H
 
 #include <GL\glfw.h>
 class InputHandler
