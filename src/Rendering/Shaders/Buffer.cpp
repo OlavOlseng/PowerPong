@@ -58,5 +58,6 @@ void Buffer::setBufferHandle(GLuint handle){
 }
 Buffer::~Buffer()
 {
+	glDeleteBuffers(1,&_bufferHandle);
 	
 }

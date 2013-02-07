@@ -72,6 +72,7 @@ void TexturedQuad::render(Pipeline *pipeline){
 	glBindVertexArray(0);
 	shader->unbind();
 
+	
 }
 void TexturedQuad::setAttributes(GLint*attributes,GLint*shadowAttributes){
 	vertexBuffer->setVertexAttribute(attributes[ShaderAttributes::COORD3D]);
@@ -83,4 +84,6 @@ void TexturedQuad::setAttributes(GLint*attributes,GLint*shadowAttributes){
 
 TexturedQuad::~TexturedQuad(void)
 {
+	delete vertexBuffer;
+	delete textureBuffer;
 }

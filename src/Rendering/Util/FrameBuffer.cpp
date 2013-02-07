@@ -39,6 +39,7 @@ void FrameBuffer::bind(){
 FrameBuffer::~FrameBuffer(void)
 {
 	glDeleteFramebuffers(1,&bufferHandle);
-	
-	
+	glDeleteRenderbuffers(1,&depthBufferHandle);
+
+
 }

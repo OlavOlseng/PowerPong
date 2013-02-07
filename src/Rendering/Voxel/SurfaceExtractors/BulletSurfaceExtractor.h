@@ -1,6 +1,7 @@
 #ifndef BULLET_SURFACE_EXTRACTOR
 #define BULLET_SURFACE_EXTRACTOR
 #include "../../../bullet/btBulletDynamicsCommon.h"
+
 #include "../Volume/Volume.h"
 #include "SurfaceExtractor.h"
 class BulletSurfaceExtractor

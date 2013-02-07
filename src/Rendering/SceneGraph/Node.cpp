@@ -8,7 +8,7 @@ Node::Node(void)
 {
 	localScale = glm::vec3(1,1,1);
 	
-	children = new std::vector<Node*>();
+	
 	parent = nullptr;
 	changed = true;
 	this->cachedModelMatrix = glm::mat4(1.0);
@@ -19,7 +19,7 @@ Node::Node(void)
 void Node::addChild(Node *node)
 {
 	
-	children->push_back(node);
+	children.push_back(node);
 	node->setParent(this);
 
 }
@@ -104,7 +104,7 @@ glm::mat4 Node::getCachedModelMatrix(){
 
 std::vector<Node*> *Node::getChildren(){
 
-	return this->children;
+	return &this->children;
 }
 
 void Node::setParent(Node *parent)
@@ -176,7 +176,7 @@ void Node::render(Pipeline *pipeline)
 	}
 	}
 
-	for(Node *child:*this->children){
+	for(Node *child:this->children){
 		child->render(pipeline);
 
 		pipeline->setTotalRotationTranslation(modelMatrix);
@@ -191,5 +191,15 @@ void Node::render(Pipeline *pipeline)
 Node::~Node(void)
 {
 	
-	delete children;
+
+	for(Node * child :children)
+		delete child;
+
+	for(Light * light:this->directionalLights)
+		delete light;
+	for(Light * light:this->pointLights)
+		delete light;
+
+
+
 }

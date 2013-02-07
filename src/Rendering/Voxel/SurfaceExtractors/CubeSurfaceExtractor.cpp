@@ -26,9 +26,9 @@ VolumeSurface * CubeSurfaceExtractor::extractSurface(unsigned int xStart,unsigne
 	unsigned int i = 0;
 	unsigned int globalX,globalY,globalZ;
 	BlockType block;
-	for (unsigned int z = 0; z<zEnd; z++) {
+	for (unsigned int y = 0; y<yEnd; y++) {
 		
-		for(unsigned int y= 0;y<yEnd;y++){
+		for(unsigned int z= 0;z<zEnd;z++){
 
 			for(unsigned int x = 0;x<xEnd;x++){
 

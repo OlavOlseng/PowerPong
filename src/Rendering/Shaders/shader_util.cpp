@@ -24,7 +24,7 @@ std::string ShaderUtil::readShaderFile(std::string fName){
     if(file.good() && file.is_open()){
 		while(!file.eof()){
 			std::getline(file,input);
-			shaderFile << input + "\n";
+			shaderFile << input << "\n";
 		}
 		
     }else{

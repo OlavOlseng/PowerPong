@@ -38,6 +38,9 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 	cameraController->addBehaviour(behaviour);
 	cameraController->addBehaviour(mouseB);
 
+	
+
+
 	if (enableTest)
 	{
 		test();
@@ -108,7 +111,7 @@ void GameScreen::test()
 			for(int z = 0;z<32;z++){
 
 				volume->set(x,y,z,2);
-			
+				
 			}
 		}
 	}
@@ -150,6 +153,7 @@ void GameScreen::test()
 	this->frameBuffer->setDepthBuffer(1280,728);
 	this->frameBuffer->addRenderTexture(quadTex);
 
+	delete rootNode;
 	
 	
 }
@@ -165,7 +169,7 @@ void GameScreen::reshape(int width, int height){
 void GameScreen::render()
 {
 
-
+	/*
 	frameBuffer->bind();
 
 
@@ -208,7 +212,7 @@ void GameScreen::render()
 	
 	
 
-	
+	*/
 	
 
 	

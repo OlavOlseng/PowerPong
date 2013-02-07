@@ -13,16 +13,16 @@ Pipeline::Pipeline(unsigned int maxDirectionalLights,unsigned int maxPointLights
 	numPointLights = 0;
 	totalRotationTranslation = glm::mat4(1.0);
 	setShadowPass(false);
+
+	
+	
 	
 }
 
 
 void Pipeline::clear(){
+	
 
-	for(int i=0;i<numDirectionalLights;i++){
-		DirectionalLight * light = directionalLights[i];
-		light->transformedDirection = light->direction;
-	}
 
 	numDirectionalLights = 0;
 	numPointLights = 0;
@@ -161,17 +161,9 @@ PointLight*Pipeline::getPointLight(unsigned int index){
 	return this->pointLights[index];
 }
 Pipeline::~Pipeline(void)
-{/*
-	for(int i = 0;i<maxDirectionalLights;i++){
-		if(directionalLights[i])
-			delete directionalLights[i];
-	}
+{
+	
 	delete[] directionalLights;
-
-	for(int i = 0;i<maxPointLights;i++){
-		if(pointLights[i])
-		delete pointLights[i];
-	}
 	delete[] pointLights;
-	*/
+	
 }

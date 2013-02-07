@@ -39,4 +39,5 @@ GLuint Texture::getTextureHandle(){
 
 Texture::~Texture(void)
 {
+	glDeleteTextures(1,&textureHandle);
 }

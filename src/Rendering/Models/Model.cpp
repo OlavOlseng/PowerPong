@@ -70,4 +70,5 @@ std::shared_ptr<ResourceManager> Model::getResourceManager(){
 
 Model::~Model(void)
 {
+	
 }

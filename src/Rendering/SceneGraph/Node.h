@@ -13,7 +13,7 @@ class Node
 {
 public:
 	Node(void);
-	~Node(void);
+	virtual ~Node(void);
 
 	void addChild(Node *node);
 	
@@ -48,7 +48,7 @@ public:
 
 private:
 	
-	std::vector<Node*> *children;
+	std::vector<Node*> children;
 	Node *parent;
 	
 	std::vector<DirectionalLight*> directionalLights;

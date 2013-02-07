@@ -17,7 +17,7 @@ class Model:public Node
 {
 public:
 	Model();
-	~Model(void);
+	virtual ~Model(void);
 
 
 

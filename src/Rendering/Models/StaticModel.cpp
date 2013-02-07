@@ -23,7 +23,7 @@ StaticModel::~StaticModel(void)
 	delete texcoordBuffer;
 	delete elementBuffer;
 	delete shadowVertexBuffer;
-
+	glDeleteVertexArrays(1,&vao);
 }
 
 
