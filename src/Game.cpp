@@ -24,11 +24,7 @@ Game::~Game(void)
 
 
 
-#include "Rendering\Voxel\Volume\LargeVolume.h"
-#include "Rendering\Voxel\Volume\OctreeVolume.h"
-#include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractor.h"
-#include "Rendering\Voxel\SurfaceExtractors\CubeSurfaceExtractorWithByteNormals.h"
-#include "Rendering\Models\VolumeModel.h"
+
 
 
 

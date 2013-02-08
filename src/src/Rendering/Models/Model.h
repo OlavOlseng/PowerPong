@@ -1,6 +1,5 @@
 #ifndef model_h
 #define model_h
-#include "../GLtools/GLTriangleBatch.h"
 #include <glm\glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm\gtc\type_ptr.hpp>
@@ -19,11 +18,6 @@ public:
 	Model();
 	virtual ~Model(void);
 
-
-
-
-	
-	
 	virtual void render(Pipeline *pipeline) = 0;
 	
 	virtual void setAttributes(GLint*attributes,GLint*shadowAttributes=nullptr)=0 ;

@@ -210,4 +210,5 @@ VolumeModel::~VolumeModel(void)
 
 	delete[] surfaceVaos;
 	delete[] surfaces;
+	glDeleteVertexArrays(this->numSurfaces,surfaceVaos);
 }

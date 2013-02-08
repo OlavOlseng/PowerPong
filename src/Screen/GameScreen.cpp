@@ -50,11 +50,11 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 
 
 #include <glm\gtx\noise.hpp>
-#include "../Rendering/Voxel/Volume/LargeVolume.h"
-#include "../Rendering/Voxel/Volume/ArrayVolume.h"
-#include "../Rendering/Voxel/SurfaceExtractors/ChunkExtractor.h"
+#include "../src/Rendering/Voxel/Volume/LargeVolume.h"
+#include "../src/Rendering/Voxel/Volume/ArrayVolume.h"
+#include "../src/Rendering/Voxel/SurfaceExtractors/ChunkExtractor.h"
 #include <string>
-#include "../Rendering/Util/FrameBuffer.h"
+#include "../src/Rendering/Util/FrameBuffer.h"
 
 void GameScreen::test()
 {
@@ -153,7 +153,7 @@ void GameScreen::test()
 	this->frameBuffer->setDepthBuffer(1280,728);
 	this->frameBuffer->addRenderTexture(quadTex);
 
-	delete rootNode;
+	
 	
 	
 }
@@ -169,7 +169,7 @@ void GameScreen::reshape(int width, int height){
 void GameScreen::render()
 {
 
-	/*
+	
 	frameBuffer->bind();
 
 
@@ -212,7 +212,7 @@ void GameScreen::render()
 	
 	
 
-	*/
+	
 	
 
 	
@@ -245,4 +245,5 @@ GameScreen::~GameScreen(void)
 {
 	delete world;
 	delete pipeline;
+	delete rootNode;
 }

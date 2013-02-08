@@ -5,32 +5,33 @@
 
 
 
-#include "Screen.h"
+#include "../src/Rendering/Screen/Screen.h"
 #include "../World/World.h"
 #include "../Entities/Ball.h"
-#include "../Rendering/Models/StaticModel.h"
+
+#include "../src/Rendering/Models/StaticModel.h"
 #include <assimp\scene.h>
 #include <assimp\Importer.hpp>
 #include <assimp\DefaultLogger.hpp>
 #include <assimp\postprocess.h>
-#include "../Rendering/Models/ResourceManager.h"
-#include "../Rendering/camera/FreeMovementCamera.h"
+#include "../src/Rendering/Models/ResourceManager.h"
+#include "../src/Rendering/camera/FreeMovementCamera.h"
 #include "../Entities/Block.h"
-#include "../Rendering/Voxel/Volume/OctreeVolume.h"
-#include "../Rendering/Models/VolumeModel.h"
-#include "../Rendering/Voxel/SurfaceExtractors/CubeSurfaceExtractorWithByteNormals.h"
-#include "../Rendering/Voxel/SurfaceExtractors/VolumeSurface.h"
-#include "../Rendering/Models/LineModel.h"
+#include "../src/Rendering/Voxel/Volume/OctreeVolume.h"
+#include "../src/Rendering/Models/VolumeModel.h"
+#include "../src/Rendering/Voxel/SurfaceExtractors/CubeSurfaceExtractorWithByteNormals.h"
+#include "../src/Rendering/Voxel/SurfaceExtractors/VolumeSurface.h"
+#include "../src/Rendering/Models/LineModel.h"
 #include <memory>
-#include "../Input/InputHandler.h"
-#include "../Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
+#include "../src/Input/InputHandler.h"
+#include "../src/Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
 #include "../Entities/VolumeEntity.h"
-#include "../Rendering/Util/FrameBuffer.h"
-#include "../Rendering/Models/TexturedQuad.h"
-#include "../Rendering/camera/Controller/UnconstrainedCameraController.h"
-#include "../Input/KeyMap.h"
-#include "../Rendering/camera/Controller/Behavior/KeyMovementBehaviour.h"
-#include "../Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h"
+#include "../src/Rendering/Util/FrameBuffer.h"
+#include "../src/Rendering/Models/TexturedQuad.h"
+#include "../src/Rendering/camera/Controller/UnconstrainedCameraController.h"
+#include "../src/Input/KeyMap.h"
+#include "../src/Rendering/camera/Controller/Behavior/KeyMovementBehaviour.h"
+#include "../src/Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h"
 class GameScreen: public Screen
 {
 public:

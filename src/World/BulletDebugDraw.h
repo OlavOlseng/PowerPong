@@ -1,6 +1,6 @@
 #ifndef BULLET_DEBUG_DRAW_H
 #define BULLET_DEBUG_DRAW_H
-#include "../Rendering/Models/LineModel.h"
+#include "../src/Rendering/Models/LineModel.h"
 #include "../bullet/btBulletCollisionCommon.h"
 class BulletDebugDraw:public btIDebugDraw
 {
