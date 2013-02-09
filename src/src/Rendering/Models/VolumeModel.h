@@ -6,7 +6,7 @@
 class VolumeModel:public Model
 {
 public:
-	VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ,unsigned int surfaceWidth,unsigned int surfaceHeight,unsigned int surfaceDepth);
+	VolumeModel(unsigned int numSurfacesX,unsigned int numSurfacesY,unsigned int numSurfacesZ,unsigned int surfaceWidth,unsigned int surfaceHeight,unsigned int surfaceDepth,std::shared_ptr<ResourceManager> resourceManager);
 	~VolumeModel(void);
 
 	void render(Pipeline *pipeline);

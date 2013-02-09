@@ -95,8 +95,7 @@ void GameScreen::test()
 			floorVolume->set(x,0,z,2);
 	
 	TileAtlas * frameBufferAtlas = new TileAtlas("tileAtlas.png",1,1,resourceManager);
-	VolumeModel * floorModel = new VolumeModel(1,1,1,32,1,32);
-	floorModel->setResourceManager(resourceManager);
+	VolumeModel * floorModel = new VolumeModel(1,1,1,32,1,32,resourceManager);
 	floorModel->init(atlas);
 	floorModel->setSurface(0,0,0,CubeSurfaceExtractorWithByteNormals(floorVolume).extractSurface(0,0,0,32,32,32));
 	floorModel->setScale(glm::vec3(100,1,100));
@@ -120,8 +119,7 @@ void GameScreen::test()
 
 	Texture * quadTex = new Texture(Texture::ColorFormat::FORMAT_RGB,1280,728);
 	
-	VolumeModel * model = new VolumeModel(1,1,1,32,1,32);
-	model->setResourceManager(resourceManager);
+	VolumeModel * model = new VolumeModel(1,1,1,32,1,32,resourceManager);
 	model->init(atlas);
 	model->move(glm::vec3(20,0.0,0.0));
 	
@@ -133,15 +131,13 @@ void GameScreen::test()
 
 	
 	
-	texturedQuad = new TexturedQuad();
-	texturedQuad->setResourceManager(resourceManager);
+	texturedQuad = new TexturedQuad(resourceManager);
 	texturedQuad->init(quadTex);
 	texturedQuad->setSize(1280/4.0,728/4.0,1);
 	texturedQuad->setPosition(glm::vec3(300,100,1));
 
 	
-	translatedQuad = new TexturedQuad();
-	translatedQuad->setResourceManager(resourceManager);
+	translatedQuad = new TexturedQuad(resourceManager);
 	translatedQuad->init(quadTex);
 	translatedQuad->setSize(1280/20.0,728/20.0,1);
 

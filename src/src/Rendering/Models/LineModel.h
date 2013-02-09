@@ -6,7 +6,7 @@
 class LineModel:public Model
 {
 public:
-	LineModel(void);
+	LineModel(std::shared_ptr<ResourceManager> resourceManager);
 	~LineModel(void);
 	void addLine(glm::vec3 &from ,glm::vec3 &to,glm::vec3 &color);
 	void clearLines();

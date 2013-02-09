@@ -4,7 +4,7 @@
 #define SCRN_MNGR_H
 
 #include <deque>
-#include <list>
+#include <vector>
 #include "Screen.h"
 
 class ScreenManager
@@ -22,8 +22,8 @@ public:
 
 private:
 	std::deque<Screen*> scrnStack;
-	std::list<Screen*> toUpdate;
-	std::list<Screen*> toRender;
+	std::vector<Screen*> toUpdate;
+	std::vector<Screen*> toRender;
 };
 
 

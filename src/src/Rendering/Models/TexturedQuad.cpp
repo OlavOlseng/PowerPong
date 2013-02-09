@@ -1,7 +1,7 @@
 #include "TexturedQuad.h"
 
 
-TexturedQuad::TexturedQuad(void)
+TexturedQuad::TexturedQuad(std::shared_ptr<ResourceManager> resourceManager):Model(resourceManager)
 {
 
 	vertexBuffer = new Buffer(Buffer::BufferType::ARRAY_BUFFER,Buffer::BufferDrawMode::STATIC,3,GL_FLOAT);

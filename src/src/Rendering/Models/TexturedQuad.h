@@ -4,7 +4,7 @@
 class TexturedQuad:public Model
 {
 public:
-	TexturedQuad(void);
+	TexturedQuad(std::shared_ptr<ResourceManager> resourceManager);
 	~TexturedQuad(void);
 
 	void render(Pipeline *pipeline);

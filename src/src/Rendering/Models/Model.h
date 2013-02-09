@@ -15,7 +15,7 @@
 class Model:public Node
 {
 public:
-	Model();
+	Model(std::shared_ptr<ResourceManager> resourceManager);
 	virtual ~Model(void);
 
 	virtual void render(Pipeline *pipeline) = 0;

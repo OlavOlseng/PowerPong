@@ -17,7 +17,7 @@
 class StaticModel:public Model
 {
 public:
-	StaticModel();
+	StaticModel(std::shared_ptr<ResourceManager> resourceManager);
 	~StaticModel(void);
 	Buffer *getVertexBuffer();
 	Buffer*getNormalBuffer();

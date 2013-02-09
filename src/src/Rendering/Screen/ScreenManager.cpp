@@ -52,7 +52,7 @@ void ScreenManager::setToUpdate()
 
 void ScreenManager::render()
 {
-	std::list<Screen*>::reverse_iterator it;
+	std::vector<Screen*>::reverse_iterator it;
 	for (it = toRender.rbegin(); it != toRender.rend(); it++)
 	{
 		(*it) -> render();
@@ -61,7 +61,7 @@ void ScreenManager::render()
 
 void ScreenManager::update(double dt)
 {
-	std::list<Screen*>::reverse_iterator it;
+	std::vector<Screen*>::reverse_iterator it;
 	for (it = toUpdate.rbegin(); it != toUpdate.rend(); it++)
 	{
 		(*it) -> update(dt);

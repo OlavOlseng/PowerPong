@@ -1,9 +1,10 @@
 #include "Model.h"
 
 
-Model::Model()
+Model::Model(std::shared_ptr<ResourceManager> resourceManager)
 {
 
+	setResourceManager(resourceManager);
 	setScale(glm::vec3(1.0,1.0,1.0));
 	this->material.ambient = glm::vec3(0.0,0.0,0.0);
 	this->material.diffuse = glm::vec3(0.0,0.0,0.0);

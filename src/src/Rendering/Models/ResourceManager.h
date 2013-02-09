@@ -15,11 +15,11 @@ public:
 	enum{NO_RESOURCE = -1};
 	ResourceManager(void);
 	~ResourceManager(void);
-	//Increases the refrence coutn by 1
+	//Increases the refrence count by 1
 	void setWorkingDirectory(std::string dir);
-	//Increases the refrence coutn by 1
+	//Increases the refrence count by 1
 	void setShaderDirectory(std::string dir);
-	//Increases the refrence coutn by 1
+	//Increases the refrence count by 1
 	void setModelDirectory(std::string dir);
 	std::string getWorkingDirectiory();
 	std::string getModelDirectory();

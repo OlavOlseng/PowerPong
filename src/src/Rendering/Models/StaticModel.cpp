@@ -1,7 +1,7 @@
 #include "StaticModel.h"
 
 
-StaticModel::StaticModel()
+StaticModel::StaticModel(std::shared_ptr<ResourceManager> resourceManager):Model(resourceManager)
 {
 	
 	this->vertexBuffer = new Buffer(Buffer::ARRAY_BUFFER,Buffer::STATIC,3,GL_FLOAT);
@@ -62,7 +62,7 @@ Node* StaticModel::initFromScene(const aiScene * scene,Node * modelRoot){
 	
 		
 			for (int i = 1;i<scene->mNumMeshes;i++){
-				StaticModel*model = new StaticModel();
+				StaticModel*model = new StaticModel(getResourceManager());
 				
 				model->setResourceManager(getResourceManager());
 				model->initFromMesh(scene->mMeshes[i],scene->mMaterials,false);

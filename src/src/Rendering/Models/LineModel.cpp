@@ -2,7 +2,7 @@
 
 
 
-LineModel::LineModel(void)
+LineModel::LineModel(std::shared_ptr<ResourceManager> resourceManager):Model(resourceManager)
 {
 	lines = new std::vector<glm::vec3>();
 	colors = new std::vector<glm::vec3>();
