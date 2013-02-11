@@ -1,14 +1,14 @@
 #ifndef game_h
 #define game_h
 
-#include "src\BaseGame.h"
+#include <SGL\BaseGame.h>
 
 
 
 
-#include "src\Rendering\Models\Model.h"
+#include <SGL\Rendering\Models\Model.h>
 
-#include "src\Rendering\Models\StaticModel.h"
+#include <SGL\Rendering\Models\StaticModel.h>
 
 #include <assimp\scene.h>
 #include <assimp\Importer.hpp>
@@ -16,10 +16,10 @@
 #include <assimp\postprocess.h>
 #include "World\World.h"
 #include "Entities\Block.h"
-#include "src\Rendering\SceneGraph\Pipeline.h"
-#include "src\Rendering\SceneGraph\Node.h"
-#include "src\Rendering\Models\ResourceManager.h"
-#include "src\Rendering\Screen\ScreenManager.h"
+#include <SGL\Rendering\SceneGraph\Pipeline.h>
+#include <SGL\Rendering\SceneGraph\Node.h>
+#include <SGL\Rendering\Models\ResourceManager.h>
+#include <SGL\Rendering\Screen\ScreenManager.h>
 #include "Screen\GameScreen.h"
 
 class Game: public BaseGame

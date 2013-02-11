@@ -5,33 +5,33 @@
 
 
 
-#include "../src/Rendering/Screen/Screen.h"
+#include <SGL\Rendering\Screen\Screen.h>
 #include "../World/World.h"
 #include "../Entities/Ball.h"
 
-#include "../src/Rendering/Models/StaticModel.h"
+#include <SGL/Rendering/Models/StaticModel.h>
 #include <assimp\scene.h>
 #include <assimp\Importer.hpp>
 #include <assimp\DefaultLogger.hpp>
 #include <assimp\postprocess.h>
-#include "../src/Rendering/Models/ResourceManager.h"
-#include "../src/Rendering/camera/FreeMovementCamera.h"
+#include <SGL/Rendering/Models/ResourceManager.h>
+#include <SGL//Rendering/camera/FreeMovementCamera.h>
 #include "../Entities/Block.h"
-#include "../src/Rendering/Voxel/Volume/OctreeVolume.h"
-#include "../src/Rendering/Models/VolumeModel.h"
-#include "../src/Rendering/Voxel/SurfaceExtractors/CubeSurfaceExtractorWithByteNormals.h"
-#include "../src/Rendering/Voxel/SurfaceExtractors/VolumeSurface.h"
-#include "../src/Rendering/Models/LineModel.h"
+#include <SGL/Rendering/Voxel/Volume/OctreeVolume.h>
+#include <SGL/Rendering/Models/VolumeModel.h>
+#include <SGL/Rendering/Voxel/SurfaceExtractors/CubeSurfaceExtractorWithByteNormals.h>
+#include <SGL/Rendering/Voxel/SurfaceExtractors/VolumeSurface.h>
+#include <SGL/Rendering/Models/LineModel.h> 
 #include <memory>
-#include "../src/Input/InputHandler.h"
-#include "../src/Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h"
+#include <SGL/Input/InputHandler.h>
+#include <SGL/Rendering/Voxel/SurfaceExtractors/BulletSurfaceExtractor.h>
 #include "../Entities/VolumeEntity.h"
-#include "../src/Rendering/Util/FrameBuffer.h"
-#include "../src/Rendering/Models/TexturedQuad.h"
-#include "../src/Rendering/camera/Controller/UnconstrainedCameraController.h"
-#include "../src/Input/KeyMap.h"
-#include "../src/Rendering/camera/Controller/Behavior/KeyMovementBehaviour.h"
-#include "../src/Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h"
+#include <SGL/Rendering/Util/FrameBuffer.h>
+#include <SGL/Rendering/Models/TexturedQuad.h>
+#include <SGL/Rendering/camera/Controller/UnconstrainedCameraController.h>
+#include <SGL/Input/KeyMap.h>
+#include <SGL\Rendering\camera\Controller\Behavior\KeyMovementBehaviour.h>
+#include <SGL/Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h>
 class GameScreen: public Screen
 {
 public:

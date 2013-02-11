@@ -50,11 +50,12 @@ GameScreen::GameScreen(std::shared_ptr<ResourceManager> resourceManager,bool ena
 
 
 #include <glm\gtx\noise.hpp>
-#include "../src/Rendering/Voxel/Volume/LargeVolume.h"
-#include "../src/Rendering/Voxel/Volume/ArrayVolume.h"
-#include "../src/Rendering/Voxel/SurfaceExtractors/ChunkExtractor.h"
+#include "../SGL/Rendering/Voxel/Volume/LargeVolume.h"
+#include "../SGL/Rendering/Voxel/Volume/ArrayVolume.h"
+#include "../SGL/Rendering/Voxel/SurfaceExtractors/ChunkExtractor.h"
 #include <string>
-#include "../src/Rendering/Util/FrameBuffer.h"
+#include "../SGL/Rendering/Util/FrameBuffer.h"
+
 
 void GameScreen::test()
 {
