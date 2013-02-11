@@ -27,13 +27,12 @@ btManifoldPoint CollisionPair::getManifoldPoint()
 	return this->cp;
 }
 
-int CollisionPair::getCollisionType()
+int CollisionPair::isCollisionType(int collisionType)
 {
-	return entA->getClassID() + entB->getClassID();
+	return ((entA->getClassID() + entB->getClassID()) == collisionType);
 }
 
 bool CollisionPair::involves(int cID)
 {
-	if(entA->getClassID() == cID || entB->getClassID() == cID)
-		return true;
+	return ((entA->getClassID() | entB->getClassID()) & cID);
 }

@@ -32,6 +32,7 @@
 #include <SGL/Input/KeyMap.h>
 #include <SGL\Rendering\camera\Controller\Behavior\KeyMovementBehaviour.h>
 #include <SGL/Rendering/camera/Controller/Behavior/MouseFPSBehaviour.h>
+
 class GameScreen: public Screen
 {
 public:
@@ -46,27 +47,14 @@ public:
 private:
 	StaticModel * ballModel;
 	InputHandler inputHandler;
-	Ball * ballEntity;
-	Block * blockEntity;
 	Node * rootNode;
 
 	FreeMovementCamera * cam;
 	//temp
 	std::shared_ptr<ResourceManager> resourceManager;
 	void test();
-	LineModel * crossHair;
 	Pipeline * pipeline;
-	Node * floorNode;
-
 	UnconstrainedCameraController * cameraController;
-	TexturedQuad * texturedQuad;
-
-	TexturedQuad * translatedQuad;
-
-	FrameBuffer * frameBuffer;
-	
-
-
 
 };
 

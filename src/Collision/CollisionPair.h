@@ -1,4 +1,3 @@
-#pragma once
 #ifndef COLLISION_PAIR_H
 #define COLLISION_PAIR_H
 
@@ -14,7 +13,7 @@ public:
 	Entity* getEntA();
 	Entity* getEntB();
 	btManifoldPoint getManifoldPoint();
-	int getCollisionType();
+	int isCollisionType(int collisionType);
 	bool involves(int cID);
 
 private:

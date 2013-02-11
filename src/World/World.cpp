@@ -35,14 +35,16 @@ void World::init()
 	simWorld->setGravity(btVector3(0,-10,0));
 
 	// Build the static ground and add it to the simulation
-	this -> addEntity(new Plane(new btVector3(0,1,0),new btVector3(0, 0.0,0)));
+	this -> addEntity(new Plane(new btVector3(0,1,0),new btVector3(0, 0, 0)));
 
 	//Setup collision handler
 	this->colHand = new CollisionHandler();
+	this->colHand->addInvolvementFlags(1);
+
 	//Add collision callback
 	gContactProcessedCallback = cProcCB;
 
-	//test();
+	test();
 }
 
 void World::setDebugDraw(BulletDebugDraw* debugDraw){
@@ -143,6 +145,8 @@ bool World::cProcCB(btManifoldPoint& cp, void* body0, void* body1)
 void World::test()
 {
 	
+
+
 	addEntity(new Ball(-4,4,31.0,78.0));
 	addEntity(new Ball(4,4,31.0,-78.0));
 	addEntity(new Ball(2,8,31.0,-78.0));
@@ -153,6 +157,12 @@ void World::test()
 		for(int y = 0; y < 5; y++)
 			addEntity(new Block(x*4, y*4, x*y*4));
 	}
+
+	for(int x = 0; x < 5; x++){
+		for(int y = 0; y < 5; y++)
+			addEntity(new Block(100, y*4, 100));
+	}
+
 	addEntity(new StaticWall(40,true,0,22));
 	addEntity(new StaticWall(40,true,0,-22));
 	addEntity(new StaticWall(40,false,22,0));

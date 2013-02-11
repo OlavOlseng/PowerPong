@@ -43,6 +43,7 @@ public:
 	void *  getUserPointer();
 
 protected:
+	
 	ClassID cID;
 	EntityID entID;
 	
@@ -51,12 +52,11 @@ protected:
 	btCollisionShape* colShape;
 	btMotionState* motionState;
 	btRigidBody* body;
+	int health;
+
 
 private:
 	CollisionHandler* colHand;
-	
-	
-
 };
 
 #endif
