@@ -205,6 +205,7 @@ void GameScreen::render()
 	pipeline->setView(glm::mat4(1.0));
 	
 	//crossHair->render(pipeline);
+	
 	texturedQuad->render(pipeline);
 	
 	
@@ -226,7 +227,7 @@ void GameScreen::update(double dt)
 	//rootNode->getChildren()->at(0)->rotate(glm::quat(glm::vec3(0.0,1*dt,0.0)));
 	
 	//floorNode->rotate(glm::quat(glm::vec3(0,1.0*dt,0)));
-
+	
 	cameraController->update(dt);
 
 
