@@ -2,7 +2,7 @@
 #ifndef COLLISION_PAIR_H
 #define COLLISION_PAIR_H
 
-#include "btBulletDynamicsCommon.h"
+#include <bullet\btBulletDynamicsCommon.h>
 class Entity;
 
 class CollisionPair

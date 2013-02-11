@@ -2,7 +2,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "..\bullet\btBulletDynamicsCommon.h"
+#include <bullet\btBulletDynamicsCommon.h>
 #include <glm\glm.hpp>
 #include "../Collision/CollisionPair.h"
 #include "../Collision/CollisionHandler.h"

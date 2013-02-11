@@ -3,7 +3,7 @@
 #ifndef OVLY_SCRN_H
 #define	OVLY_SCRN_H
 
-#include "../src/Rendering/Screen/Screen.h"
+#include <SGL/Rendering/Screen/Screen.h>
 
 class OverlayScreen: public Screen
 {

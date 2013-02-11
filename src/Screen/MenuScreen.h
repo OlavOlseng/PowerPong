@@ -3,7 +3,7 @@
 #ifndef MENU_SCRN_H
 #define MENU_SCRN_H
 
-#include "../src/Rendering/Screen/Screen.h"
+#include <SGL/Rendering/Screen/Screen.h>
 
 class MenuScreen: public Screen
 {
