@@ -31,3 +31,7 @@ void CollisionHandler::clear()
 {
 	pairs.clear();
 }
+
+void CollisionHandler::handleCollisions()
+{
+}
